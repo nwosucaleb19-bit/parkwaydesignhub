@@ -1,0 +1,72 @@
+import { useState } from "react";
+import { TYPE_DESKTOP, TYPE_MOBILE, FRAMEWORKS } from "../tokens.js";
+import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { typoCssDesktop, typoFlutter } from "../snippets/index.js";
+
+const SAMPLE = "The Future of African Banking & Financial Services.";
+const BODY_SAMPLE =
+  "Shorten route-to-market for innovators with a suite of everything they need to launch and grow.";
+
+function specimenStyle([, face, size, lh, ls, upper], cap = 56) {
+  const gothic = face.includes("Gothic");
+  return {
+    margin: 0,
+    fontFamily: gothic ? "'PP Right Gothic', sans-serif" : "'Manrope', sans-serif",
+    fontWeight: face.includes("Bold") && !face.includes("Semi") ? 700 : face.includes("SemiBold") ? 600 : gothic ? 500 : 400,
+    fontSize: Math.min(size, cap),
+    lineHeight: parseFloat(lh) / 100,
+    letterSpacing: ls,
+    textTransform: upper ? "uppercase" : "none",
+    overflowWrap: "break-word",
+  };
+}
+
+function Ramp({ rows, body }) {
+  return (
+    <div className="ph-ramp">
+      {rows.map((r) => (
+        <div key={r[0]} className="ph-rampitem" style={{ cursor: "default" }}>
+          <span className="ph-rampmeta">
+            {r[0]} · {r[2]}pt · {r[3]}{r[4] ? ` · ${r[4]}px` : ""} · {r[1]}
+          </span>
+          <span style={{ ...specimenStyle(r), color: r[0].startsWith("P") ? "var(--pk-text-2)" : "var(--pk-text)" }}>
+            {r[0].startsWith("P") ? body : SAMPLE}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function Typography({ fw, setFw }) {
+  const [device, setDevice] = useState("desktop");
+  const ramp = device === "desktop" ? TYPE_DESKTOP : TYPE_MOBILE;
+  return (
+    <>
+      <Lead>
+        Display headings are set in PP Right Gothic Wide Medium; H5/H6 and all paragraph styles
+        use Manrope. These specimens render in the real PP Right Gothic — bundled with the hub.
+      </Lead>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4 }}>
+        <Tabs value={device} onChange={setDevice} label="Device ramp" items={[["desktop", "Desktop"], ["mobile", "Mobile"]]} />
+        <span style={{ font: "500 11px var(--pk-mono)", color: "var(--pk-text-faint)" }}>
+          Figma {device === "desktop" ? "88:140" : "530:6673"}
+        </span>
+      </div>
+
+      <SectionHeader label="Headings" desc="PP Right Gothic Wide Medium (H1–H4) and Manrope (H5–H6)." />
+      <Ramp rows={ramp.filter((r) => r[0].startsWith("H"))} body={BODY_SAMPLE} />
+
+      <SectionHeader label="Paragraphs" desc="Manrope, Regular / Medium." />
+      <Ramp rows={ramp.filter((r) => r[0].startsWith("P"))} body={BODY_SAMPLE} />
+
+      <SectionHeader label="Export type styles" />
+      <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
+      <CodeBlock
+        code={fw === "flutter" ? typoFlutter : typoCssDesktop}
+        label={fw === "flutter" ? "parkway_text_theme.dart" : "parkway-type.css (Vue & React)"}
+      />
+    </>
+  );
+}
