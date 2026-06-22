@@ -5,7 +5,9 @@ import { RAIL_ICONS } from "../iconography/index.js";
 export default function Rail({ activeModule }) {
   return (
     <nav className="ph-rail" aria-label="Top-level sections">
-      <span className="ph-mark" aria-hidden="true">P</span>
+      <span className="ph-mark">
+        <img src="/logos/parkway-mark.svg" alt="Parkway" width="30" height="30" />
+      </span>
       {MODULES.map((m) => {
         const Icon = RAIL_ICONS[m.icon];
         const act = activeModule === m.id;

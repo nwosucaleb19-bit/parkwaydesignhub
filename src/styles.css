@@ -131,31 +131,31 @@ a { color: inherit; }
   font-family: var(--pk-sans);
 }
 
-/* Zone 1 — icon + label rail */
+/* Zone 1 — icon + label rail (labels sit beside icons, one line) */
 .ph-rail {
-  width: 84px; flex: none;
+  width: 188px; flex: none;
   background: var(--pk-rail-bg);
   border-right: 1px solid var(--pk-line);
   display: flex; flex-direction: column; align-items: stretch;
-  gap: 4px; padding: 16px 12px;
+  gap: 2px; padding: 16px 14px;
   position: sticky; top: 0; height: 100dvh; overflow-y: auto;
 }
 .ph-mark {
-  width: 34px; height: 34px; border-radius: 9px;
-  background: var(--pk-accent); color: #1A1A1A;
-  font: 700 17px/34px var(--pk-disp); text-align: center;
-  margin: 2px auto 14px;
+  display: flex; align-items: center; height: 34px;
+  margin: 2px 0 16px 8px;
 }
+.ph-mark img { width: 30px; height: 30px; display: block; }
 .ph-railitem {
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
-  padding: 10px 4px; border-radius: 11px;
+  display: flex; flex-direction: row; align-items: center; gap: 11px;
+  padding: 10px 12px; border-radius: 10px;
   color: var(--pk-text-muted); text-decoration: none;
   transition: background .18s var(--pk-ease), color .18s var(--pk-ease);
 }
+.ph-railitem svg { flex: none; }
 .ph-railitem:hover { background: var(--pk-hover); color: var(--pk-text); }
 .ph-railitem.act { background: var(--pk-selected); color: var(--pk-text); }
-.ph-railitem:active { transform: scale(.96); }
-.ph-raillabel { font: 600 9.5px var(--pk-sans); letter-spacing: .1px; }
+.ph-railitem:active { transform: scale(.98); }
+.ph-raillabel { font: 600 13px var(--pk-sans); letter-spacing: .1px; white-space: nowrap; }
 
 .ph-body { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
@@ -198,15 +198,18 @@ a { color: inherit; }
 .ph-cta:hover { background: var(--pk-accent-hover); }
 .ph-cta:active { transform: scale(.97); }
 
-/* Theme toggle — ThemeToggleButton1 reproduced in CSS (fixed dark disc) */
+/* Theme toggle — labelled pill with ThemeToggleButton1 disc (CSS rotation) */
 .ph-toggle {
-  width: 34px; height: 34px; flex: none; border: 1px solid var(--pk-line); padding: 0; cursor: pointer;
-  border-radius: 50%; background: #161616; overflow: hidden;
-  display: grid; place-items: center;
-  transition: transform .12s var(--pk-ease);
+  display: inline-flex; align-items: center; gap: 8px; flex: none;
+  height: 34px; padding: 0 14px 0 5px; cursor: pointer;
+  border: 1px solid var(--pk-line); border-radius: 18px;
+  background: var(--pk-rail-bg); color: var(--pk-text);
+  transition: border-color .18s var(--pk-ease), transform .12s var(--pk-ease);
 }
-.ph-toggle:active { transform: scale(.95); }
-.ph-toggle svg { width: 34px; height: 34px; display: block; }
+.ph-toggle:hover { border-color: var(--pk-text-faint); }
+.ph-toggle:active { transform: scale(.98); }
+.ph-toggle-icon { width: 24px; height: 24px; flex: none; border-radius: 50%; background: #161616; overflow: hidden; display: block; }
+.ph-toggle-label { font: 600 12.5px var(--pk-sans); color: var(--pk-text); }
 .ph-toggle-disc, .ph-toggle-ring {
   transition: transform .35s ease-in-out;
   transform-box: view-box; transform-origin: center;
@@ -232,7 +235,7 @@ a { color: inherit; }
 
 /* Zone 2 — directory */
 .ph-dir {
-  width: clamp(280px, 30vw, 380px); flex: none;
+  width: clamp(300px, 28vw, 380px); flex: none;
   border-right: 1px solid var(--pk-line);
   display: flex; flex-direction: column;
   position: sticky; top: 0; height: 100dvh;
@@ -263,7 +266,7 @@ a { color: inherit; }
 }
 .ph-item:hover { background: var(--pk-hover); }
 .ph-item.act { background: var(--pk-selected); }
-.ph-itemlabel { font: 500 13.5px var(--pk-sans); color: var(--pk-text-2); display: flex; align-items: center; gap: 8px; min-width: 0; }
+.ph-itemlabel { font: 500 13.5px var(--pk-sans); color: var(--pk-text-2); display: flex; align-items: center; gap: 8px; min-width: 0; white-space: nowrap; }
 .ph-item.act .ph-itemlabel { color: var(--pk-text); font-weight: 600; }
 .ph-item:hover .ph-itemlabel { color: var(--pk-text); }
 .ph-item.soon .ph-itemlabel { color: var(--pk-text-faint); }

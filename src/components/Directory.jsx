@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MODULES, ITEMS } from "../nav.js";
+import { MODULES, ITEMS, moduleOf } from "../nav.js";
 import { FIGMA_FILE } from "../tokens.js";
 import { MagnifyingGlass, X, ArrowUpRight } from "../iconography/index.js";
 
@@ -103,28 +103,26 @@ export default function Directory({ activePage }) {
     );
   }
 
+  // Contextual: show only the active area's items (driven by the rail).
+  const activeModule = MODULES.find((m) => m.id === moduleOf(activePage)) || MODULES[0];
   return (
     <aside className="ph-dir" aria-label="Directory">
       <div className="ph-dirscroll">
         <Search q={q} setQ={setQ} />
-        {MODULES.map((m) => (
-          <div key={m.id}>
-            <p className="ph-group">{m.label}</p>
-            {m.items.map((it) => (
-              <div key={it.id}>
-                <ItemRow it={it} active={activePage === it.id} />
-                {it.children && activePage === it.id && (
-                  <div className="ph-children">
-                    {it.children.map((c, i) => (
-                      <a key={i} className="ph-item" href={`#/${it.id}`}>
-                        <span className="ph-itemlabel">{c.label}</span>
-                        {c.count != null && <span className="ph-itemcount">{c.count}</span>}
-                      </a>
-                    ))}
-                  </div>
-                )}
+        <p className="ph-group">{activeModule.label}</p>
+        {activeModule.items.map((it) => (
+          <div key={it.id}>
+            <ItemRow it={it} active={activePage === it.id} />
+            {it.children && activePage === it.id && (
+              <div className="ph-children">
+                {it.children.map((c, i) => (
+                  <a key={i} className="ph-item" href={`#/${it.id}`}>
+                    <span className="ph-itemlabel">{c.label}</span>
+                    {c.count != null && <span className="ph-itemcount">{c.count}</span>}
+                  </a>
+                ))}
               </div>
-            ))}
+            )}
           </div>
         ))}
       </div>

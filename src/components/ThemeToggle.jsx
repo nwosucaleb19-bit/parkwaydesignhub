@@ -12,9 +12,9 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={dark}
-      title="Toggle theme"
+      title={dark ? "Switch to light mode" : "Switch to dark mode"}
     >
-      <svg viewBox="0 0 240 240" aria-hidden="true">
+      <svg className="ph-toggle-icon" viewBox="0 0 240 240" aria-hidden="true">
         <g className="ph-toggle-disc">
           <path
             d="M120 67.5C149.25 67.5 172.5 90.75 172.5 120C172.5 149.25 149.25 172.5 120 172.5"
@@ -31,6 +31,7 @@ export default function ThemeToggle() {
           fill="#FFFFFF"
         />
       </svg>
+      <span className="ph-toggle-label">{dark ? "Dark mode" : "Light mode"}</span>
     </button>
   );
 }

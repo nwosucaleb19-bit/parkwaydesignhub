@@ -3,7 +3,9 @@
     "allow": [
       "Bash(git add *)",
       "Bash(git commit -q -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(open http://localhost:5173)",
+      "mcp__plugin_figma_figma__get_metadata"
     ]
   }
 }
