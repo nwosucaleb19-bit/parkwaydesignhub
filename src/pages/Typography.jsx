@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TYPE_DESKTOP, TYPE_MOBILE, FRAMEWORKS } from "../tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { DownloadSimple } from "../iconography/index.js";
 import { typoCssDesktop, typoFlutter } from "../snippets/index.js";
 
 const SAMPLE = "The Future of African Banking & Financial Services.";
@@ -48,6 +49,23 @@ export default function Typography({ fw, setFw }) {
         use Manrope. These specimens render in the real PP Right Gothic — bundled with the hub.
       </Lead>
 
+      <SectionHeader label="Typeface" desc="PP Right Gothic Wide — the licensed display face, bundled with the hub. Download it to install on your system." />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", borderTop: "1px solid var(--pk-line-soft)", padding: "16px 2px" }}>
+        <div>
+          <div className="ph-rowlabel" style={{ fontSize: 14 }}>PP Right Gothic Wide</div>
+          <div style={{ font: "400 12px var(--pk-sans)", color: "var(--pk-text-muted)", marginTop: 2 }}>Variable &amp; OpenType · all weights</div>
+        </div>
+        <div className="ph-dlrow">
+          <a className="ph-dlbtn" href="/fonts/Right%20Gothic%20Wide/variable/PP%20Right%20Gothic%20Wide%20Variable.ttf" download="PP Right Gothic Wide Variable.ttf">
+            <DownloadSimple size={13} weight="bold" /> Download font
+          </a>
+          <a className="ph-dlbtn" href="/fonts/Right%20Gothic%20Wide/otf/PPRightGothic-WideMedium.otf" download="PPRightGothic-WideMedium.otf">
+            <DownloadSimple size={13} weight="bold" /> .otf
+          </a>
+        </div>
+      </div>
+
+      <SectionHeader label="Ramp" desc="Switch between the desktop and mobile scales." />
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4 }}>
         <Tabs value={device} onChange={setDevice} label="Device ramp" items={[["desktop", "Desktop"], ["mobile", "Mobile"]]} />
         <span style={{ font: "500 11px var(--pk-mono)", color: "var(--pk-text-faint)" }}>

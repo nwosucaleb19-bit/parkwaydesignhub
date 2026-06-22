@@ -11,6 +11,7 @@ import Buttons from "./pages/Buttons.jsx";
 import Colors from "./pages/Colors.jsx";
 import Typography from "./pages/Typography.jsx";
 import Spacing from "./pages/Spacing.jsx";
+import Shadows from "./pages/Shadows.jsx";
 import Icons from "./pages/Icons.jsx";
 import Logo from "./pages/Logo.jsx";
 import Placeholder from "./pages/Placeholder.jsx";
@@ -22,6 +23,7 @@ const PAGES = {
   colors: Colors,
   typography: Typography,
   spacing: Spacing,
+  shadows: Shadows,
   icons: Icons,
   logo: Logo,
 };

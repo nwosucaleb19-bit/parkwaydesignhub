@@ -141,10 +141,10 @@ a { color: inherit; }
   position: sticky; top: 0; height: 100dvh; overflow-y: auto;
 }
 .ph-mark {
-  display: flex; align-items: center; height: 34px;
-  margin: 2px 0 16px 8px;
+  display: flex; align-items: center; height: 30px;
+  margin: 2px 0 18px 10px;
 }
-.ph-mark img { width: 30px; height: 30px; display: block; }
+.ph-mark img { height: 26px; width: auto; display: block; }
 .ph-railitem {
   display: flex; flex-direction: row; align-items: center; gap: 11px;
   padding: 10px 12px; border-radius: 10px;
@@ -379,6 +379,15 @@ a { color: inherit; }
 .ph-spacelabel { font: 500 11px var(--pk-mono); font-variant-numeric: tabular-nums; color: var(--pk-text-muted); width: 110px; flex: none; }
 .ph-spacelabel.act { color: var(--pk-text); }
 .ph-spacebar { flex: 1; max-width: 520px; border-radius: 3px; transition: background .2s var(--pk-ease); }
+
+/* ── Shadows page (documented tokens — NOT applied to app chrome) ────── */
+.ph-shadowgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px; }
+.ph-shadowcard { border: 0; background: transparent; padding: 0; text-align: left; cursor: pointer; display: flex; flex-direction: column; }
+.ph-shadowtile { height: 88px; border-radius: 12px; background: var(--pk-canvas); border: 1px solid var(--pk-line); margin-bottom: 16px; }
+.ph-shadowname { font: 500 12px var(--pk-mono); color: var(--pk-text); }
+.ph-shadowmeta { font: 400 12px var(--pk-sans); color: var(--pk-text-muted); margin-top: 2px; }
+.ph-shadowval { font: 400 10.5px/1.5 var(--pk-mono); color: var(--pk-text-faint); margin-top: 10px; word-break: break-word; }
+.ph-shadowval.ok { color: var(--pk-success); font-weight: 600; }
 
 /* ── Buttons page ───────────────────────────────────────────────────── */
 .ph-live-primary:hover { background: #FBBFA6 !important; }

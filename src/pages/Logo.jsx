@@ -5,8 +5,8 @@ import { Lead, SectionHeader, Tabs } from "../components/primitives.jsx";
 import { DownloadSimple } from "../iconography/index.js";
 
 const LOCKUPS = [
-  { id: "light", name: "On light", file: "/logos/logo-light.svg", base: "parkway-logo-light", stage: "light", meta: "logo-light.svg · 583×152", alt: "Parkway wordmark for light backgrounds" },
-  { id: "dark", name: "On dark", file: "/logos/logo-dark.svg", base: "parkway-logo-dark", stage: "dark", meta: "logo-dark.svg · 583×152", alt: "Parkway wordmark for dark backgrounds" },
+  { id: "light", name: "On light", file: "/logos/logo-light.svg", base: "parkway-logo-light", stage: "light", meta: "logo-light.svg · 582×104", alt: "Parkway wordmark for light backgrounds" },
+  { id: "dark", name: "On dark", file: "/logos/logo-dark.svg", base: "parkway-logo-dark", stage: "dark", meta: "logo-dark.svg · 582×104", alt: "Parkway wordmark for dark backgrounds" },
 ];
 
 function LogoCard({ item, scale }) {
