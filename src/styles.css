@@ -38,11 +38,16 @@
   --pk-text-muted: #8A8A85;
   --pk-text-faint: #A5A5A0;
 
-  /* single restrained accent — Parkway Atomic Tangerine */
+  /* single restrained accent — set per product (Parkway = Atomic Tangerine) */
   --pk-accent: #F9956B;
   --pk-accent-hover: #FBBFA6;
   --pk-accent-soft: #FEF1EA;
   --pk-accent-ink: #C77756;
+
+  /* elevation tokens — for floating overlays only (menus, popovers), never chrome */
+  --pk-shadow-md: 0 4px 6px -1px rgba(18,18,18,.08), 0 2px 4px -2px rgba(18,18,18,.08);
+  --pk-shadow-lg: 0 10px 15px -3px rgba(18,18,18,.08), 0 4px 6px -4px rgba(18,18,18,.08);
+  --pk-shadow-xl: 0 20px 25px -5px rgba(18,18,18,.10), 0 8px 10px -6px rgba(18,18,18,.10);
 
   /* badge palettes (status chips) */
   --pk-ok: #3A7D44;
@@ -156,6 +161,41 @@ a { color: inherit; }
 .ph-railitem.act { background: var(--pk-selected); color: var(--pk-text); }
 .ph-railitem:active { transform: scale(.98); }
 .ph-raillabel { font: 600 13px var(--pk-sans); letter-spacing: .1px; white-space: nowrap; }
+
+/* ── Product switcher (top of rail) ─────────────────────────────────── */
+.ph-switch { position: relative; margin: 2px 0 16px; }
+.ph-switchbtn {
+  display: flex; align-items: center; gap: 9px; width: 100%;
+  border: 1px solid var(--pk-line); background: var(--pk-panel-bg);
+  border-radius: 10px; padding: 7px 9px; cursor: pointer;
+  transition: border-color .18s var(--pk-ease);
+}
+.ph-switchbtn:hover { border-color: var(--pk-text-faint); }
+.ph-switchname { font: 700 13.5px var(--pk-sans); color: var(--pk-text); flex: 1; text-align: left; letter-spacing: -.1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ph-switchcaret { color: var(--pk-text-faint); display: flex; flex: none; transition: transform .2s var(--pk-ease); }
+.ph-switchcaret[data-open] { transform: rotate(180deg); }
+.ph-pmark { display: block; flex: none; }
+.ph-pletter {
+  display: flex; align-items: center; justify-content: center; flex: none;
+  border-radius: 6px; background: var(--pk-selected); color: var(--pk-text-2);
+  font: 700 11px var(--pk-sans);
+}
+.ph-switchmenu {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 30;
+  background: var(--pk-panel-bg); border: 1px solid var(--pk-line);
+  border-radius: 11px; padding: 5px; box-shadow: var(--pk-shadow-lg);
+  animation: ph-pop .16s var(--pk-ease);
+}
+@keyframes ph-pop { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.ph-switchopt {
+  display: flex; align-items: center; gap: 9px; width: 100%; border: 0;
+  background: transparent; border-radius: 8px; padding: 8px 9px; cursor: pointer;
+  transition: background .15s var(--pk-ease);
+}
+.ph-switchopt:hover { background: var(--pk-hover); }
+.ph-switchopt.act { background: var(--pk-selected); }
+.ph-switchoptname { font: 600 13px var(--pk-sans); color: var(--pk-text); flex: 1; text-align: left; }
+.ph-switchopt > svg { color: var(--pk-text); flex: none; }
 
 .ph-body { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 

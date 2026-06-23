@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { MODULES, ITEMS, moduleOf } from "../nav.js";
+import { moduleOf } from "../nav.js";
+import { linkTo } from "../products.js";
 import { FIGMA_FILE } from "../tokens.js";
 import { MagnifyingGlass, X, ArrowUpRight } from "../iconography/index.js";
 
@@ -9,7 +10,7 @@ function Badge({ status }) {
   return null;
 }
 
-function ItemRow({ it, active }) {
+function ItemRow({ it, active, productId }) {
   if (it.external) {
     return (
       <a className="ph-item" href={it.href} target="_blank" rel="noreferrer">
@@ -22,7 +23,7 @@ function ItemRow({ it, active }) {
   return (
     <a
       className={`ph-item${active ? " act" : ""}${it.status === "soon" ? " soon" : ""}`}
-      href={`#/${it.id}`}
+      href={linkTo(productId, it.id)}
       aria-current={active ? "page" : undefined}
     >
       <span className="ph-itemlabel">{it.label}<Badge status={it.status} /></span>
@@ -65,13 +66,14 @@ function Foot() {
   );
 }
 
-// Zone 2 — searchable directory tree.
-export default function Directory({ activePage }) {
+// Zone 2 — searchable, contextual directory tree for the active product.
+export default function Directory({ product, activePage }) {
   const [q, setQ] = useState("");
   const needle = q.trim().toLowerCase();
+  const pid = product.id;
 
   if (needle) {
-    const hits = Object.values(ITEMS).filter(
+    const hits = Object.values(product.items).filter(
       (it) =>
         it.label.toLowerCase().includes(needle) ||
         it.id.includes(needle) ||
@@ -85,7 +87,7 @@ export default function Directory({ activePage }) {
             <>
               <p className="ph-group">Results · {hits.length}</p>
               {hits.map((it) => (
-                <ItemRow key={it.id} it={it} active={activePage === it.id} />
+                <ItemRow key={it.id} it={it} active={activePage === it.id} productId={pid} />
               ))}
             </>
           ) : (
@@ -104,7 +106,8 @@ export default function Directory({ activePage }) {
   }
 
   // Contextual: show only the active area's items (driven by the rail).
-  const activeModule = MODULES.find((m) => m.id === moduleOf(activePage)) || MODULES[0];
+  const activeModule =
+    product.modules.find((m) => m.id === moduleOf(product.modules, activePage)) || product.modules[0];
   return (
     <aside className="ph-dir" aria-label="Directory">
       <div className="ph-dirscroll">
@@ -112,11 +115,11 @@ export default function Directory({ activePage }) {
         <p className="ph-group">{activeModule.label}</p>
         {activeModule.items.map((it) => (
           <div key={it.id}>
-            <ItemRow it={it} active={activePage === it.id} />
+            <ItemRow it={it} active={activePage === it.id} productId={pid} />
             {it.children && activePage === it.id && (
               <div className="ph-children">
                 {it.children.map((c, i) => (
-                  <a key={i} className="ph-item" href={`#/${it.id}`}>
+                  <a key={i} className="ph-item" href={linkTo(pid, it.id)}>
                     <span className="ph-itemlabel">{c.label}</span>
                     {c.count != null && <span className="ph-itemcount">{c.count}</span>}
                   </a>

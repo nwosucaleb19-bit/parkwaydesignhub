@@ -68,24 +68,43 @@ export const MODULES = [
   },
 ];
 
-// Flat lookup: item id -> { ...item, module } (external links excluded)
-export const ITEMS = {};
-MODULES.forEach((m) =>
-  m.items.forEach((it) => {
-    if (!it.external) ITEMS[it.id] = { ...it, module: m.label };
-  })
-);
-
 export const DEFAULT_PAGE = "introduction";
 
+// Flat lookup for a module set: item id -> { ...item, module } (external excluded).
+export function buildItems(modules) {
+  const map = {};
+  modules.forEach((m) =>
+    m.items.forEach((it) => {
+      if (!it.external) map[it.id] = { ...it, module: m.label };
+    })
+  );
+  return map;
+}
+
 // First navigable item in a module (for rail clicks)
-export function firstItemId(moduleId) {
-  const m = MODULES.find((x) => x.id === moduleId);
+export function firstItemId(modules, moduleId) {
+  const m = modules.find((x) => x.id === moduleId);
   const hit = m?.items.find((it) => !it.external);
   return hit ? hit.id : DEFAULT_PAGE;
 }
 
 // Which rail module owns a given item id (for active rail highlight)
-export function moduleOf(itemId) {
-  return MODULES.find((m) => m.items.some((it) => it.id === itemId))?.id;
+export function moduleOf(modules, itemId) {
+  return modules.find((m) => m.items.some((it) => it.id === itemId))?.id;
+}
+
+// Scaffold nav for not-yet-branded products: the same module structure and
+// item labels as Parkway, but every item is a "soon" placeholder except a
+// coming-soon Introduction. Keeps the directory looking real before tokens exist.
+export function scaffoldModules() {
+  return MODULES.map((m) => ({
+    id: m.id,
+    label: m.label,
+    icon: m.icon,
+    items: m.items.map((it) =>
+      it.id === "introduction"
+        ? { id: "introduction", label: "Introduction", page: "product-soon", status: "building" }
+        : { id: it.id, label: it.label, status: "soon" }
+    ),
+  }));
 }

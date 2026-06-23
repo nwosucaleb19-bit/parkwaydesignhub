@@ -1,5 +1,6 @@
 import { Lead, SectionHeader } from "../components/primitives.jsx";
 import { ArrowRight } from "../iconography/index.js";
+import { linkTo } from "../products.js";
 
 const LINKS = [
   ["colors", "Colors", "Tangerine, Rich Grey & Buff scales with messaging colors"],
@@ -17,7 +18,8 @@ const STEPS = [
   <>Need the source? Every page deep-links to its exact Figma node in Dev Mode.</>,
 ];
 
-export default function Introduction() {
+export default function Introduction({ product }) {
+  const pid = product?.id || "parkway";
   return (
     <>
       <Lead>
@@ -29,7 +31,7 @@ export default function Introduction() {
       <SectionHeader label="Browse the system" />
       <div className="ph-linkrows">
         {LINKS.map(([key, title, desc]) => (
-          <a key={key} className="ph-linkrow" href={`#/${key}`}>
+          <a key={key} className="ph-linkrow" href={linkTo(pid, key)}>
             <span>
               <span className="ph-linktitle">{title}</span>
               <span className="ph-linkdesc">{desc}</span>
