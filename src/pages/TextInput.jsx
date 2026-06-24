@@ -16,46 +16,38 @@ function InfoDot() {
 }
 
 function LiveInput({ addon, state }) {
+  const [val, setVal] = useState("");
   const error = state === "error";
   const disabled = state === "disabled";
-  const focus = state === "focus";
-  const filled = state === "filled";
-  const border = error ? "#FF0000" : focus ? "#121212" : "#DDDDDD";
   return (
-    <div style={{ width: 335, maxWidth: "100%", display: "grid", gap: 6 }}>
-      <span style={{ font: "600 12px Manrope", color: "#444444" }}>Amount</span>
-      <span style={{
-        display: "flex", alignItems: "center", gap: 8, height: 45, padding: "0 16px",
-        border: `1px solid ${border}`, borderRadius: 8,
-        background: disabled ? "#FBFBFB" : "#FFFFFF",
-        boxShadow: focus ? "0 0 0 3px rgba(18,18,18,.08)" : "none",
-        transition: "border-color .15s ease",
-      }}>
+    <div className="ph-tfield">
+      <label className="ph-tfield__label" htmlFor="pk-demo-input">Amount</label>
+      <span className={`ph-tfield__box${error ? " err" : ""}${disabled ? " dis" : ""}`}>
         <input
-          readOnly
+          id="pk-demo-input"
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
           disabled={disabled}
-          value={filled ? "N 50,000.00" : ""}
           placeholder="Placeholder text"
-          style={{ flex: 1, border: 0, outline: 0, background: "none", font: "400 14px Manrope", color: disabled ? "#BBBBBB" : "#121212" }}
+          aria-invalid={error || undefined}
+          autoComplete="off"
         />
-        {addon === "icon" && <CaretDown size={16} color="#868686" />}
+        {addon === "icon" && <span className="ph-tfield__chev"><CaretDown size={16} /></span>}
       </span>
       {addon === "helper" && !error && (
-        <span style={{ display: "inline-flex", gap: 6, alignItems: "center", font: "400 12px Manrope", color: "#868686" }}>
-          <InfoDot />Your remaining daily transfer limit is&nbsp;<strong style={{ color: "#444444" }}>N200,000.00</strong>
+        <span className="ph-tfield__help">
+          <InfoDot />Your remaining daily transfer limit is&nbsp;<strong>N200,000.00</strong>
         </span>
       )}
-      {error && <span style={{ font: "400 12px Manrope", color: "#FF0000" }}>Enter a valid amount</span>}
+      {error && <span className="ph-tfield__help err">Enter a valid amount</span>}
     </div>
   );
 }
 
 const STATES = [
-  ["default", "Default", "Resting field, hairline Grey-04 border."],
-  ["focus", "Focus", "Border darkens to Grey-01 with a soft focus ring."],
-  ["filled", "Filled", "Holds a value in Grey-01; border stays at rest."],
+  ["default", "Default", "Resting field, hairline border."],
   ["error", "Error", "Red border + message, sets aria-invalid."],
-  ["disabled", "Disabled", "Grey-06 fill, non-interactive."],
+  ["disabled", "Disabled", "Dimmed, non-interactive."],
 ];
 
 const PROPS_ROWS = [
@@ -74,7 +66,7 @@ export default function TextInput({ fw, setFw }) {
   const label = { react: "PkTextInput.jsx + parkway-input.css", vue: "PkTextInput.vue", flutter: "pk_text_input.dart" };
   return (
     <>
-      <Lead>45px field, 8px radius, hairline border that darkens on focus. Optional trailing icon and helper line, across five states.</Lead>
+      <Lead>A real, focusable field — click in and type. 45px, 8px radius; the border and a light ring turn tangerine on focus.</Lead>
 
       <SectionHeader label="Playground" desc="Adjust the controls; the preview and snippet update together." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>

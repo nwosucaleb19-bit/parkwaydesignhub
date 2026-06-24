@@ -13,7 +13,6 @@ import UsageGuidelines from "./pages/UsageGuidelines.jsx";
 import Buttons from "./pages/Buttons.jsx";
 import TextInput from "./pages/TextInput.jsx";
 import ToastMessage from "./pages/ToastMessage.jsx";
-import LinkButton from "./pages/LinkButton.jsx";
 import Badges from "./pages/Badges.jsx";
 import Toggle from "./pages/Toggle.jsx";
 import Checkbox from "./pages/Checkbox.jsx";
@@ -35,7 +34,6 @@ const PAGES = {
   buttons: Buttons,
   textinput: TextInput,
   toast: ToastMessage,
-  link: LinkButton,
   badges: Badges,
   toggle: Toggle,
   checkbox: Checkbox,

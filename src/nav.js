@@ -32,7 +32,6 @@ export const MODULES = [
       { id: "buttons", label: "Buttons", page: "buttons", node: "95:97", status: "live", meta: "2×5×3" },
       { id: "textinput", label: "Text Input", page: "textinput", figma: wfig("31764-10117"), status: "building" },
       { id: "toast", label: "Toast Message", page: "toast", figma: wfig("31766-10180"), status: "building" },
-      { id: "link", label: "Link button", page: "link", figma: wfig("31766-13007"), status: "building" },
       { id: "badges", label: "Badges", page: "badges", figma: wfig("31766-13029"), status: "building" },
       { id: "toggle", label: "Toggle button", page: "toggle", figma: wfig("31766-13046"), status: "building" },
       { id: "checkbox", label: "Checkbox", page: "checkbox", figma: wfig("31767-13062"), status: "building" },

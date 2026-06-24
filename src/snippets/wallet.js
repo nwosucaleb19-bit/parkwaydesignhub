@@ -30,7 +30,7 @@ export default function PkTextInput({
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
   font: 400 14px Manrope; color: var(--pk-grey-01); }
 .pk-input input::placeholder { color: var(--pk-grey-02); }
-.pk-input:focus-within { border-color: var(--pk-grey-01); }
+.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px rgba(249,149,107,.20); }
 .pk-input.is-error { border-color: var(--pk-error); }
 .pk-field__help { font: 400 12px Manrope; color: var(--pk-grey-08); }
 .pk-field__help.is-error { color: var(--pk-error); }
@@ -62,7 +62,7 @@ const model = defineModel();
   background: var(--pk-white-01); transition: border-color .15s ease; }
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
   font: 400 14px Manrope; color: var(--pk-grey-01); }
-.pk-input:focus-within { border-color: var(--pk-grey-01); }
+.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px rgba(249,149,107,.20); }
 .pk-input.is-error { border-color: var(--pk-error); }
 .pk-field__help { font: 400 12px Manrope; color: var(--pk-grey-08); }
 .pk-field__help.is-error { color: var(--pk-error); }
@@ -96,7 +96,7 @@ class PkTextInput extends StatelessWidget {
           hintText: hint, suffixIcon: suffixIcon, errorText: error,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           enabledBorder: border(PkColors.grey04),
-          focusedBorder: border(PkColors.grey01),
+          focusedBorder: border(PkColors.tangerine01),
           errorBorder: border(PkColors.error),
           helperText: helper,
         ),
