@@ -3,18 +3,19 @@ import { BTN, FRAMEWORKS } from "../tokens.js";
 import { Lead, SectionHeader, Tabs, Select, CodeBlock } from "../components/primitives.jsx";
 import { reactButton, vueButton, flutterButton, usageSnippet } from "../snippets/index.js";
 
-function LiveButton({ variant, size, state }) {
+function LiveButton({ variant, size, state, platform }) {
   const pal = BTN[variant];
   const disabled = state === "disabled";
   const label = size === "small" ? "Sign in" : "Get a demo";
   const w = BTN.widths[size];
+  const radius = platform === "mobile" ? BTN.radiusMobile : BTN.radius;
   return (
     <button
       type="button"
       disabled={disabled}
       className={state === "default" ? `ph-live-${variant}` : ""}
       style={{
-        height: BTN.height, borderRadius: BTN.radius, border: 0,
+        height: BTN.height, borderRadius: radius, border: 0,
         width: w === "100%" ? "100%" : w, maxWidth: "100%",
         background: pal[state], color: disabled ? BTN.textDisabled : BTN.text,
         font: BTN.font, fontFamily: "Manrope, sans-serif",
@@ -42,14 +43,15 @@ export default function Buttons({ fw, setFw }) {
   const [variant, setVariant] = useState("primary");
   const [size, setSize] = useState("medium");
   const [state, setState] = useState("default");
+  const [platform, setPlatform] = useState("desktop");
   const implCode = { vue: vueButton, react: reactButton, flutter: flutterButton };
   const implLabel = { vue: "PkButton.vue", react: "PkButton.jsx + parkway-button.css", flutter: "pk_button.dart" };
   const pal = BTN[variant];
   return (
     <>
       <Lead>
-        Pill-shaped, 54px tall, set in Manrope SemiBold 14. Two variants (Primary tangerine,
-        Alternative grey) across five sizes and three states. Hover the preview for the real state.
+        54px tall, Manrope SemiBold 14. Two variants × five sizes × three states. Desktop uses the
+        27px pill; mobile uses an 8px radius. Hover the preview for the real state.
       </Lead>
 
       <SectionHeader label="Playground" desc="Adjust the controls; the live preview and the usage snippet below update together." />
@@ -62,18 +64,22 @@ export default function Buttons({ fw, setFw }) {
           <span className="ph-rowlabel">Size</span>
           <Select value={size} onChange={setSize} label="Size" options={["small", "icon", "medium", "large", "xlarge"]} />
         </div>
-        <div style={{ ...ROW, borderBottom: 0 }}>
+        <div style={ROW}>
           <span className="ph-rowlabel">State</span>
           <Tabs small value={state} onChange={setState} label="State" items={[["default", "Default"], ["hover", "Hover"], ["disabled", "Disabled"]]} />
+        </div>
+        <div style={{ ...ROW, borderBottom: 0 }}>
+          <span className="ph-rowlabel">Platform</span>
+          <Tabs small value={platform} onChange={setPlatform} label="Platform" items={[["desktop", "Desktop"], ["mobile", "Mobile"]]} />
         </div>
       </div>
 
       <div className="ph-stage tall" style={{ marginTop: 14 }}>
-        <LiveButton variant={variant} size={size} state={state} />
+        <LiveButton variant={variant} size={size} state={state} platform={platform} />
       </div>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
-      <CodeBlock code={usageSnippet(fw, variant, size, state)} label="Usage — reflects the controls above" />
+      <CodeBlock code={usageSnippet(fw, variant, size, state, platform)} label="Usage — reflects the controls above" />
       <CodeBlock code={implCode[fw]} label={implLabel[fw]} />
 
       <SectionHeader label="Props" />
@@ -119,7 +125,7 @@ export default function Buttons({ fw, setFw }) {
         <div>
           <p className="ph-guidehead"><span className="ph-dot err" aria-hidden="true" />Don't</p>
           <ul className="ph-guidelist">
-            <li>Don't change the 27px pill radius or 54px height per surface.</li>
+            <li>Don't invent a third radius — desktop is the 27px pill, mobile is 8px.</li>
             <li>Don't recolor states manually — the tokens already encode hover/disabled.</li>
             <li>Don't rely on color alone for disabled; keep the control non-interactive.</li>
           </ul>

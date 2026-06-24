@@ -1,4 +1,5 @@
 // Button component snippets — referenced by the Buttons page.
+// Desktop keeps the 27px pill; mobile uses an 8px corner radius.
 
 export const reactButton = `// PkButton.jsx — Parkway button (React)
 // Figma: Buttons 95:97 · requires parkway-tokens.css
@@ -9,6 +10,7 @@ const WIDTHS = { small: 98, icon: 200, medium: 275, large: 325, xlarge: "100%" }
 export default function PkButton({
   variant = "primary",      // "primary" | "alternative"
   size = "medium",          // "small" | "icon" | "medium" | "large" | "xlarge"
+  platform = "desktop",     // "desktop" (27px pill) | "mobile" (8px radius)
   disabled = false,
   withArrow,                // defaults to true for size="icon"
   children,
@@ -17,7 +19,7 @@ export default function PkButton({
   const arrow = withArrow ?? size === "icon";
   return (
     <button
-      className={\`pk-btn pk-btn--\${variant}\`}
+      className={\`pk-btn pk-btn--\${variant}\${platform === "mobile" ? " pk-btn--mobile" : ""}\`}
       style={{ width: WIDTHS[size] }}
       disabled={disabled}
       {...rest}
@@ -35,6 +37,7 @@ export default function PkButton({
   gap: 6px; font: 600 14px/1 Manrope, sans-serif;
   color: var(--pk-grey-01); transition: background .15s ease;
 }
+.pk-btn--mobile { border-radius: 8px; }   /* mobile platform */
 .pk-btn--primary            { background: var(--pk-tangerine-01); }
 .pk-btn--primary:hover      { background: var(--pk-tangerine-03); }
 .pk-btn--primary:disabled   { background: var(--pk-tangerine-04);
@@ -54,6 +57,7 @@ import { computed } from "vue";
 const props = defineProps({
   variant: { type: String, default: "primary" },   // primary | alternative
   size: { type: String, default: "medium" },        // small | icon | medium | large | xlarge
+  platform: { type: String, default: "desktop" },   // desktop (27px) | mobile (8px)
   disabled: { type: Boolean, default: false },
   withArrow: { type: Boolean, default: undefined },
 });
@@ -67,7 +71,7 @@ const arrow = computed(() => props.withArrow ?? props.size === "icon");
 <template>
   <button
     class="pk-btn"
-    :class="\`pk-btn--\${variant}\`"
+    :class="[\`pk-btn--\${variant}\`, { 'pk-btn--mobile': platform === 'mobile' }]"
     :style="{ width }"
     :disabled="disabled"
   >
@@ -83,6 +87,7 @@ const arrow = computed(() => props.withArrow ?? props.size === "icon");
   gap: 6px; font: 600 14px/1 Manrope, sans-serif;
   color: var(--pk-grey-01); transition: background .15s ease;
 }
+.pk-btn--mobile { border-radius: 8px; }   /* mobile platform */
 .pk-btn--primary            { background: var(--pk-tangerine-01); }
 .pk-btn--primary:hover      { background: var(--pk-tangerine-03); }
 .pk-btn--primary:disabled   { background: var(--pk-tangerine-04);
@@ -101,6 +106,7 @@ import 'parkway_tokens.dart';
 
 enum PkVariant { primary, alternative }
 enum PkSize { small, icon, medium, large, xlarge }
+enum PkPlatform { desktop, mobile }   // desktop = 27px pill, mobile = 8px radius
 
 class PkButton extends StatelessWidget {
   const PkButton({
@@ -109,6 +115,7 @@ class PkButton extends StatelessWidget {
     this.onPressed,
     this.variant = PkVariant.primary,
     this.size = PkSize.medium,
+    this.platform = PkPlatform.desktop,
     bool? withArrow,
   }) : withArrow = withArrow ?? (size == PkSize.icon);
 
@@ -116,6 +123,7 @@ class PkButton extends StatelessWidget {
   final VoidCallback? onPressed;   // null = disabled
   final PkVariant variant;
   final PkSize size;
+  final PkPlatform platform;
   final bool withArrow;
 
   static const _widths = {
@@ -126,6 +134,7 @@ class PkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primary = variant == PkVariant.primary;
+    final radius = platform == PkPlatform.mobile ? 8.0 : 27.0;
     return SizedBox(
       width: _widths[size],
       height: 54,
@@ -133,7 +142,7 @@ class PkButton extends StatelessWidget {
         onPressed: onPressed,
         style: ButtonStyle(
           shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(27))),
+            borderRadius: BorderRadius.circular(radius))),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
               return primary ? PkColors.tangerine04 : PkColors.grey06;
@@ -167,12 +176,11 @@ class PkButton extends StatelessWidget {
   }
 }`;
 
-export const usageSnippet = (fw, variant, size, state) => {
+export const usageSnippet = (fw, variant, size, state, platform = "desktop") => {
   const dis = state === "disabled";
   const label = size === "small" ? "Sign in" : "Get a demo";
-  if (fw === "react")
-    return `<PkButton variant="${variant}" size="${size}"${dis ? " disabled" : ""}>\n  ${label}\n</PkButton>`;
-  if (fw === "vue")
-    return `<PkButton variant="${variant}" size="${size}"${dis ? " disabled" : ""}>\n  ${label}\n</PkButton>`;
-  return `PkButton(\n  label: '${label}',\n  variant: PkVariant.${variant},\n  size: PkSize.${size},\n  onPressed: ${dis ? "null, // disabled" : "() => handleTap(),"}\n)`;
+  const mob = platform === "mobile";
+  if (fw === "react" || fw === "vue")
+    return `<PkButton variant="${variant}" size="${size}"${mob ? ' platform="mobile"' : ""}${dis ? " disabled" : ""}>\n  ${label}\n</PkButton>`;
+  return `PkButton(\n  label: '${label}',\n  variant: PkVariant.${variant},\n  size: PkSize.${size},${mob ? "\n  platform: PkPlatform.mobile," : ""}\n  onPressed: ${dis ? "null, // disabled" : "() => handleTap(),"}\n)`;
 };

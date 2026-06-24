@@ -345,36 +345,38 @@ export function usageBadge(fw, status) {
 
 /* ── Toggle ─────────────────────────────────────────────────────────── */
 export const reactToggle = `// PkToggle.jsx — Parkway Wallet
-export default function PkToggle({ checked, onChange, disabled }) {
+export default function PkToggle({ checked, onChange, disabled, platform = "desktop" }) {
   return (
     <button type="button" role="switch" aria-checked={checked} disabled={disabled}
-      className={\`pk-toggle\${checked ? " is-on" : ""}\`}
+      className={\`pk-toggle\${checked ? " is-on" : ""}\${platform === "mobile" ? " pk-toggle--mobile" : ""}\`}
       onClick={() => onChange?.(!checked)}>
       <span className="pk-toggle__knob" />
     </button>
   );
 }
 
-/* parkway-toggle.css
+/* parkway-toggle.css — desktop = pill, mobile = 8px radius
 .pk-toggle { width: 40px; height: 20px; border: 0; border-radius: 999px;
   padding: 2px; background: var(--pk-grey-04); cursor: pointer;
   transition: background .2s ease; }
+.pk-toggle--mobile { border-radius: 8px; }
 .pk-toggle.is-on { background: var(--pk-tangerine-01); }
 .pk-toggle:disabled { background: var(--pk-tangerine-04); cursor: not-allowed; }
 .pk-toggle__knob { display: block; width: 16px; height: 16px; border-radius: 50%;
   background: var(--pk-white-01); transition: transform .2s ease; }
+.pk-toggle--mobile .pk-toggle__knob { border-radius: 5px; }
 .pk-toggle.is-on .pk-toggle__knob { transform: translateX(20px); }
 */`;
 
 export const vueToggle = `<!-- PkToggle.vue — Parkway Wallet -->
 <script setup>
-defineProps({ disabled: Boolean });
+defineProps({ disabled: Boolean, platform: { type: String, default: "desktop" } });
 const model = defineModel({ type: Boolean });
 </script>
 
 <template>
   <button type="button" role="switch" :aria-checked="model" :disabled="disabled"
-    class="pk-toggle" :class="{ 'is-on': model }" @click="model = !model">
+    class="pk-toggle" :class="{ 'is-on': model, 'pk-toggle--mobile': platform === 'mobile' }" @click="model = !model">
     <span class="pk-toggle__knob" />
   </button>
 </template>
@@ -382,10 +384,12 @@ const model = defineModel({ type: Boolean });
 <style scoped>
 .pk-toggle { width: 40px; height: 20px; border: 0; border-radius: 999px; padding: 2px;
   background: var(--pk-grey-04); cursor: pointer; transition: background .2s ease; }
+.pk-toggle--mobile { border-radius: 8px; }
 .pk-toggle.is-on { background: var(--pk-tangerine-01); }
 .pk-toggle:disabled { background: var(--pk-tangerine-04); cursor: not-allowed; }
 .pk-toggle__knob { display: block; width: 16px; height: 16px; border-radius: 50%;
   background: var(--pk-white-01); transition: transform .2s ease; }
+.pk-toggle--mobile .pk-toggle__knob { border-radius: 5px; }
 .pk-toggle.is-on .pk-toggle__knob { transform: translateX(20px); }
 </style>`;
 
@@ -407,12 +411,13 @@ class PkToggle extends StatelessWidget {
   );
 }`;
 
-export function usageToggle(fw, state) {
+export function usageToggle(fw, state, platform = "desktop") {
+  const mob = platform === "mobile";
   if (fw === "flutter")
     return `PkToggle(\n  value: ${state === "on" ? "true" : "false"},\n  onChanged: ${state === "disabled" ? "null, // disabled" : "(v) => setState(() => on = v),"}\n)`;
   if (fw === "vue")
-    return `<PkToggle v-model="on"${state === "disabled" ? " disabled" : ""} />`;
-  return `<PkToggle checked={${state === "on" ? "true" : "false"}} onChange={setOn}${state === "disabled" ? " disabled" : ""} />`;
+    return `<PkToggle v-model="on"${mob ? ' platform="mobile"' : ""}${state === "disabled" ? " disabled" : ""} />`;
+  return `<PkToggle checked={${state === "on" ? "true" : "false"}} onChange={setOn}${mob ? ' platform="mobile"' : ""}${state === "disabled" ? " disabled" : ""} />`;
 }
 
 /* ── Checkbox ───────────────────────────────────────────────────────── */
