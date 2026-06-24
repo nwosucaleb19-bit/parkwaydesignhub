@@ -27,10 +27,7 @@ const GROUPS = [
 export default function UsageGuidelines() {
   return (
     <>
-      <Lead>
-        Cross-cutting rules that keep Parkway coherent across products and frameworks.
-        Component pages carry their own Do / Don't; these apply everywhere.
-      </Lead>
+      <Lead>Cross-cutting rules that keep Parkway coherent. Component pages carry their own Do / Don't.</Lead>
 
       {GROUPS.map(([label, items]) => (
         <section key={label}>

@@ -39,8 +39,7 @@ export default function Logo() {
   return (
     <>
       <Lead>
-        The Parkway wordmark and symbol, straight from the brand library. Use the light version on
-        light backgrounds and the dark version on dark — SVG for production, PNG for quick use.
+        The Parkway wordmark and symbol. Light on light, dark on dark — SVG for production, PNG for quick use.
       </Lead>
 
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4, flexWrap: "wrap" }}>

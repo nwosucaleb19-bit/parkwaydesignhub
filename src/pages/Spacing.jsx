@@ -8,10 +8,7 @@ export default function Spacing({ fw, setFw }) {
   const dartSpace = `abstract class PkSpacing {\n  static const double ${SPACING.map((s, i) => `s${i + 1} = ${s}`).join(", ")};\n}`;
   return (
     <>
-      <Lead>
-        Spacing for and between components uses increments of 8px. The base unit reduces
-        guesswork, keeps rhythm visually harmonious, and scales well across devices.
-      </Lead>
+      <Lead>Spacing uses 8px increments — consistent rhythm, less guesswork.</Lead>
 
       <div className="ph-stage" style={{ marginTop: 18 }}>
         <p className="ph-stagecap">The spacing system — 8px base unit</p>

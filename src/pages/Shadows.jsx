@@ -45,9 +45,8 @@ export default function Shadows({ fw, setFw }) {
   return (
     <>
       <Lead>
-        A small elevation scale for surfaces that genuinely need lift — modals, popovers, menus.
-        Documented as tokens for product use; the hub's own chrome stays flat with hairline borders.
-        Click any tile to copy its token.
+        Elevation tokens for lifted surfaces — modals, popovers, menus. The hub itself stays flat.
+        Click a tile to copy.
       </Lead>
 
       <div className="ph-stage" style={{ marginTop: 18 }}>

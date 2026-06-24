@@ -37,7 +37,7 @@ export const PRODUCTS = [
     lettermark: "R",
     modules: scaffoldModules(),
     blurb:
-      "ReadyCash is set up on the Parkway hub. The directory structure and layout are live — its colours, type, components, and logo populate here once ReadyCash's tokens are finalised in Figma.",
+      "ReadyCash on the Parkway hub. Its colours, type, components, and logo populate here once finalised in Figma.",
   }),
   withItems({
     id: "swwwipe",
@@ -49,7 +49,7 @@ export const PRODUCTS = [
     lettermark: "S",
     modules: scaffoldModules(),
     blurb:
-      "Swwwipe is set up on the Parkway hub. The directory structure and layout are live — its colours, type, components, and logo populate here once Swwwipe's tokens are finalised in Figma.",
+      "Swwwipe on the Parkway hub. Its colours, type, components, and logo populate here once finalised in Figma.",
   }),
 ];
 

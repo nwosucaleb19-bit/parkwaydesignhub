@@ -48,8 +48,7 @@ export default function Installation({ fw, setFw }) {
   return (
     <>
       <Lead>
-        Parkway ships as reference code, not a package yet — adopt it by copying the foundation
-        files into your project. Three steps, then drop in components. Pick your framework:
+        No package yet — adopt Parkway by copying the foundation files. Three steps, then drop in components.
       </Lead>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />

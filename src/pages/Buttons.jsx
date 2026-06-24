@@ -50,8 +50,8 @@ export default function Buttons({ fw, setFw }) {
   return (
     <>
       <Lead>
-        54px tall, Manrope SemiBold 14. Two variants × five sizes × three states. Desktop uses the
-        27px pill; mobile uses an 8px radius. Hover the preview for the real state.
+        54px tall, Manrope SemiBold 14. Two variants × five sizes × three states.
+        Desktop pill (27px); mobile 8px radius.
       </Lead>
 
       <SectionHeader label="Playground" desc="Adjust the controls; the live preview and the usage snippet below update together." />

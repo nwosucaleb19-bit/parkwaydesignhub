@@ -27,10 +27,7 @@ export default function Colors({ fw, setFw }) {
   const exportLabel = { react: "parkway-tokens.css", vue: "parkway-tokens.css", flutter: "parkway_tokens.dart" };
   return (
     <>
-      <Lead>
-        Parkway's palette is built around Atomic Tangerine, with Rich Grey as the ink secondary
-        and Buff as the warm alternative. Click any swatch to copy its hex.
-      </Lead>
+      <Lead>Built around Atomic Tangerine, with Rich Grey and Buff. Click any swatch to copy its hex.</Lead>
 
       {COLOR_GROUPS.map(([key, label, items]) => (
         <section key={key} id={`pk-color-${key}`} style={{ scrollMarginTop: 88 }}>

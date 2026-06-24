@@ -3,19 +3,18 @@ import { ArrowRight } from "../iconography/index.js";
 import { linkTo } from "../products.js";
 
 const LINKS = [
-  ["colors", "Colors", "Tangerine, Rich Grey & Buff scales with messaging colors"],
-  ["typography", "Typography", "PP Right Gothic display + Manrope body, desktop & mobile ramps"],
-  ["spacing", "Spacing", "8px base unit system, space-1 through space-8"],
-  ["buttons", "Buttons", "2 variants × 5 sizes × 3 states, live playground"],
-  ["icons", "Icons", "Phosphor — Parkway's official icon set, for web & Vue"],
-  ["logo", "Logo & brand", "Download the wordmark and symbol as SVG or PNG"],
+  ["colors", "Colors", "Tangerine, Rich Grey & Buff"],
+  ["typography", "Typography", "PP Right Gothic + Manrope"],
+  ["spacing", "Spacing", "8px base unit"],
+  ["buttons", "Buttons", "2 × 5 × 3 playground"],
+  ["icons", "Icons", "Phosphor icon set"],
+  ["logo", "Logo & brand", "Wordmark & symbol, SVG/PNG"],
 ];
 
 const STEPS = [
-  <>Copy <strong>parkway-tokens</strong> (CSS or Dart) from the Colors page into your project.</>,
-  <>Add the type styles from the Typography page — desktop ramp for web, mobile ramp for Flutter.</>,
-  <>Drop in components from the Components section; every snippet references tokens, never raw hex.</>,
-  <>Need the source? Every page deep-links to its exact Figma node in Dev Mode.</>,
+  <>Copy the tokens from <strong>Colors</strong>.</>,
+  <>Add the type styles from <strong>Typography</strong>.</>,
+  <>Drop in components — every snippet uses tokens, never raw hex.</>,
 ];
 
 export default function Introduction({ product }) {
@@ -23,9 +22,8 @@ export default function Introduction({ product }) {
   return (
     <>
       <Lead>
-        One source of truth — the Parkway Figma library — translated into copy-ready code for
-        the web team (React &amp; Vue) and the mobile team (Flutter). Pick a framework once;
-        every snippet on every page follows.
+        Tokens and components as copy-ready code for React, Vue, and Flutter.
+        Pick a framework once — every snippet follows.
       </Lead>
 
       <SectionHeader label="Browse the system" />

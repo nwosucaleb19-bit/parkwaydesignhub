@@ -42,10 +42,7 @@ abstract class PkGrid {
 export default function Grid({ fw, setFw }) {
   return (
     <>
-      <Lead>
-        Spacing snaps to a grid so layouts stay rhythmic. Parkway uses an 8-point grid for layout,
-        with a 4-point grid for fine adjustments. Every value is a multiple of its base unit.
-      </Lead>
+      <Lead>An 8-point grid for layout, 4-point for fine adjustments. Every value is a multiple of its base.</Lead>
 
       <SectionHeader label="8-point grid" desc="The layout default — section, card, and stack spacing. Matches the Spacing tokens." />
       <div className="ph-stage" style={{ marginTop: 6 }}>
