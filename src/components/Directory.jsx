@@ -119,10 +119,18 @@ export default function Directory({ product, activePage }) {
             {it.children && activePage === it.id && (
               <div className="ph-children">
                 {it.children.map((c, i) => (
-                  <a key={i} className="ph-item" href={linkTo(pid, it.id)}>
+                  <button
+                    key={i}
+                    type="button"
+                    className="ph-item ph-item--child"
+                    onClick={() => {
+                      const el = c.anchor && document.getElementById(`pk-color-${c.anchor}`);
+                      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                  >
                     <span className="ph-itemlabel">{c.label}</span>
                     {c.count != null && <span className="ph-itemcount">{c.count}</span>}
-                  </a>
+                  </button>
                 ))}
               </div>
             )}

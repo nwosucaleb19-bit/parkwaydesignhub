@@ -33,7 +33,7 @@ export default function Colors({ fw, setFw }) {
       </Lead>
 
       {COLOR_GROUPS.map(([key, label, items]) => (
-        <section key={key}>
+        <section key={key} id={`pk-color-${key}`} style={{ scrollMarginTop: 88 }}>
           <SectionHeader label={label} />
           <div className="ph-swatchgrid">
             {items.map(([n, h, note]) => (
