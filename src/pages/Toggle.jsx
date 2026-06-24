@@ -100,6 +100,26 @@ export default function Toggle({ fw, setFw }) {
           </tbody>
         </table>
       </div>
+
+      <SectionHeader label="Usage guidelines" />
+      <div className="ph-guidance">
+        <div>
+          <p className="ph-guidehead"><span className="ph-dot ok" aria-hidden="true" />Do</p>
+          <ul className="ph-guidelist">
+            <li>Use for an instant on/off setting.</li>
+            <li>Apply the change immediately — no save step.</li>
+            <li>Label what the toggle controls.</li>
+          </ul>
+        </div>
+        <div>
+          <p className="ph-guidehead"><span className="ph-dot err" aria-hidden="true" />Don't</p>
+          <ul className="ph-guidelist">
+            <li>Don't use where the change needs a save/submit — use a checkbox.</li>
+            <li>Don't use for more than two states.</li>
+            <li>Don't rely on the track colour alone.</li>
+          </ul>
+        </div>
+      </div>
     </>
   );
 }

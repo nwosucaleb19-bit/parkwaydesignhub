@@ -101,6 +101,26 @@ export default function Checkbox({ fw, setFw }) {
           </tbody>
         </table>
       </div>
+
+      <SectionHeader label="Usage guidelines" />
+      <div className="ph-guidance">
+        <div>
+          <p className="ph-guidehead"><span className="ph-dot ok" aria-hidden="true" />Do</p>
+          <ul className="ph-guidelist">
+            <li>Use for opt-in and multi-select.</li>
+            <li>Keep the label part of the hit target.</li>
+            <li>Use the indeterminate state for a parent of many.</li>
+          </ul>
+        </div>
+        <div>
+          <p className="ph-guidehead"><span className="ph-dot err" aria-hidden="true" />Don't</p>
+          <ul className="ph-guidelist">
+            <li>Don't use a single checkbox where a toggle fits a setting.</li>
+            <li>Don't rely on colour alone for the checked state.</li>
+            <li>Don't nest checkboxes more than one level.</li>
+          </ul>
+        </div>
+      </div>
     </>
   );
 }

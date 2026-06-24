@@ -96,6 +96,26 @@ export default function ToastMessage({ fw, setFw }) {
           </tbody>
         </table>
       </div>
+
+      <SectionHeader label="Usage guidelines" />
+      <div className="ph-guidance">
+        <div>
+          <p className="ph-guidehead"><span className="ph-dot ok" aria-hidden="true" />Do</p>
+          <ul className="ph-guidelist">
+            <li>Keep it to one concise line; lead with the outcome.</li>
+            <li>Auto-dismiss success; let warnings persist until acknowledged.</li>
+            <li>Use role="alert" for warnings so they're announced.</li>
+          </ul>
+        </div>
+        <div>
+          <p className="ph-guidehead"><span className="ph-dot err" aria-hidden="true" />Don't</p>
+          <ul className="ph-guidelist">
+            <li>Don't stack multiple toasts at once.</li>
+            <li>Don't put an action the user must take inside a toast.</li>
+            <li>Don't use a toast for field-level validation errors.</li>
+          </ul>
+        </div>
+      </div>
     </>
   );
 }

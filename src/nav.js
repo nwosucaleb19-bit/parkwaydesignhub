@@ -20,8 +20,8 @@ export const MODULES = [
     icon: "BookOpen",
     items: [
       { id: "introduction", label: "Introduction", page: "introduction", status: "building" },
-      { id: "installation", label: "Installation", status: "soon" },
-      { id: "usage", label: "Usage guidelines", status: "soon" },
+      { id: "installation", label: "Installation", page: "installation", status: "building" },
+      { id: "usage", label: "Usage guidelines", page: "usage", status: "building" },
     ],
   },
   {

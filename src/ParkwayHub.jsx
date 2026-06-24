@@ -8,6 +8,8 @@ import Rail from "./components/Rail.jsx";
 import Directory from "./components/Directory.jsx";
 import ThemeToggle from "./components/ThemeToggle.jsx";
 import Introduction from "./pages/Introduction.jsx";
+import Installation from "./pages/Installation.jsx";
+import UsageGuidelines from "./pages/UsageGuidelines.jsx";
 import Buttons from "./pages/Buttons.jsx";
 import TextInput from "./pages/TextInput.jsx";
 import ToastMessage from "./pages/ToastMessage.jsx";
@@ -28,6 +30,8 @@ import Placeholder from "./pages/Placeholder.jsx";
 // Page registry — add a component = add its module here + an item in nav.js.
 const PAGES = {
   introduction: Introduction,
+  installation: Installation,
+  usage: UsageGuidelines,
   buttons: Buttons,
   textinput: TextInput,
   toast: ToastMessage,

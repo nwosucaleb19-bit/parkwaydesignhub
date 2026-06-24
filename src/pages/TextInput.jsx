@@ -123,6 +123,26 @@ export default function TextInput({ fw, setFw }) {
           </tbody>
         </table>
       </div>
+
+      <SectionHeader label="Usage guidelines" />
+      <div className="ph-guidance">
+        <div>
+          <p className="ph-guidehead"><span className="ph-dot ok" aria-hidden="true" />Do</p>
+          <ul className="ph-guidelist">
+            <li>Always pair the field with a visible label.</li>
+            <li>Show the expected format in the placeholder.</li>
+            <li>Surface errors inline with text, not colour alone.</li>
+          </ul>
+        </div>
+        <div>
+          <p className="ph-guidehead"><span className="ph-dot err" aria-hidden="true" />Don't</p>
+          <ul className="ph-guidelist">
+            <li>Don't use the placeholder as the label.</li>
+            <li>Don't disable a field without explaining why.</li>
+            <li>Don't validate on every keystroke — wait for blur or submit.</li>
+          </ul>
+        </div>
+      </div>
     </>
   );
 }
