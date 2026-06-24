@@ -9,6 +9,10 @@
 
 import { FIGMA_FILE } from "./tokens.js";
 
+// Parkway Wallet components live in a separate Figma file.
+const WALLET_FILE = "https://www.figma.com/design/S0VLTiTi39BsU5sYq0FUyq/ParkwayWallet";
+const wfig = (node) => `${WALLET_FILE}?node-id=${node}&m=dev`;
+
 export const MODULES = [
   {
     id: "get-started",
@@ -26,9 +30,12 @@ export const MODULES = [
     icon: "SquaresFour",
     items: [
       { id: "buttons", label: "Buttons", page: "buttons", node: "95:97", status: "live", meta: "2×5×3" },
-      { id: "inputs", label: "Inputs", status: "soon" },
-      { id: "navigation", label: "Navigation", status: "soon" },
-      { id: "feedback", label: "Feedback", status: "soon" },
+      { id: "textinput", label: "Text Input", page: "textinput", figma: wfig("31764-10117"), status: "building" },
+      { id: "toast", label: "Toast Message", page: "toast", figma: wfig("31766-10180"), status: "building" },
+      { id: "link", label: "Link button", page: "link", figma: wfig("31766-13007"), status: "building" },
+      { id: "badges", label: "Badges", page: "badges", figma: wfig("31766-13029"), status: "building" },
+      { id: "toggle", label: "Toggle button", page: "toggle", figma: wfig("31766-13046"), status: "building" },
+      { id: "checkbox", label: "Checkbox", page: "checkbox", figma: wfig("31767-13062"), status: "building" },
     ],
   },
   {

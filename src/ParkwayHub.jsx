@@ -9,6 +9,12 @@ import Directory from "./components/Directory.jsx";
 import ThemeToggle from "./components/ThemeToggle.jsx";
 import Introduction from "./pages/Introduction.jsx";
 import Buttons from "./pages/Buttons.jsx";
+import TextInput from "./pages/TextInput.jsx";
+import ToastMessage from "./pages/ToastMessage.jsx";
+import LinkButton from "./pages/LinkButton.jsx";
+import Badges from "./pages/Badges.jsx";
+import Toggle from "./pages/Toggle.jsx";
+import Checkbox from "./pages/Checkbox.jsx";
 import Colors from "./pages/Colors.jsx";
 import Typography from "./pages/Typography.jsx";
 import Spacing from "./pages/Spacing.jsx";
@@ -22,6 +28,12 @@ import Placeholder from "./pages/Placeholder.jsx";
 const PAGES = {
   introduction: Introduction,
   buttons: Buttons,
+  textinput: TextInput,
+  toast: ToastMessage,
+  link: LinkButton,
+  badges: Badges,
+  toggle: Toggle,
+  checkbox: Checkbox,
   colors: Colors,
   typography: Typography,
   spacing: Spacing,
@@ -95,8 +107,8 @@ export default function ParkwayHub() {
                 <h1 className="ph-pagetitle">{item?.label}</h1>
               </div>
               <div className="ph-pagehead-r">
-                {item?.node && (
-                  <a className="ph-cta" href={figmaHref(item.node)} target="_blank" rel="noreferrer">
+                {(item?.figma || item?.node) && (
+                  <a className="ph-cta" href={item.figma || figmaHref(item.node)} target="_blank" rel="noreferrer">
                     Open in Figma <ArrowUpRight size={13} weight="bold" />
                   </a>
                 )}
