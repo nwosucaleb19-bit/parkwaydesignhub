@@ -59,6 +59,7 @@ export const MODULES = [
       },
       { id: "typography", label: "Typography", page: "typography", node: "88:140", status: "live" },
       { id: "spacing", label: "Spacing", page: "spacing", node: "95:75", status: "live", count: 8 },
+      { id: "grid", label: "Grid", page: "grid", status: "building", meta: "4 · 8 pt" },
       { id: "shadows", label: "Shadows", page: "shadows", status: "building", count: 3 },
       { id: "icons", label: "Icons", page: "icons", status: "building", meta: "Phosphor" },
     ],
