@@ -102,6 +102,7 @@ export const SPACING = [8, 16, 24, 32, 40, 48, 56, 64];
 export const BTN = {
   height: 54,
   radius: 27,
+  radiusMobile: 8,
   font: "600 14px Manrope",
   widths: { small: 98, icon: 200, medium: 275, large: 325, xlarge: "100%" },
   primary: { default: "#F9956B", hover: "#FBBFA6", disabled: "#FDD5C4" },

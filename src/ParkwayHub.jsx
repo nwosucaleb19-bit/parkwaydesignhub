@@ -8,10 +8,18 @@ import Rail from "./components/Rail.jsx";
 import Directory from "./components/Directory.jsx";
 import ThemeToggle from "./components/ThemeToggle.jsx";
 import Introduction from "./pages/Introduction.jsx";
+import Installation from "./pages/Installation.jsx";
+import UsageGuidelines from "./pages/UsageGuidelines.jsx";
 import Buttons from "./pages/Buttons.jsx";
+import TextInput from "./pages/TextInput.jsx";
+import ToastMessage from "./pages/ToastMessage.jsx";
+import Badges from "./pages/Badges.jsx";
+import Toggle from "./pages/Toggle.jsx";
+import Checkbox from "./pages/Checkbox.jsx";
 import Colors from "./pages/Colors.jsx";
 import Typography from "./pages/Typography.jsx";
 import Spacing from "./pages/Spacing.jsx";
+import Grid from "./pages/Grid.jsx";
 import Shadows from "./pages/Shadows.jsx";
 import Icons from "./pages/Icons.jsx";
 import Logo from "./pages/Logo.jsx";
@@ -21,10 +29,18 @@ import Placeholder from "./pages/Placeholder.jsx";
 // Page registry — add a component = add its module here + an item in nav.js.
 const PAGES = {
   introduction: Introduction,
+  installation: Installation,
+  usage: UsageGuidelines,
   buttons: Buttons,
+  textinput: TextInput,
+  toast: ToastMessage,
+  badges: Badges,
+  toggle: Toggle,
+  checkbox: Checkbox,
   colors: Colors,
   typography: Typography,
   spacing: Spacing,
+  grid: Grid,
   shadows: Shadows,
   icons: Icons,
   logo: Logo,
@@ -95,8 +111,8 @@ export default function ParkwayHub() {
                 <h1 className="ph-pagetitle">{item?.label}</h1>
               </div>
               <div className="ph-pagehead-r">
-                {item?.node && (
-                  <a className="ph-cta" href={figmaHref(item.node)} target="_blank" rel="noreferrer">
+                {(item?.figma || item?.node) && (
+                  <a className="ph-cta" href={item.figma || figmaHref(item.node)} target="_blank" rel="noreferrer">
                     Open in Figma <ArrowUpRight size={13} weight="bold" />
                   </a>
                 )}

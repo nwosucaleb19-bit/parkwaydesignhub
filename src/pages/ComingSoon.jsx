@@ -11,7 +11,7 @@ export default function ComingSoon({ product }) {
       </Lead>
       <SectionHeader
         label={`${product?.name || "Product"} · status`}
-        desc="The navigation, theming, and layout are already live. Colours, typography, components, and the logo will populate here once this product's tokens are finalised — no rebuild needed, just data."
+        desc="Nav and layout are live. Brand tokens, components, and the logo populate here once finalised — no rebuild, just data."
       />
       <ul className="ph-steps" style={{ marginTop: 4 }}>
         <li>

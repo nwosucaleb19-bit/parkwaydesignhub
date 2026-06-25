@@ -52,8 +52,8 @@ export default function Icons({ fw, setFw }) {
   return (
     <>
       <Lead>
-        Parkway uses <strong>Phosphor</strong> as its icon set — a flexible family with multiple
-        weights. Browse a curated selection, copy any import, or install Phosphor for your framework.
+        <strong>Phosphor</strong> is Parkway's icon set. Browse the curated set, copy an import,
+        or install it for your framework.
       </Lead>
 
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4, flexWrap: "wrap" }}>

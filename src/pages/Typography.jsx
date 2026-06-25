@@ -44,10 +44,7 @@ export default function Typography({ fw, setFw }) {
   const ramp = device === "desktop" ? TYPE_DESKTOP : TYPE_MOBILE;
   return (
     <>
-      <Lead>
-        Display headings are set in PP Right Gothic Wide Medium; H5/H6 and all paragraph styles
-        use Manrope. These specimens render in the real PP Right Gothic — bundled with the hub.
-      </Lead>
+      <Lead>Display in PP Right Gothic Wide Medium; body in Manrope. Specimens render in the real bundled font.</Lead>
 
       <SectionHeader label="Typeface" desc="PP Right Gothic Wide — the licensed display face, bundled with the hub. Download it to install on your system." />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", borderTop: "1px solid var(--pk-line-soft)", padding: "16px 2px" }}>

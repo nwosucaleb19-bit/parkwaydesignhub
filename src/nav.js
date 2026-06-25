@@ -9,6 +9,10 @@
 
 import { FIGMA_FILE } from "./tokens.js";
 
+// Parkway Wallet components live in a separate Figma file.
+const WALLET_FILE = "https://www.figma.com/design/S0VLTiTi39BsU5sYq0FUyq/ParkwayWallet";
+const wfig = (node) => `${WALLET_FILE}?node-id=${node}&m=dev`;
+
 export const MODULES = [
   {
     id: "get-started",
@@ -16,8 +20,8 @@ export const MODULES = [
     icon: "BookOpen",
     items: [
       { id: "introduction", label: "Introduction", page: "introduction", status: "building" },
-      { id: "installation", label: "Installation", status: "soon" },
-      { id: "usage", label: "Usage guidelines", status: "soon" },
+      { id: "installation", label: "Installation", page: "installation", status: "building" },
+      { id: "usage", label: "Usage guidelines", page: "usage", status: "building" },
     ],
   },
   {
@@ -26,9 +30,11 @@ export const MODULES = [
     icon: "SquaresFour",
     items: [
       { id: "buttons", label: "Buttons", page: "buttons", node: "95:97", status: "live", meta: "2×5×3" },
-      { id: "inputs", label: "Inputs", status: "soon" },
-      { id: "navigation", label: "Navigation", status: "soon" },
-      { id: "feedback", label: "Feedback", status: "soon" },
+      { id: "textinput", label: "Text Input", page: "textinput", figma: wfig("31764-10117"), status: "building" },
+      { id: "toast", label: "Toast Message", page: "toast", figma: wfig("31766-10180"), status: "building" },
+      { id: "badges", label: "Badges", page: "badges", figma: wfig("31766-13029"), status: "building" },
+      { id: "toggle", label: "Toggle button", page: "toggle", figma: wfig("31766-13046"), status: "building" },
+      { id: "checkbox", label: "Checkbox", page: "checkbox", figma: wfig("31767-13062"), status: "building" },
     ],
   },
   {
@@ -44,14 +50,15 @@ export const MODULES = [
         status: "live",
         count: 33,
         children: [
-          { label: "Atomic Tangerine", count: 9 },
-          { label: "Rich Grey & White", count: 13 },
-          { label: "Buff", count: 9 },
-          { label: "Messaging", count: 2 },
+          { label: "Atomic Tangerine", count: 9, anchor: "tangerine" },
+          { label: "Rich Grey & White", count: 13, anchor: "grey" },
+          { label: "Buff", count: 9, anchor: "buff" },
+          { label: "Messaging", count: 2, anchor: "messaging" },
         ],
       },
       { id: "typography", label: "Typography", page: "typography", node: "88:140", status: "live" },
       { id: "spacing", label: "Spacing", page: "spacing", node: "95:75", status: "live", count: 8 },
+      { id: "grid", label: "Grid", page: "grid", status: "building", meta: "4 · 8 pt" },
       { id: "shadows", label: "Shadows", page: "shadows", status: "building", count: 3 },
       { id: "icons", label: "Icons", page: "icons", status: "building", meta: "Phosphor" },
     ],
