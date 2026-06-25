@@ -331,6 +331,13 @@ a { color: inherit; }
 .ph-children { margin: 2px 0 2px 16px; padding-left: 12px; border-left: 1px solid var(--pk-line); }
 .ph-children .ph-itemlabel { font-size: 12.5px; }
 
+/* expandable group rows (Inputs parent) */
+.ph-item-group { font-family: var(--pk-sans); }
+.ph-item-group.has-active .ph-itemlabel { color: var(--pk-text); font-weight: 600; }
+.ph-chevron { font-size: 10px; color: var(--pk-text-faint); flex: none; }
+.ph-subitems { margin: 2px 0 4px 10px; padding-left: 12px; border-left: 2px solid var(--pk-accent-soft, var(--pk-line)); }
+.ph-subitem .ph-itemlabel { font-size: 12.5px; }
+
 /* status badges */
 .ph-badge { font: 600 8.5px var(--pk-sans); letter-spacing: 1px; padding: 2px 6px; border-radius: 5px; flex: none; }
 .ph-badge.live { color: var(--pk-warn-ink); background: var(--pk-warn-soft); }

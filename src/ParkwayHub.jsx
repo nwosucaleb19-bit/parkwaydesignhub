@@ -21,6 +21,12 @@ import Typography from "./pages/Typography.jsx";
 import Spacing from "./pages/Spacing.jsx";
 import Grid from "./pages/Grid.jsx";
 import Shadows from "./pages/Shadows.jsx";
+import Inputs from "./pages/Inputs.jsx";
+import InputsDropdown from "./pages/InputsDropdown.jsx";
+import InputsPin6 from "./pages/InputsPin6.jsx";
+import InputsPin4 from "./pages/InputsPin4.jsx";
+import InputsContact from "./pages/InputsContact.jsx";
+import InputsSearch from "./pages/InputsSearch.jsx";
 import Icons from "./pages/Icons.jsx";
 import Logo from "./pages/Logo.jsx";
 import ComingSoon from "./pages/ComingSoon.jsx";
@@ -42,6 +48,12 @@ const PAGES = {
   spacing: Spacing,
   grid: Grid,
   shadows: Shadows,
+  "inputs-text":     Inputs,
+  "inputs-dropdown": InputsDropdown,
+  "inputs-pin-6":    InputsPin6,
+  "inputs-pin-4":    InputsPin4,
+  "inputs-contact":  InputsContact,
+  "inputs-search":   InputsSearch,
   icons: Icons,
   logo: Logo,
   "product-soon": ComingSoon,
