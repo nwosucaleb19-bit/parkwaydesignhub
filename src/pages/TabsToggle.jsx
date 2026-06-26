@@ -21,11 +21,12 @@ function LiveTabsToggle({ value, onChange }) {
       display: "flex",
       width: 343,
       height: 48,
-      background: "#F9F9F9",
+      background: "var(--pk-tabs-toggle-bg)",
       borderRadius: 40,
       padding: 4,
       gap: 15,
     }}>
+      {/* sliding pill */}
       <div style={{
         position: "absolute",
         top: 4,
@@ -33,8 +34,8 @@ function LiveTabsToggle({ value, onChange }) {
         width: 160,
         height: 40,
         borderRadius: 20,
-        background: "#FFFFFF",
-        border: "1px solid #FDD5C4",
+        background: "var(--pk-tabs-toggle-pill-bg)",
+        border: "1px solid var(--pk-tabs-toggle-pill-border)",
         transform: `translateX(${idx * 175}px)`,
         transition: "transform .2s ease",
         pointerEvents: "none",
@@ -53,7 +54,7 @@ function LiveTabsToggle({ value, onChange }) {
             position: "relative",
             zIndex: 1,
             font: "600 14px/1 Manrope, sans-serif",
-            color: "#000",
+            color: "var(--pk-tabs-toggle-text)",
             cursor: "pointer",
           }}
         >
@@ -64,30 +65,33 @@ function LiveTabsToggle({ value, onChange }) {
   );
 }
 
+const STATES = [
+  ["active",   "Active pill",    "var(--pk-tabs-toggle-pill-bg) background with var(--pk-tabs-toggle-pill-border) border — the selected tab."],
+  ["inactive", "Inactive tab",   "No pill — sits directly on the var(--pk-tabs-toggle-bg) container."],
+];
+
 const PROPS_ROWS = [
-  ["tabs", "Array<[string, string]>", "required", "Array of [key, label] pairs. Currently two items."],
-  ["value / modelValue", "string", "required", "Key of the active tab."],
-  ["onChange / onChanged", "function", "—", "Called with the new key on tab press."],
+  ["tabs",                   "Array<[string, string]>", "required", "Array of [key, label] pairs. Two items."],
+  ["value / modelValue",     "string",                  "required", "Key of the active tab."],
+  ["onChange / onChanged",   "function",                "—",        "Called with the new key on tab press."],
 ];
 
 export default function TabsToggle({ fw, setFw }) {
   const [active, setActive] = useState("pay-now");
-  const impl = {
-    react: reactTabsToggle,
-    vue: vueTabsToggle,
-    flutter: flutterTabsToggle,
-  };
+
+  const impl = { react: reactTabsToggle, vue: vueTabsToggle, flutter: flutterTabsToggle };
   const label = {
-    react: "PkTabsToggle.jsx + parkway-tabs-toggle.css",
-    vue: "PkTabsToggle.vue",
+    react:   "PkTabsToggle.jsx + parkway-tabs-toggle.css",
+    vue:     "PkTabsToggle.vue",
     flutter: "pk_tabs_toggle.dart",
   };
 
   return (
     <>
       <Lead>
-        Two-option pill toggle for switching between payment modes. A white pill with a Tangerine-04
-        border slides under the active tab; both labels stay visible at all times.
+        Two-option pill toggle for switching between payment modes. A sliding pill sits under
+        the active tab; its background and border colour swap automatically when the system
+        switches between light and dark mode via CSS custom properties.
       </Lead>
 
       <div className="ph-stage tall" style={{ marginTop: 14 }}>
@@ -100,16 +104,14 @@ export default function TabsToggle({ fw, setFw }) {
 
       <SectionHeader label="States" />
       <div className="ph-statelist">
-        {TAB_OPTIONS.map(([key, lbl]) => (
-          <div key={key} className="ph-stateline">
-            <span
-              className="ph-statedot"
-              style={{
-                background: key === active ? "#FDD5C4" : "transparent",
-                border: "2px solid #FDD5C4",
-              }}
-            />
-            <span className="ph-statelabel">{lbl}{key === active ? " — active" : ""}</span>
+        {STATES.map(([k, name, desc]) => (
+          <div key={k} className="ph-stateline">
+            <span className="ph-statedot" style={{
+              background: k === "active" ? "var(--pk-tabs-toggle-pill-border)" : "transparent",
+              border: "2px solid var(--pk-tabs-toggle-pill-border)",
+            }} />
+            <span className="ph-statelabel">{name}</span>
+            <span className="ph-statedesc">{desc}</span>
           </div>
         ))}
       </div>
@@ -136,8 +138,9 @@ export default function TabsToggle({ fw, setFw }) {
         <div>
           <p className="ph-guidehead"><span className="ph-dot ok" aria-hidden="true" />Do</p>
           <ul className="ph-guidelist">
-            <li>Use for binary or dual-mode switching at the top of a payment form.</li>
-            <li>Keep labels short — one or two words each to fit the 160px pill.</li>
+            <li>Use for binary switching at the top of a payment form.</li>
+            <li>Keep labels short — one or two words each to fit the 160 px pill.</li>
+            <li>Let CSS vars drive dark mode; no manual theme prop needed.</li>
           </ul>
         </div>
         <div>

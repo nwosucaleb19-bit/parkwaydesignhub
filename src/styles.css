@@ -67,6 +67,28 @@
   --pk-success: #36CC4F;
   --pk-error: #E5484D;
 
+  /* transaction filter buttons — inactive surface */
+  --pk-filter-type-bg:    #F0F0F0;
+  --pk-filter-type-text:  #121212;
+  --pk-filter-stat-bg:    #FBFBFB;
+  --pk-filter-stat-text:  #C6C6C6;
+
+  /* tabs toggle */
+  --pk-tabs-toggle-bg:          #F9F9F9;
+  --pk-tabs-toggle-pill-bg:     #FFFFFF;
+  --pk-tabs-toggle-pill-border: #FDD5C4;
+  --pk-tabs-toggle-text:        #000000;
+
+  /* date picker */
+  --pk-dp-bg:           #FFFFFF;
+  --pk-dp-shadow:       0 2px 12px rgba(0,0,0,0.08);
+  --pk-dp-title:        #121212;
+  --pk-dp-chevron:      #121212;
+  --pk-dp-weekday:      #121212;
+  --pk-dp-day:          #858585;
+  --pk-dp-hover:        #FFF0E8;
+  --pk-dp-close:        #9CA3AF;
+
   /* code block — fixed dark in both themes */
   --pk-code-bg: #141414;
   --pk-code-head: #1E1E1E;
@@ -117,6 +139,28 @@
 
   --pk-success: #36CC4F;
   --pk-error: #FF6166;
+
+  /* transaction filter buttons — inactive surface */
+  --pk-filter-type-bg:    #242424;
+  --pk-filter-type-text:  #FFFFFF;
+  --pk-filter-stat-bg:    #1F1F1F;
+  --pk-filter-stat-text:  #FFFFFF;
+
+  /* tabs toggle */
+  --pk-tabs-toggle-bg:          #242424;
+  --pk-tabs-toggle-pill-bg:     #242424;
+  --pk-tabs-toggle-pill-border: #F9956B;
+  --pk-tabs-toggle-text:        #FFFFFF;
+
+  /* date picker */
+  --pk-dp-bg:           #232323;
+  --pk-dp-shadow:       0 2px 20px rgba(0,0,0,0.40);
+  --pk-dp-title:        #F2F2F0;
+  --pk-dp-chevron:      #F2F2F0;
+  --pk-dp-weekday:      #F2F2F0;
+  --pk-dp-day:          #A0A0A0;
+  --pk-dp-hover:        #2A2018;
+  --pk-dp-close:        #7A7A75;
 
   color-scheme: dark;
 }

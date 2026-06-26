@@ -756,52 +756,107 @@ export function usageMarquee(fw, speed) {
 }
 
 /* ── Transaction Status ──────────────────────────────────────────────── */
-export const reactTransactionStatus = `// PkTransactionStatus.jsx — Parkway Wallet
-import './parkway-transaction-status.css';
+export const reactTransactionStatus = `// PkTransactionFilters.jsx — Parkway Wallet
+// Covers both Transaction Type (fluid) and Transaction Status (fixed-width) filter rows.
+// Dark mode: wrap a parent with class="dark" or data-theme="dark".
+import './parkway-transaction-filters.css';
 
-const STATUSES = [
+const TX_TYPES = [
+  { key: 'transfer',   label: 'Transfer' },
+  { key: 'receive',    label: 'Receive' },
+  { key: 'stamp-duty', label: 'Stamp Duty' },
+];
+
+const TX_STATUSES = [
   { key: 'successful', label: 'Successful' },
   { key: 'pending',    label: 'Pending' },
   { key: 'failed',     label: 'Failed' },
 ];
 
-export default function PkTransactionStatus({ value = 'successful', onChange }) {
+function PkFilterGroup({ label, options, value, onChange, fluid = false }) {
   return (
-    <div className="pk-txn-status">
-      {STATUSES.map(({ key, label }) => (
-        <button
-          key={key}
-          type="button"
-          className={\`pk-txn-status__btn\${value === key ? ' is-active' : ''}\`}
-          onClick={() => onChange?.(key)}
-        >
-          {label}
-        </button>
-      ))}
+    <div className="pk-filter-group">
+      <span className="pk-filter-group__label">{label}</span>
+      <div className={\`pk-filter-group__row\${fluid ? ' is-fluid' : ''}\`}>
+        {options.map((opt) => (
+          <button
+            key={opt.key}
+            type="button"
+            className={\`pk-filter-btn\${value === opt.key ? ' is-active' : ''}\${fluid ? ' is-fluid' : ''}\`}
+            onClick={() => onChange?.(opt.key)}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
 
-/* parkway-transaction-status.css
-.pk-txn-status { display: flex; gap: 16px; }
-.pk-txn-status__btn {
-  width: 101px; height: 38px; border-radius: 8px;
-  border: 2px solid transparent; background: #FBFBFB;
-  font: 600 12px/1 Manrope, sans-serif; color: #C6C6C6;
-  cursor: pointer; transition: border-color .15s ease, color .15s ease, background .15s ease;
+export function PkTransactionType({ value = 'transfer', onChange }) {
+  return <PkFilterGroup label="Transaction Type" options={TX_TYPES} value={value} onChange={onChange} fluid />;
 }
-.pk-txn-status__btn.is-active {
-  border-color: var(--pk-tangerine-01); background: transparent; color: var(--pk-tangerine-01);
+
+export function PkTransactionStatus({ value = 'successful', onChange }) {
+  return <PkFilterGroup label="Transaction Status" options={TX_STATUSES} value={value} onChange={onChange} />;
+}
+
+/* parkway-transaction-filters.css
+
+/* ── Tokens (swap for dark mode) ── */
+:root {
+  --pk-filter-type-bg:    #F0F0F0;
+  --pk-filter-type-text:  #121212;
+  --pk-filter-stat-bg:    #FBFBFB;
+  --pk-filter-stat-text:  #C6C6C6;
+}
+[data-theme="dark"], .dark {
+  --pk-filter-type-bg:    #242424;
+  --pk-filter-type-text:  #FFFFFF;
+  --pk-filter-stat-bg:    #1F1F1F;
+  --pk-filter-stat-text:  #FFFFFF;
+}
+
+.pk-filter-group { display: flex; flex-direction: column; gap: 15px; width: 100%; }
+.pk-filter-group__label { font: 400 12px/1 Manrope, sans-serif; color: #999; }
+.pk-filter-group__row { display: flex; gap: 16px; }
+.pk-filter-group__row.is-fluid { width: 100%; }
+
+.pk-filter-btn {
+  height: 38px; width: 101px; padding: 0 24px;
+  border-radius: 8px; border: 2px solid transparent;
+  background: var(--pk-filter-stat-bg);
+  font: 600 12px/1 Manrope, sans-serif;
+  color: var(--pk-filter-stat-text);
+  cursor: pointer;
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.pk-filter-btn.is-fluid {
+  flex: 1 0 0; width: auto;
+  background: var(--pk-filter-type-bg);
+  color: var(--pk-filter-type-text);
+}
+.pk-filter-btn.is-active {
+  border-color: var(--pk-tangerine-01);
+  background: transparent;
+  color: var(--pk-tangerine-01);
 }
 */`;
 
-export const vueTransactionStatus = `<!-- PkTransactionStatus.vue — Parkway Wallet -->
+export const vueTransactionStatus = `<!-- PkTransactionFilters.vue — Parkway Wallet -->
 <script setup>
-const props = withDefaults(defineProps({
-  modelValue: { type: String, default: 'successful' },
-}), {});
-const emit = defineEmits(['update:modelValue']);
-const STATUSES = [
+const props = defineProps({
+  typeValue:   { type: String, default: 'transfer' },
+  statusValue: { type: String, default: 'successful' },
+});
+const emit = defineEmits(['update:typeValue', 'update:statusValue']);
+
+const TX_TYPES = [
+  { key: 'transfer',   label: 'Transfer' },
+  { key: 'receive',    label: 'Receive' },
+  { key: 'stamp-duty', label: 'Stamp Duty' },
+];
+const TX_STATUSES = [
   { key: 'successful', label: 'Successful' },
   { key: 'pending',    label: 'Pending' },
   { key: 'failed',     label: 'Failed' },
@@ -809,107 +864,156 @@ const STATUSES = [
 </script>
 
 <template>
-  <div class="pk-txn-status">
-    <button
-      v-for="s in STATUSES"
-      :key="s.key"
-      type="button"
-      class="pk-txn-status__btn"
-      :class="{ 'is-active': modelValue === s.key }"
-      @click="emit('update:modelValue', s.key)"
-    >{{ s.label }}</button>
+  <div class="pk-filters">
+    <!-- Transaction Type -->
+    <div class="pk-filter-group">
+      <span class="pk-filter-group__label">Transaction Type</span>
+      <div class="pk-filter-group__row is-fluid">
+        <button
+          v-for="opt in TX_TYPES" :key="opt.key"
+          type="button"
+          class="pk-filter-btn is-fluid"
+          :class="{ 'is-active': typeValue === opt.key }"
+          @click="emit('update:typeValue', opt.key)"
+        >{{ opt.label }}</button>
+      </div>
+    </div>
+    <!-- Transaction Status -->
+    <div class="pk-filter-group">
+      <span class="pk-filter-group__label">Transaction Status</span>
+      <div class="pk-filter-group__row">
+        <button
+          v-for="opt in TX_STATUSES" :key="opt.key"
+          type="button"
+          class="pk-filter-btn"
+          :class="{ 'is-active': statusValue === opt.key }"
+          @click="emit('update:statusValue', opt.key)"
+        >{{ opt.label }}</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.pk-txn-status { display: flex; gap: 16px; }
-.pk-txn-status__btn {
-  width: 101px; height: 38px; border-radius: 8px;
-  border: 2px solid transparent; background: #FBFBFB;
-  font: 600 12px/1 Manrope, sans-serif; color: #C6C6C6; cursor: pointer;
-  transition: border-color .15s ease, color .15s ease, background .15s ease;
+:root {
+  --pk-filter-type-bg: #F0F0F0; --pk-filter-type-text: #121212;
+  --pk-filter-stat-bg: #FBFBFB; --pk-filter-stat-text: #C6C6C6;
 }
-.pk-txn-status__btn.is-active {
-  border-color: var(--pk-tangerine-01); background: transparent; color: var(--pk-tangerine-01);
+:root[data-theme="dark"] {
+  --pk-filter-type-bg: #242424; --pk-filter-type-text: #FFFFFF;
+  --pk-filter-stat-bg: #1F1F1F; --pk-filter-stat-text: #FFFFFF;
 }
+.pk-filters { display: flex; flex-direction: column; gap: 24px; width: 100%; }
+.pk-filter-group { display: flex; flex-direction: column; gap: 15px; }
+.pk-filter-group__label { font: 400 12px/1 Manrope, sans-serif; color: #999; }
+.pk-filter-group__row { display: flex; gap: 16px; }
+.pk-filter-group__row.is-fluid { width: 100%; }
+.pk-filter-btn {
+  height: 38px; width: 101px; padding: 0 24px; border-radius: 8px;
+  border: 2px solid transparent;
+  background: var(--pk-filter-stat-bg); color: var(--pk-filter-stat-text);
+  font: 600 12px/1 Manrope, sans-serif; cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.pk-filter-btn.is-fluid { flex: 1 0 0; width: auto; background: var(--pk-filter-type-bg); color: var(--pk-filter-type-text); }
+.pk-filter-btn.is-active { border-color: var(--pk-tangerine-01); background: transparent; color: var(--pk-tangerine-01); }
 </style>`;
 
-export const flutterTransactionStatus = `// pk_transaction_status.dart — Parkway Wallet
+export const flutterTransactionStatus = `// pk_transaction_filters.dart — Parkway Wallet
 import 'package:flutter/material.dart';
 import 'parkway_tokens.dart';
 
-enum TxnStatus { successful, pending, failed }
-
-class PkTransactionStatus extends StatelessWidget {
-  const PkTransactionStatus({
-    super.key,
-    required this.value,
-    required this.onChanged,
-  });
-
-  final TxnStatus value;
-  final ValueChanged<TxnStatus> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: TxnStatus.values.map((s) => Padding(
-        padding: EdgeInsets.only(right: s == TxnStatus.values.last ? 0 : 16),
-        child: _StatusBtn(status: s, selected: value == s, onTap: () => onChanged(s)),
-      )).toList(),
-    );
-  }
+// ── Tokens ──────────────────────────────────────────────────────────────
+class _FilterTokens {
+  final Color inactiveBg;
+  final Color inactiveText;
+  const _FilterTokens({ required this.inactiveBg, required this.inactiveText });
 }
 
-class _StatusBtn extends StatelessWidget {
-  const _StatusBtn({ required this.status, required this.selected, required this.onTap });
-  final TxnStatus status;
-  final bool selected;
-  final VoidCallback onTap;
+const _light = (
+  type:   _FilterTokens(inactiveBg: Color(0xFFF0F0F0), inactiveText: Color(0xFF121212)),
+  status: _FilterTokens(inactiveBg: Color(0xFFFBFBFB), inactiveText: Color(0xFFC6C6C6)),
+);
+const _dark = (
+  type:   _FilterTokens(inactiveBg: Color(0xFF242424), inactiveText: Color(0xFFFFFFFF)),
+  status: _FilterTokens(inactiveBg: Color(0xFF1F1F1F), inactiveText: Color(0xFFFFFFFF)),
+);
 
-  String get label => switch (status) {
-    TxnStatus.successful => 'Successful',
-    TxnStatus.pending    => 'Pending',
-    TxnStatus.failed     => 'Failed',
-  };
+// ── PkFilterGroup ────────────────────────────────────────────────────────
+class PkFilterGroup extends StatelessWidget {
+  const PkFilterGroup({
+    super.key,
+    required this.label,
+    required this.options,
+    required this.value,
+    required this.onChanged,
+    this.fluid = false,
+    this.dark = false,
+  });
+
+  final String label;
+  final List<(String, String)> options;
+  final String value;
+  final ValueChanged<String> onChanged;
+  final bool fluid;
+  final bool dark;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        width: 101, height: 38,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: selected ? Colors.transparent : const Color(0xFFFBFBFB),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: selected ? PkColors.tangerine01 : Colors.transparent,
-            width: 2,
-          ),
-        ),
-        child: Text(label,
-          style: TextStyle(
-            fontFamily: 'Manrope', fontWeight: FontWeight.w600, fontSize: 12,
-            color: selected ? PkColors.tangerine01 : const Color(0xFFC6C6C6),
-          ),
-        ),
-      ),
+    final tok = dark ? (fluid ? _dark.type : _dark.status) : (fluid ? _light.type : _light.status);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontFamily: 'Manrope', fontSize: 12, color: Color(0xFF999999))),
+        const SizedBox(height: 15),
+        Row(children: options.map(((String, String) opt) {
+          final active = opt.\$1 == value;
+          return Expanded(
+            flex: fluid ? 1 : 0,
+            child: Padding(
+              padding: EdgeInsets.only(right: opt == options.last ? 0 : 16),
+              child: GestureDetector(
+                onTap: () => onChanged(opt.\$1),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  height: 38,
+                  width: fluid ? double.infinity : 101,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: active ? Colors.transparent : tok.inactiveBg,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: active ? PkColors.tangerine01 : Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
+                  child: Text(opt.\$2,
+                    style: TextStyle(
+                      fontFamily: 'Manrope', fontWeight: FontWeight.w600, fontSize: 12,
+                      color: active ? PkColors.tangerine01 : tok.inactiveText,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList()),
+      ],
     );
   }
 }`;
 
-export function usageTransactionStatus(fw, status) {
+export function usageTransactionStatus(fw, typeVal, statusVal) {
   if (fw === "flutter")
-    return `PkTransactionStatus(\n  value: TxnStatus.${status},\n  onChanged: (s) => setState(() => txnStatus = s),\n)`;
-  if (fw === "vue") return `<PkTransactionStatus v-model="txnStatus" />`;
-  return `<PkTransactionStatus value="${status}" onChange={setTxnStatus} />`;
+    return `// Dark mode is driven by the ThemeMode passed to MaterialApp.\n// Transaction Type\nPkFilterGroup(\n  label: 'Transaction Type',\n  options: const [('transfer','Transfer'),('receive','Receive'),('stamp-duty','Stamp Duty')],\n  value: '${typeVal}',\n  onChanged: (v) => setState(() => txnType = v),\n  fluid: true,\n),\n\n// Transaction Status\nPkFilterGroup(\n  label: 'Transaction Status',\n  options: const [('successful','Successful'),('pending','Pending'),('failed','Failed')],\n  value: '${statusVal}',\n  onChanged: (v) => setState(() => txnStatus = v),\n)`;
+  if (fw === "vue")
+    return `<!-- Dark mode: set data-theme="dark" on :root or a wrapping element -->\n<PkTransactionFilters\n  v-model:typeValue="txnType"\n  v-model:statusValue="txnStatus"\n/>`;
+  return `{/* Dark mode: set data-theme="dark" on :root — CSS vars handle the rest */}\n<PkTransactionType   value="${typeVal}"   onChange={setTxnType} />\n<PkTransactionStatus value="${statusVal}" onChange={setTxnStatus} />`;
 }
 
 /* ── Tabs Toggle (Pay Now / Scheduled) ───────────────────────────────── */
 export const reactTabsToggle = `// PkTabsToggle.jsx — Parkway Wallet
+// Dark mode: set data-theme="dark" on :root — CSS vars handle the rest.
 import './parkway-tabs-toggle.css';
 
 export default function PkTabsToggle({ tabs = [], value, onChange }) {
@@ -932,30 +1036,48 @@ export default function PkTabsToggle({ tabs = [], value, onChange }) {
 }
 
 /* parkway-tabs-toggle.css
+
+:root {
+  --pk-tabs-toggle-bg:          #F9F9F9;
+  --pk-tabs-toggle-pill-bg:     #FFFFFF;
+  --pk-tabs-toggle-pill-border: #FDD5C4;
+  --pk-tabs-toggle-text:        #000000;
+}
+[data-theme="dark"] {
+  --pk-tabs-toggle-bg:          #242424;
+  --pk-tabs-toggle-pill-bg:     #242424;
+  --pk-tabs-toggle-pill-border: #F9956B;
+  --pk-tabs-toggle-text:        #FFFFFF;
+}
+
 .pk-tabs-toggle {
   position: relative; display: flex;
   width: 343px; height: 48px;
-  background: #F9F9F9; border-radius: 40px; padding: 4px;
-  gap: 15px;
+  background: var(--pk-tabs-toggle-bg);
+  border-radius: 40px; padding: 4px; gap: 15px;
 }
 .pk-tabs-toggle__pill {
   position: absolute; top: 4px; left: 4px;
   width: 160px; height: 40px; border-radius: 20px;
-  background: #FFFFFF; border: 1px solid var(--pk-tangerine-04);
+  background: var(--pk-tabs-toggle-pill-bg);
+  border: 1px solid var(--pk-tabs-toggle-pill-border);
   transition: transform .2s ease; pointer-events: none;
 }
 .pk-tabs-toggle__btn {
   flex: 0 0 160px; height: 40px; border-radius: 20px;
   border: 0; background: transparent; position: relative; z-index: 1;
-  font: 600 14px/1 Manrope, sans-serif; color: #000; cursor: pointer;
+  font: 600 14px/1 Manrope, sans-serif;
+  color: var(--pk-tabs-toggle-text);
+  cursor: pointer;
 }
 */`;
 
 export const vueTabsToggle = `<!-- PkTabsToggle.vue — Parkway Wallet -->
+<!-- Dark mode: set data-theme="dark" on :root — CSS vars handle the rest. -->
 <script setup>
 import { computed } from 'vue';
 const props = defineProps({
-  tabs:  { type: Array, default: () => [] },
+  tabs:       { type: Array,  default: () => [] },
   modelValue: { type: String, default: '' },
 });
 const emit = defineEmits(['update:modelValue']);
@@ -976,21 +1098,37 @@ const idx = computed(() => props.tabs.findIndex(([k]) => k === props.modelValue)
 </template>
 
 <style scoped>
+:root {
+  --pk-tabs-toggle-bg:          #F9F9F9;
+  --pk-tabs-toggle-pill-bg:     #FFFFFF;
+  --pk-tabs-toggle-pill-border: #FDD5C4;
+  --pk-tabs-toggle-text:        #000000;
+}
+:root[data-theme="dark"] {
+  --pk-tabs-toggle-bg:          #242424;
+  --pk-tabs-toggle-pill-bg:     #242424;
+  --pk-tabs-toggle-pill-border: #F9956B;
+  --pk-tabs-toggle-text:        #FFFFFF;
+}
 .pk-tabs-toggle {
   position: relative; display: flex;
   width: 343px; height: 48px;
-  background: #F9F9F9; border-radius: 40px; padding: 4px; gap: 15px;
+  background: var(--pk-tabs-toggle-bg);
+  border-radius: 40px; padding: 4px; gap: 15px;
 }
 .pk-tabs-toggle__pill {
   position: absolute; top: 4px; left: 4px;
   width: 160px; height: 40px; border-radius: 20px;
-  background: #fff; border: 1px solid var(--pk-tangerine-04);
+  background: var(--pk-tabs-toggle-pill-bg);
+  border: 1px solid var(--pk-tabs-toggle-pill-border);
   transition: transform .2s ease; pointer-events: none;
 }
 .pk-tabs-toggle__btn {
   flex: 0 0 160px; height: 40px; border-radius: 20px;
   border: 0; background: transparent; position: relative; z-index: 1;
-  font: 600 14px/1 Manrope, sans-serif; color: #000; cursor: pointer;
+  font: 600 14px/1 Manrope, sans-serif;
+  color: var(--pk-tabs-toggle-text);
+  cursor: pointer;
 }
 </style>`;
 
@@ -1012,41 +1150,40 @@ class PkTabsToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final containerBg   = dark ? const Color(0xFF242424) : const Color(0xFFF9F9F9);
+    final pillBg        = dark ? const Color(0xFF242424) : Colors.white;
+    final pillBorder    = dark ? PkColors.tangerine01    : PkColors.tangerine04;
+    final textColor     = dark ? Colors.white            : Colors.black;
+
     final idx = tabs.indexWhere((t) => t.\$1 == value);
     return Container(
       width: 343, height: 48,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF9F9F9),
-        borderRadius: BorderRadius.circular(40),
-      ),
+      decoration: BoxDecoration(color: containerBg, borderRadius: BorderRadius.circular(40)),
       padding: const EdgeInsets.all(4),
       child: Stack(children: [
         AnimatedPositioned(
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
-          left: idx * 175.0,
-          top: 0, bottom: 0,
-          width: 160,
+          left: idx * 175.0, top: 0, bottom: 0, width: 160,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: pillBg,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: PkColors.tangerine04),
+              border: Border.all(color: pillBorder),
             ),
           ),
         ),
         Row(children: tabs.map(((String, String) t) => GestureDetector(
           onTap: () => onChanged(t.\$1),
-          child: Container(
-            width: t == tabs.last ? 160 : 160,
-            alignment: Alignment.center,
-            color: Colors.transparent,
-            child: Text(t.\$2,
-              style: const TextStyle(
+          child: SizedBox(
+            width: 160,
+            child: Center(child: Text(t.\$2,
+              style: TextStyle(
                 fontFamily: 'Manrope', fontWeight: FontWeight.w600,
-                fontSize: 14, color: Colors.black,
+                fontSize: 14, color: textColor,
               ),
-            ),
+            )),
           ),
         )).toList()),
       ]),
@@ -1306,38 +1443,54 @@ export default function PkDatePicker({ defaultValue = null, onSelect, onClose })
 }
 
 /* parkway-date-picker.css
+
+:root {
+  --pk-dp-bg:      #FFFFFF;  --pk-dp-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --pk-dp-title:   #121212;  --pk-dp-chevron: #121212;
+  --pk-dp-weekday: #121212;  --pk-dp-day:    #858585;
+  --pk-dp-hover:   #FFF0E8;  --pk-dp-close:  #9CA3AF;
+}
+[data-theme="dark"] {
+  --pk-dp-bg:      #232323;  --pk-dp-shadow: 0 2px 20px rgba(0,0,0,0.40);
+  --pk-dp-title:   #F2F2F0;  --pk-dp-chevron: #F2F2F0;
+  --pk-dp-weekday: #F2F2F0;  --pk-dp-day:    #A0A0A0;
+  --pk-dp-hover:   #2A2018;  --pk-dp-close:  #7A7A75;
+}
+
 .pk-datepicker {
-  background: #fff; border-radius: 8px; padding: 25px; width: 326px;
+  background: var(--pk-dp-bg); box-shadow: var(--pk-dp-shadow);
+  border-radius: 8px; padding: 25px; width: 326px;
   display: flex; flex-direction: column; gap: 20px;
   font-family: Inter, system-ui, sans-serif;
 }
 .pk-datepicker__header { display: flex; justify-content: space-between; align-items: center; }
-.pk-datepicker__title { font: 500 17px/25px Inter, sans-serif; color: #121212; }
+.pk-datepicker__title { font: 500 17px/25px Inter, sans-serif; color: var(--pk-dp-title); }
 .pk-datepicker__nav { display: flex; gap: 10px; }
 .pk-datepicker__chevron {
   background: none; border: 0; padding: 2px; cursor: pointer;
   display: flex; align-items: center; border-radius: 4px;
 }
-.pk-datepicker__chevron:hover { background: #F5F5F5; }
+.pk-datepicker__chevron svg path { stroke: var(--pk-dp-chevron); }
+.pk-datepicker__chevron:hover { background: var(--pk-dp-hover); }
 .pk-datepicker__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
 .pk-datepicker__weekday {
   text-align: center; padding: 10px 2.5px;
-  font: 400 15px/20px Inter, sans-serif; color: #121212;
+  font: 400 15px/20px Inter, sans-serif; color: var(--pk-dp-weekday);
 }
 .pk-datepicker__weekday.is-weekend { color: #F36A6A; }
 .pk-datepicker__day {
   height: 40px; display: flex; align-items: center; justify-content: center;
-  font: 400 15px/20px Inter, sans-serif; color: #858585;
+  font: 400 15px/20px Inter, sans-serif; color: var(--pk-dp-day);
   cursor: pointer; border-radius: 8px; margin: 2px 0;
 }
 .pk-datepicker__day.is-empty { pointer-events: none; }
-.pk-datepicker__day:not(.is-empty):hover { background: #FFF0E8; }
+.pk-datepicker__day:not(.is-empty):hover { background: var(--pk-dp-hover); }
 .pk-datepicker__day.is-today { font-weight: 600; color: #FAAA89; }
 .pk-datepicker__day.is-selected { background: #FAAA89; color: #fff; font-weight: 400; }
 .pk-datepicker__ctas { display: flex; justify-content: flex-end; gap: 20px; }
 .pk-datepicker__close {
   background: none; border: 0; padding: 10px 20px; border-radius: 4px;
-  font: 400 15px/20px Inter, sans-serif; color: #9CA3AF; cursor: pointer;
+  font: 400 15px/20px Inter, sans-serif; color: var(--pk-dp-close); cursor: pointer;
 }
 .pk-datepicker__select {
   background: #FAAA89; border: 0; padding: 10px 20px; border-radius: 4px;

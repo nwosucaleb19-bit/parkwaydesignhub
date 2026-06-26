@@ -8,89 +8,135 @@ import {
   usageTransactionStatus,
 } from "../snippets/wallet.js";
 
-const FIGMA_NODE = "31774-13288";
+const TX_TYPES = [
+  { key: "transfer",   label: "Transfer" },
+  { key: "receive",    label: "Receive" },
+  { key: "stamp-duty", label: "Stamp Duty" },
+];
 
-const STATUSES = [
+const TX_STATUSES = [
   { key: "successful", label: "Successful" },
   { key: "pending",    label: "Pending" },
   { key: "failed",     label: "Failed" },
 ];
 
-function LiveTransactionStatus({ value, onChange }) {
+function FilterBtn({ label, active, inactiveBg, inactiveText, fluid, onClick }) {
   return (
-    <div style={{ display: "flex", gap: 16 }}>
-      {STATUSES.map(({ key, label }) => {
-        const active = value === key;
-        return (
-          <button
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        ...(fluid ? { flex: "1 0 0", minWidth: 0 } : { width: 101 }),
+        height: 38,
+        padding: "0 16px",
+        borderRadius: 8,
+        border: active ? "2px solid #F9956B" : "2px solid transparent",
+        background: active ? "transparent" : inactiveBg,
+        font: "600 12px/1 Manrope, sans-serif",
+        color: active ? "#F9956B" : inactiveText,
+        cursor: "pointer",
+        transition: "border-color .15s ease, color .15s ease, background .15s ease",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+function FilterGroup({ groupLabel, options, value, onChange, fluid, bgVar, textVar }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 15, width: "100%" }}>
+      <span style={{ font: "400 12px/1.4 Manrope, sans-serif", color: "#999" }}>
+        {groupLabel}
+      </span>
+      <div style={{ display: "flex", gap: 16, width: fluid ? "100%" : "auto" }}>
+        {options.map(({ key, label }) => (
+          <FilterBtn
             key={key}
-            type="button"
+            label={label}
+            active={value === key}
+            fluid={fluid}
+            inactiveBg={`var(${bgVar})`}
+            inactiveText={`var(${textVar})`}
             onClick={() => onChange(key)}
-            style={{
-              width: 101,
-              height: 38,
-              borderRadius: 8,
-              border: active ? "2px solid #F9956B" : "2px solid transparent",
-              background: active ? "transparent" : "#FBFBFB",
-              font: "600 12px/1 Manrope, sans-serif",
-              color: active ? "#F9956B" : "#C6C6C6",
-              cursor: "pointer",
-              transition: "border-color .15s ease, color .15s ease, background .15s ease",
-            }}
-          >
-            {label}
-          </button>
-        );
-      })}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
+const STATES = [
+  ["Active",    "Tangerine-01 border and text, transparent background — the selected filter."],
+  ["Inactive (Type)",   "var(--pk-filter-type-bg) background — adapts per theme."],
+  ["Inactive (Status)", "var(--pk-filter-stat-bg) background — adapts per theme."],
+];
+
 const PROPS_ROWS = [
-  ["value", "string", "required", "Active filter key: 'successful' | 'pending' | 'failed'."],
-  ["onChange / onChanged", "function", "—", "Called with the new key when a button is clicked."],
+  ["value",                "string",   "required", "Active filter key for the respective group."],
+  ["onChange / onChanged", "function", "—",        "Called with the new key on button click."],
+  ["fluid",                "boolean",  "false",    "Buttons fill the row width equally (used by Transaction Type)."],
 ];
 
 export default function TransactionStatus({ fw, setFw }) {
-  const [active, setActive] = useState("successful");
-  const impl = {
-    react: reactTransactionStatus,
-    vue: vueTransactionStatus,
-    flutter: flutterTransactionStatus,
-  };
+  const [typeVal,   setTypeVal]   = useState("stamp-duty");
+  const [statusVal, setStatusVal] = useState("successful");
+
+  const impl  = { react: reactTransactionStatus, vue: vueTransactionStatus, flutter: flutterTransactionStatus };
   const label = {
-    react: "PkTransactionStatus.jsx + parkway-transaction-status.css",
-    vue: "PkTransactionStatus.vue",
-    flutter: "pk_transaction_status.dart",
+    react:   "PkTransactionFilters.jsx + parkway-transaction-filters.css",
+    vue:     "PkTransactionFilters.vue",
+    flutter: "pk_transaction_filters.dart",
   };
 
   return (
     <>
       <Lead>
-        Three-option filter row for transaction history: Successful, Pending, and Failed. The active
-        state uses a Tangerine-01 border and text; inactive buttons sit on a near-white fill.
+        Two filter rows used together on the Wallet transaction history screen — Transaction Type
+        (fluid buttons: Transfer / Receive / Stamp Duty) and Transaction Status (fixed-width:
+        Successful / Pending / Failed). Inactive surfaces are driven by CSS custom properties
+        that swap automatically when the system switches between light and dark mode.
       </Lead>
 
-      <div className="ph-stage tall" style={{ marginTop: 14 }}>
-        <LiveTransactionStatus value={active} onChange={setActive} />
+      <div className="ph-stage tall" style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 24 }}>
+        <FilterGroup
+          groupLabel="Transaction Type"
+          options={TX_TYPES}
+          value={typeVal}
+          onChange={setTypeVal}
+          fluid
+          bgVar="--pk-filter-type-bg"
+          textVar="--pk-filter-type-text"
+        />
+        <FilterGroup
+          groupLabel="Transaction Status"
+          options={TX_STATUSES}
+          value={statusVal}
+          onChange={setStatusVal}
+          fluid={false}
+          bgVar="--pk-filter-stat-bg"
+          textVar="--pk-filter-stat-text"
+        />
       </div>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
-      <CodeBlock code={usageTransactionStatus(fw, active)} label="Usage — reflects active state above" />
+      <CodeBlock
+        code={usageTransactionStatus(fw, typeVal, statusVal)}
+        label="Usage — reflects active selections above"
+      />
       <CodeBlock code={impl[fw]} label={label[fw]} />
 
       <SectionHeader label="States" />
       <div className="ph-statelist">
-        {STATUSES.map(({ key, label: lbl }) => (
-          <div key={key} className="ph-stateline">
-            <span
-              className="ph-statedot"
-              style={{
-                background: key === active ? "#F9956B" : "transparent",
-                border: "2px solid #F9956B",
-              }}
-            />
-            <span className="ph-statelabel">{lbl}{key === active ? " — active" : ""}</span>
+        {STATES.map(([name, desc]) => (
+          <div key={name} className="ph-stateline">
+            <span className="ph-statedot" style={{
+              background: name === "Active" ? "#F9956B" : "transparent",
+              border: "2px solid #F9956B",
+            }} />
+            <span className="ph-statelabel">{name}</span>
+            <span className="ph-statedesc">{desc}</span>
           </div>
         ))}
       </div>
@@ -117,15 +163,16 @@ export default function TransactionStatus({ fw, setFw }) {
         <div>
           <p className="ph-guidehead"><span className="ph-dot ok" aria-hidden="true" />Do</p>
           <ul className="ph-guidelist">
-            <li>Keep exactly three options — this component is designed as a tri-state filter.</li>
-            <li>Persist the active filter in URL state or component state for navigation stability.</li>
+            <li>Use both filter rows together — they are designed as a pair on the history screen.</li>
+            <li>Let the CSS vars handle dark mode automatically; don't pass a manual <code>dark</code> prop.</li>
+            <li>Persist both active filters in URL state for navigation stability.</li>
           </ul>
         </div>
         <div>
           <p className="ph-guidehead"><span className="ph-dot err" aria-hidden="true" />Don't</p>
           <ul className="ph-guidelist">
-            <li>Don't use this for more than 3 items — use a full select or chip list instead.</li>
-            <li>Don't change the label text; these map to backend transaction status values.</li>
+            <li>Don't change the label text — values map directly to backend filter params.</li>
+            <li>Don't mix fluid and fixed-width buttons in the same row.</li>
           </ul>
         </div>
       </div>
