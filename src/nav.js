@@ -38,7 +38,6 @@ export const MODULES = [
       { id: "marquee",            label: "Marquee",             page: "marquee",            figma: wfig("31774-13261"), status: "building" },
       { id: "transaction-status", label: "Transaction Status",  page: "transaction-status", figma: wfig("31774-13288"), status: "building" },
       { id: "tabs-toggle",        label: "Tabs Toggle",         page: "tabs-toggle",        figma: wfig("31774-13298"), status: "building" },
-      { id: "settings-tabs",      label: "Settings Tabs",       page: "settings-tabs",      figma: wfig("31774-13304"), status: "building" },
       { id: "date-picker",        label: "Date Picker",         page: "date-picker",        figma: wfig("31774-13316"), status: "building" },
       { id: "radio",              label: "Radio Button",        page: "radio",              figma: wfig("31827-38240"), status: "building" },
     ],

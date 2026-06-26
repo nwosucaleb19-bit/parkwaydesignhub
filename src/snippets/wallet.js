@@ -23,16 +23,16 @@ export default function PkTextInput({
 
 /* parkway-input.css
 .pk-field { display: grid; gap: 6px; }
-.pk-field__label { font: 600 12px Manrope; color: var(--pk-grey-09); }
+.pk-field__label { font: 600 12px Manrope; color: var(--pk-label); }
 .pk-input { display: flex; align-items: center; gap: 8px; height: 45px;
-  padding: 0 16px; border: 1px solid var(--pk-grey-04); border-radius: 8px;
-  background: var(--pk-white-01); transition: border-color .15s ease; }
+  padding: 0 16px; border: 1px solid var(--pk-border); border-radius: 8px;
+  background: var(--pk-field-bg); transition: border-color .15s ease; }
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
-  font: 400 14px Manrope; color: var(--pk-grey-01); }
-.pk-input input::placeholder { color: var(--pk-grey-02); }
-.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px rgba(249,149,107,.20); }
+  font: 400 14px Manrope; color: var(--pk-text); }
+.pk-input input::placeholder { color: var(--pk-placeholder); }
+.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px var(--pk-focus-ring); }
 .pk-input.is-error { border-color: var(--pk-error); }
-.pk-field__help { font: 400 12px Manrope; color: var(--pk-grey-08); }
+.pk-field__help { font: 400 12px Manrope; color: var(--pk-text-muted); }
 .pk-field__help.is-error { color: var(--pk-error); }
 */`;
 
@@ -56,15 +56,15 @@ const model = defineModel();
 
 <style scoped>
 .pk-field { display: grid; gap: 6px; }
-.pk-field__label { font: 600 12px Manrope; color: var(--pk-grey-09); }
+.pk-field__label { font: 600 12px Manrope; color: var(--pk-label); }
 .pk-input { display: flex; align-items: center; gap: 8px; height: 45px;
-  padding: 0 16px; border: 1px solid var(--pk-grey-04); border-radius: 8px;
-  background: var(--pk-white-01); transition: border-color .15s ease; }
+  padding: 0 16px; border: 1px solid var(--pk-border); border-radius: 8px;
+  background: var(--pk-field-bg); transition: border-color .15s ease; }
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
-  font: 400 14px Manrope; color: var(--pk-grey-01); }
-.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px rgba(249,149,107,.20); }
+  font: 400 14px Manrope; color: var(--pk-text); }
+.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px var(--pk-focus-ring); }
 .pk-input.is-error { border-color: var(--pk-error); }
-.pk-field__help { font: 400 12px Manrope; color: var(--pk-grey-08); }
+.pk-field__help { font: 400 12px Manrope; color: var(--pk-text-muted); }
 .pk-field__help.is-error { color: var(--pk-error); }
 </style>`;
 
@@ -132,7 +132,7 @@ export default function PkToast({ variant = "success", children }) {
 
 /* parkway-toast.css
 .pk-toast { display: flex; align-items: center; gap: 12px;
-  padding: 20px; border-radius: 10px; background: var(--pk-grey-11);
+  padding: 20px; border-radius: 10px; background: var(--pk-toast-bg);
   font: 500 14px Manrope; color: var(--pk-white-01); }
 .pk-toast__icon { width: 24px; height: 24px; flex: none; border-radius: 50%; }
 .pk-toast--success .pk-toast__icon { background: var(--pk-success); }
@@ -153,7 +153,7 @@ defineProps({ variant: { type: String, default: "success" } }); // success | war
 
 <style scoped>
 .pk-toast { display: flex; align-items: center; gap: 12px; padding: 20px;
-  border-radius: 10px; background: var(--pk-grey-11);
+  border-radius: 10px; background: var(--pk-toast-bg);
   font: 500 14px Manrope; color: var(--pk-white-01); }
 .pk-toast__icon { width: 24px; height: 24px; flex: none; border-radius: 50%; }
 .pk-toast--success .pk-toast__icon { background: var(--pk-success); }
@@ -283,10 +283,10 @@ export default function PkBadge({ status = "success", children }) {
 /* parkway-badge.css
 .pk-badge { display: inline-flex; align-items: center; height: 22px;
   padding: 0 10px; border-radius: 11px; font: 600 11px Manrope; }
-.pk-badge--success   { background: #E7F7EA; color: #1F8A3B; }
-.pk-badge--failed    { background: #FDECEC; color: var(--pk-error); }
-.pk-badge--pending   { background: var(--pk-buff-04); color: var(--pk-buff-07); }
-.pk-badge--alternate { background: var(--pk-grey-05); color: var(--pk-grey-09); }
+.pk-badge--success   { background: var(--pk-badge-success-bg); color: var(--pk-badge-success-fg); }
+.pk-badge--failed    { background: var(--pk-badge-failed-bg);  color: var(--pk-badge-failed-fg); }
+.pk-badge--pending   { background: var(--pk-badge-pending-bg); color: var(--pk-badge-pending-fg); }
+.pk-badge--alternate { background: var(--pk-badge-alt-bg);     color: var(--pk-badge-alt-fg); }
 */`;
 
 export const vueBadge = `<!-- PkBadge.vue — Parkway Wallet -->
@@ -301,10 +301,10 @@ defineProps({ status: { type: String, default: "success" } }); // success | fail
 <style scoped>
 .pk-badge { display: inline-flex; align-items: center; height: 22px;
   padding: 0 10px; border-radius: 11px; font: 600 11px Manrope; }
-.pk-badge--success   { background: #E7F7EA; color: #1F8A3B; }
-.pk-badge--failed    { background: #FDECEC; color: var(--pk-error); }
-.pk-badge--pending   { background: var(--pk-buff-04); color: var(--pk-buff-07); }
-.pk-badge--alternate { background: var(--pk-grey-05); color: var(--pk-grey-09); }
+.pk-badge--success   { background: var(--pk-badge-success-bg); color: var(--pk-badge-success-fg); }
+.pk-badge--failed    { background: var(--pk-badge-failed-bg);  color: var(--pk-badge-failed-fg); }
+.pk-badge--pending   { background: var(--pk-badge-pending-bg); color: var(--pk-badge-pending-fg); }
+.pk-badge--alternate { background: var(--pk-badge-alt-bg);     color: var(--pk-badge-alt-fg); }
 </style>`;
 
 export const flutterBadge = `// pk_badge.dart — Parkway Wallet
@@ -357,13 +357,13 @@ export default function PkToggle({ checked, onChange, disabled, platform = "desk
 
 /* parkway-toggle.css — desktop = pill, mobile = 8px radius
 .pk-toggle { width: 40px; height: 20px; border: 0; border-radius: 999px;
-  padding: 2px; background: var(--pk-grey-04); cursor: pointer;
+  padding: 2px; background: var(--pk-track-off); cursor: pointer;
   transition: background .2s ease; }
 .pk-toggle--mobile { border-radius: 8px; }
 .pk-toggle.is-on { background: var(--pk-tangerine-01); }
 .pk-toggle:disabled { background: var(--pk-tangerine-04); cursor: not-allowed; }
 .pk-toggle__knob { display: block; width: 16px; height: 16px; border-radius: 50%;
-  background: var(--pk-white-01); transition: transform .2s ease; }
+  background: var(--pk-knob); transition: transform .2s ease; }
 .pk-toggle--mobile .pk-toggle__knob { border-radius: 5px; }
 .pk-toggle.is-on .pk-toggle__knob { transform: translateX(20px); }
 */`;
@@ -383,12 +383,12 @@ const model = defineModel({ type: Boolean });
 
 <style scoped>
 .pk-toggle { width: 40px; height: 20px; border: 0; border-radius: 999px; padding: 2px;
-  background: var(--pk-grey-04); cursor: pointer; transition: background .2s ease; }
+  background: var(--pk-track-off); cursor: pointer; transition: background .2s ease; }
 .pk-toggle--mobile { border-radius: 8px; }
 .pk-toggle.is-on { background: var(--pk-tangerine-01); }
 .pk-toggle:disabled { background: var(--pk-tangerine-04); cursor: not-allowed; }
 .pk-toggle__knob { display: block; width: 16px; height: 16px; border-radius: 50%;
-  background: var(--pk-white-01); transition: transform .2s ease; }
+  background: var(--pk-knob); transition: transform .2s ease; }
 .pk-toggle--mobile .pk-toggle__knob { border-radius: 5px; }
 .pk-toggle.is-on .pk-toggle__knob { transform: translateX(20px); }
 </style>`;
@@ -437,13 +437,13 @@ export default function PkCheckbox({ checked, onChange, disabled, label }) {
 .pk-check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .pk-check input { position: absolute; opacity: 0; }
 .pk-check__box { width: 20px; height: 20px; border-radius: 6px;
-  border: 1.5px solid var(--pk-grey-04); background: var(--pk-white-01);
+  border: 1.5px solid var(--pk-border); background: var(--pk-field-bg);
   transition: all .15s ease; }
 .pk-check input:checked + .pk-check__box { background: var(--pk-tangerine-01);
   border-color: var(--pk-tangerine-01);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 8.5l3 3 6-6' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-size: contain; }
-.pk-check input:focus-visible + .pk-check__box { outline: 2px solid var(--pk-grey-01); outline-offset: 2px; }
+.pk-check input:focus-visible + .pk-check__box { outline: 2px solid var(--pk-tangerine-01); outline-offset: 2px; }
 */`;
 
 export const vueCheckbox = `<!-- PkCheckbox.vue — Parkway Wallet -->
@@ -464,7 +464,7 @@ const model = defineModel({ type: Boolean });
 .pk-check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .pk-check input { position: absolute; opacity: 0; }
 .pk-check__box { width: 20px; height: 20px; border-radius: 6px;
-  border: 1.5px solid var(--pk-grey-04); background: var(--pk-white-01); transition: all .15s ease; }
+  border: 1.5px solid var(--pk-border); background: var(--pk-field-bg); transition: all .15s ease; }
 .pk-check input:checked + .pk-check__box { background: var(--pk-tangerine-01); border-color: var(--pk-tangerine-01); }
 </style>`;
 
@@ -1198,174 +1198,6 @@ export function usageTabsToggle(fw, value) {
   if (fw === "vue")
     return `<PkTabsToggle\n  :tabs="[['pay-now', 'Pay Now'], ['scheduled', 'Scheduled']]"\n  v-model="tab"\n/>`;
   return `<PkTabsToggle\n  tabs={${tabs}}\n  value="${value}"\n  onChange={setTab}\n/>`;
-}
-
-/* ── Settings Tabs ───────────────────────────────────────────────────── */
-export const reactSettingsTabs = `// PkSettingsTabs.jsx — Parkway Wallet
-import './parkway-settings-tabs.css';
-
-export default function PkSettingsTabs({ tabs = [], value, onChange }) {
-  const idx = tabs.findIndex(([k]) => k === value);
-  const pct = 100 / tabs.length;
-  return (
-    <div className="pk-settings-tabs">
-      <div className="pk-settings-tabs__track">
-        {tabs.map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            className={\`pk-settings-tabs__btn\${value === key ? ' is-active' : ''}\`}
-            onClick={() => onChange?.(key)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-      <div
-        className="pk-settings-tabs__indicator"
-        style={{ width: \`\${pct}%\`, left: \`\${idx * pct}%\` }}
-      />
-    </div>
-  );
-}
-
-/* parkway-settings-tabs.css
-.pk-settings-tabs { position: relative; border-bottom: 1px solid #E5E7EB; }
-.pk-settings-tabs__track { display: flex; }
-.pk-settings-tabs__btn {
-  flex: 1; height: 33px; border: 0; background: transparent; padding-bottom: 4px;
-  font: 500 14px/1 Manrope, sans-serif; color: #9CA3AF; cursor: pointer;
-  transition: color .15s ease;
-}
-.pk-settings-tabs__btn.is-active { font-weight: 600; color: #4B5563; }
-.pk-settings-tabs__indicator {
-  position: absolute; bottom: -1px; height: 3px;
-  background: var(--pk-tangerine-01);
-  border-radius: 4px 4px 0 0;
-  transition: left .2s ease;
-}
-*/`;
-
-export const vueSettingsTabs = `<!-- PkSettingsTabs.vue — Parkway Wallet -->
-<script setup>
-import { computed } from 'vue';
-const props = defineProps({
-  tabs:       { type: Array,  default: () => [] },
-  modelValue: { type: String, default: '' },
-});
-const emit = defineEmits(['update:modelValue']);
-const idx = computed(() => props.tabs.findIndex(([k]) => k === props.modelValue));
-const pct = computed(() => 100 / props.tabs.length);
-</script>
-
-<template>
-  <div class="pk-settings-tabs">
-    <div class="pk-settings-tabs__track">
-      <button
-        v-for="([key, label]) in tabs"
-        :key="key"
-        type="button"
-        class="pk-settings-tabs__btn"
-        :class="{ 'is-active': modelValue === key }"
-        @click="emit('update:modelValue', key)"
-      >{{ label }}</button>
-    </div>
-    <div
-      class="pk-settings-tabs__indicator"
-      :style="{ width: pct + '%', left: (idx * pct) + '%' }"
-    />
-  </div>
-</template>
-
-<style scoped>
-.pk-settings-tabs { position: relative; border-bottom: 1px solid #E5E7EB; }
-.pk-settings-tabs__track { display: flex; }
-.pk-settings-tabs__btn {
-  flex: 1; height: 33px; border: 0; background: transparent; padding-bottom: 4px;
-  font: 500 14px/1 Manrope, sans-serif; color: #9CA3AF; cursor: pointer;
-  transition: color .15s ease;
-}
-.pk-settings-tabs__btn.is-active { font-weight: 600; color: #4B5563; }
-.pk-settings-tabs__indicator {
-  position: absolute; bottom: -1px; height: 3px;
-  background: var(--pk-tangerine-01); border-radius: 4px 4px 0 0;
-  transition: left .2s ease;
-}
-</style>`;
-
-export const flutterSettingsTabs = `// pk_settings_tabs.dart — Parkway Wallet
-import 'package:flutter/material.dart';
-import 'parkway_tokens.dart';
-
-class PkSettingsTabs extends StatelessWidget {
-  const PkSettingsTabs({
-    super.key,
-    required this.tabs,
-    required this.value,
-    required this.onChanged,
-  });
-
-  final List<(String, String)> tabs;
-  final String value;
-  final ValueChanged<String> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final idx = tabs.indexWhere((t) => t.\$1 == value);
-    final pct = 1.0 / tabs.length;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(children: tabs.map(((String, String) t) {
-          final active = t.\$1 == value;
-          return Expanded(child: GestureDetector(
-            onTap: () => onChanged(t.\$1),
-            child: Container(
-              height: 33, alignment: Alignment.center,
-              color: Colors.transparent,
-              child: Text(t.\$2,
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontWeight: active ? FontWeight.w600 : FontWeight.w500,
-                  fontSize: 14,
-                  color: active ? const Color(0xFF4B5563) : const Color(0xFF9CA3AF),
-                ),
-              ),
-            ),
-          ));
-        }).toList()),
-        Stack(children: [
-          Container(height: 1, color: const Color(0xFFE5E7EB)),
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeInOut,
-            left: 0, bottom: 0,
-            child: FractionallySizedBox(
-              widthFactor: pct,
-              child: Transform.translate(
-                offset: Offset(idx / pct, 0),
-                child: Container(
-                  height: 3,
-                  decoration: const BoxDecoration(
-                    color: PkColors.tangerine01,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ]),
-      ],
-    );
-  }
-}`;
-
-export function usageSettingsTabs(fw, tab) {
-  if (fw === "flutter")
-    return `PkSettingsTabs(\n  tabs: const [('physical', 'Physical'), ('virtual', 'Virtual')],\n  value: '${tab}',\n  onChanged: (v) => setState(() => activeTab = v),\n)`;
-  if (fw === "vue")
-    return `<PkSettingsTabs\n  :tabs="[['physical', 'Physical'], ['virtual', 'Virtual']]"\n  v-model="activeTab"\n/>`;
-  return `<PkSettingsTabs\n  tabs={[['physical', 'Physical'], ['virtual', 'Virtual']]}\n  value="${tab}"\n  onChange={setActiveTab}\n/>`;
 }
 
 /* ── Date Picker ─────────────────────────────────────────────────────── */

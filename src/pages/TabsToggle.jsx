@@ -89,9 +89,8 @@ export default function TabsToggle({ fw, setFw }) {
   return (
     <>
       <Lead>
-        Two-option pill toggle for switching between payment modes. A sliding pill sits under
-        the active tab; its background and border colour swap automatically when the system
-        switches between light and dark mode via CSS custom properties.
+        Two-option pill toggle for switching payment modes. A sliding pill marks the active tab;
+        its colours follow the light/dark theme.
       </Lead>
 
       <div className="ph-stage tall" style={{ marginTop: 14 }}>

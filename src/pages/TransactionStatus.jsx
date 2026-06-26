@@ -93,10 +93,9 @@ export default function TransactionStatus({ fw, setFw }) {
   return (
     <>
       <Lead>
-        Two filter rows used together on the Wallet transaction history screen — Transaction Type
-        (fluid buttons: Transfer / Receive / Stamp Duty) and Transaction Status (fixed-width:
-        Successful / Pending / Failed). Inactive surfaces are driven by CSS custom properties
-        that swap automatically when the system switches between light and dark mode.
+        Two filter rows for the transaction history screen — Transaction Type (fluid: Transfer /
+        Receive / Stamp Duty) and Transaction Status (fixed-width: Successful / Pending / Failed).
+        Inactive surfaces follow the light/dark theme.
       </Lead>
 
       <div className="ph-stage tall" style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 24 }}>
