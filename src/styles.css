@@ -397,11 +397,15 @@ a { color: inherit; }
 .ph-stage.tall { min-height: 280px; }
 .ph-stagecap { font: 600 10.5px var(--pk-sans); letter-spacing: 2px; text-transform: uppercase; color: var(--pk-text-faint); margin: 0 0 22px; }
 
-/* ── Code block (fixed dark) ────────────────────────────────────────── */
-.ph-code { margin: 18px 0 0; border-radius: 11px; overflow: hidden; background: var(--pk-code-bg); border: 1px solid var(--pk-code-line); }
-.ph-codehead { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--pk-code-head); padding: 10px 16px; border-bottom: 1px solid var(--pk-code-line); }
-.ph-codelabel { font: 500 11px var(--pk-mono); color: var(--pk-code-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ph-codepre { margin: 0; padding: 20px; color: var(--pk-code-text); font: 400 12.5px/1.7 var(--pk-mono); overflow: auto; overscroll-behavior: contain; max-height: 460px; }
+/* ── Code block (shiki-highlighted, follows the hub theme) ──────────── */
+.ph-code { margin: 18px 0 0; border-radius: 12px; overflow: hidden; background: var(--pk-panel-bg); border: 1px solid var(--pk-line); }
+.ph-codehead { display: flex; align-items: center; gap: 10px; background: var(--pk-panel-bg); padding: 9px 12px; border-bottom: 1px solid var(--pk-line); }
+.ph-codelang { font: 600 10px var(--pk-sans); letter-spacing: .04em; text-transform: uppercase; color: var(--pk-accent-ink); background: var(--pk-accent-soft); padding: 3px 8px; border-radius: 6px; flex: none; }
+.ph-codelabel { font: 500 11.5px var(--pk-mono); color: var(--pk-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.ph-codebody { overflow: auto; overscroll-behavior: contain; max-height: 460px; }
+.ph-codebody pre { margin: 0; padding: 18px; font: 400 12.5px/1.7 var(--pk-mono); overflow: visible; }
+.ph-codebody pre code { font: inherit; }
+.ph-codefallback { color: var(--pk-text-2); background: var(--pk-stage); }
 
 .ph-copy { border: 1px solid var(--pk-line); background: var(--pk-canvas); color: var(--pk-text-2); font: 600 11px var(--pk-sans); letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 14px; cursor: pointer; flex: none; transition: border-color .15s var(--pk-ease), color .15s var(--pk-ease); }
 .ph-copy:hover { border-color: var(--pk-text-faint); color: var(--pk-text); }
