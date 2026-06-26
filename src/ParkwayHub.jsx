@@ -19,7 +19,6 @@ import Checkbox from "./pages/Checkbox.jsx";
 import Marquee from "./pages/Marquee.jsx";
 import TransactionStatus from "./pages/TransactionStatus.jsx";
 import TabsToggle from "./pages/TabsToggle.jsx";
-import SettingsTabs from "./pages/SettingsTabs.jsx";
 import DatePicker from "./pages/DatePicker.jsx";
 import Radio from "./pages/Radio.jsx";
 import Colors from "./pages/Colors.jsx";
@@ -46,7 +45,6 @@ const PAGES = {
   marquee: Marquee,
   "transaction-status": TransactionStatus,
   "tabs-toggle": TabsToggle,
-  "settings-tabs": SettingsTabs,
   "date-picker": DatePicker,
   radio: Radio,
   colors: Colors,
