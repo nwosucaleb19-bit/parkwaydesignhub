@@ -32,6 +32,48 @@ export const cssTokens = `:root {
   --pk-space-1: 8px;   --pk-space-2: 16px;  --pk-space-3: 24px;
   --pk-space-4: 32px;  --pk-space-5: 40px;  --pk-space-6: 48px;
   --pk-space-7: 56px;  --pk-space-8: 64px;
+
+  /* Semantic surfaces — components reference these; they flip in dark mode */
+  --pk-surface: var(--pk-white-01);
+  --pk-field-bg: var(--pk-white-01);
+  --pk-field-bg-disabled: var(--pk-grey-06);
+  --pk-border: var(--pk-grey-04);
+  --pk-label: var(--pk-grey-09);
+  --pk-text: var(--pk-grey-01);
+  --pk-text-muted: var(--pk-grey-08);
+  --pk-placeholder: var(--pk-grey-02);
+  --pk-track-off: var(--pk-grey-04);
+  --pk-knob: var(--pk-white-01);
+  --pk-toast-bg: var(--pk-grey-11);
+  --pk-focus-ring: rgba(249, 149, 107, .20);
+
+  /* Status badge pairs */
+  --pk-badge-success-bg: #E7F7EA;          --pk-badge-success-fg: #1F8A3B;
+  --pk-badge-failed-bg:  #FDECEC;          --pk-badge-failed-fg:  var(--pk-error);
+  --pk-badge-pending-bg: var(--pk-buff-04); --pk-badge-pending-fg: var(--pk-buff-07);
+  --pk-badge-alt-bg:     var(--pk-grey-05); --pk-badge-alt-fg:     var(--pk-grey-09);
+}
+
+/* Dark mode — set data-theme="dark" on <html>. Only the semantic layer flips;
+   the brand palette above stays constant. */
+:root[data-theme="dark"] {
+  --pk-surface: #161616;
+  --pk-field-bg: transparent;
+  --pk-field-bg-disabled: transparent;
+  --pk-border: #3A3A38;
+  --pk-label: #F2F2F0;
+  --pk-text: #F2F2F0;
+  --pk-text-muted: #999999;
+  --pk-placeholder: #7A7A75;
+  --pk-track-off: #3A3A38;
+  --pk-knob: #FFFFFF;
+  --pk-toast-bg: #0E0E0E;
+  --pk-focus-ring: rgba(249, 149, 107, .28);
+
+  --pk-badge-success-bg: #16331C;  --pk-badge-success-fg: #6BBF74;
+  --pk-badge-failed-bg:  #3A1D1E;  --pk-badge-failed-fg:  #FF6166;
+  --pk-badge-pending-bg: #2A2414;  --pk-badge-pending-fg: #D8B86A;
+  --pk-badge-alt-bg:     #262626;  --pk-badge-alt-fg:     #A5A5A0;
 }`;
 
 export const tailwindTokens = `// tailwind.config.js — Parkway design tokens
@@ -105,6 +147,27 @@ abstract class PkColors {
   // Messaging
   static const success = Color(0xFF36CC4F);
   static const error = Color(0xFFFF0000);
+}
+
+// Semantic surfaces — resolve by Theme.of(context).brightness (the dark layer).
+abstract class PkSurfaceLight {
+  static const field = PkColors.white01;        // background
+  static const border = PkColors.grey04;
+  static const label = PkColors.grey09;
+  static const text = PkColors.grey01;
+  static const placeholder = PkColors.grey02;
+  static const trackOff = PkColors.grey04;
+  static const toast = PkColors.grey11;
+}
+
+abstract class PkSurfaceDark {
+  static const field = Color(0x00000000);       // transparent
+  static const border = Color(0xFF3A3A38);
+  static const label = Color(0xFFF2F2F0);
+  static const text = Color(0xFFF2F2F0);
+  static const placeholder = Color(0xFF7A7A75);
+  static const trackOff = Color(0xFF3A3A38);
+  static const toast = Color(0xFF0E0E0E);
 }
 
 abstract class PkSpacing {

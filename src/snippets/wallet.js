@@ -23,16 +23,16 @@ export default function PkTextInput({
 
 /* parkway-input.css
 .pk-field { display: grid; gap: 6px; }
-.pk-field__label { font: 600 12px Manrope; color: var(--pk-grey-09); }
+.pk-field__label { font: 600 12px Manrope; color: var(--pk-label); }
 .pk-input { display: flex; align-items: center; gap: 8px; height: 45px;
-  padding: 0 16px; border: 1px solid var(--pk-grey-04); border-radius: 8px;
-  background: var(--pk-white-01); transition: border-color .15s ease; }
+  padding: 0 16px; border: 1px solid var(--pk-border); border-radius: 8px;
+  background: var(--pk-field-bg); transition: border-color .15s ease; }
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
-  font: 400 14px Manrope; color: var(--pk-grey-01); }
-.pk-input input::placeholder { color: var(--pk-grey-02); }
-.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px rgba(249,149,107,.20); }
+  font: 400 14px Manrope; color: var(--pk-text); }
+.pk-input input::placeholder { color: var(--pk-placeholder); }
+.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px var(--pk-focus-ring); }
 .pk-input.is-error { border-color: var(--pk-error); }
-.pk-field__help { font: 400 12px Manrope; color: var(--pk-grey-08); }
+.pk-field__help { font: 400 12px Manrope; color: var(--pk-text-muted); }
 .pk-field__help.is-error { color: var(--pk-error); }
 */`;
 
@@ -56,15 +56,15 @@ const model = defineModel();
 
 <style scoped>
 .pk-field { display: grid; gap: 6px; }
-.pk-field__label { font: 600 12px Manrope; color: var(--pk-grey-09); }
+.pk-field__label { font: 600 12px Manrope; color: var(--pk-label); }
 .pk-input { display: flex; align-items: center; gap: 8px; height: 45px;
-  padding: 0 16px; border: 1px solid var(--pk-grey-04); border-radius: 8px;
-  background: var(--pk-white-01); transition: border-color .15s ease; }
+  padding: 0 16px; border: 1px solid var(--pk-border); border-radius: 8px;
+  background: var(--pk-field-bg); transition: border-color .15s ease; }
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
-  font: 400 14px Manrope; color: var(--pk-grey-01); }
-.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px rgba(249,149,107,.20); }
+  font: 400 14px Manrope; color: var(--pk-text); }
+.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px var(--pk-focus-ring); }
 .pk-input.is-error { border-color: var(--pk-error); }
-.pk-field__help { font: 400 12px Manrope; color: var(--pk-grey-08); }
+.pk-field__help { font: 400 12px Manrope; color: var(--pk-text-muted); }
 .pk-field__help.is-error { color: var(--pk-error); }
 </style>`;
 
@@ -132,7 +132,7 @@ export default function PkToast({ variant = "success", children }) {
 
 /* parkway-toast.css
 .pk-toast { display: flex; align-items: center; gap: 12px;
-  padding: 20px; border-radius: 10px; background: var(--pk-grey-11);
+  padding: 20px; border-radius: 10px; background: var(--pk-toast-bg);
   font: 500 14px Manrope; color: var(--pk-white-01); }
 .pk-toast__icon { width: 24px; height: 24px; flex: none; border-radius: 50%; }
 .pk-toast--success .pk-toast__icon { background: var(--pk-success); }
@@ -153,7 +153,7 @@ defineProps({ variant: { type: String, default: "success" } }); // success | war
 
 <style scoped>
 .pk-toast { display: flex; align-items: center; gap: 12px; padding: 20px;
-  border-radius: 10px; background: var(--pk-grey-11);
+  border-radius: 10px; background: var(--pk-toast-bg);
   font: 500 14px Manrope; color: var(--pk-white-01); }
 .pk-toast__icon { width: 24px; height: 24px; flex: none; border-radius: 50%; }
 .pk-toast--success .pk-toast__icon { background: var(--pk-success); }
@@ -283,10 +283,10 @@ export default function PkBadge({ status = "success", children }) {
 /* parkway-badge.css
 .pk-badge { display: inline-flex; align-items: center; height: 22px;
   padding: 0 10px; border-radius: 11px; font: 600 11px Manrope; }
-.pk-badge--success   { background: #E7F7EA; color: #1F8A3B; }
-.pk-badge--failed    { background: #FDECEC; color: var(--pk-error); }
-.pk-badge--pending   { background: var(--pk-buff-04); color: var(--pk-buff-07); }
-.pk-badge--alternate { background: var(--pk-grey-05); color: var(--pk-grey-09); }
+.pk-badge--success   { background: var(--pk-badge-success-bg); color: var(--pk-badge-success-fg); }
+.pk-badge--failed    { background: var(--pk-badge-failed-bg);  color: var(--pk-badge-failed-fg); }
+.pk-badge--pending   { background: var(--pk-badge-pending-bg); color: var(--pk-badge-pending-fg); }
+.pk-badge--alternate { background: var(--pk-badge-alt-bg);     color: var(--pk-badge-alt-fg); }
 */`;
 
 export const vueBadge = `<!-- PkBadge.vue — Parkway Wallet -->
@@ -301,10 +301,10 @@ defineProps({ status: { type: String, default: "success" } }); // success | fail
 <style scoped>
 .pk-badge { display: inline-flex; align-items: center; height: 22px;
   padding: 0 10px; border-radius: 11px; font: 600 11px Manrope; }
-.pk-badge--success   { background: #E7F7EA; color: #1F8A3B; }
-.pk-badge--failed    { background: #FDECEC; color: var(--pk-error); }
-.pk-badge--pending   { background: var(--pk-buff-04); color: var(--pk-buff-07); }
-.pk-badge--alternate { background: var(--pk-grey-05); color: var(--pk-grey-09); }
+.pk-badge--success   { background: var(--pk-badge-success-bg); color: var(--pk-badge-success-fg); }
+.pk-badge--failed    { background: var(--pk-badge-failed-bg);  color: var(--pk-badge-failed-fg); }
+.pk-badge--pending   { background: var(--pk-badge-pending-bg); color: var(--pk-badge-pending-fg); }
+.pk-badge--alternate { background: var(--pk-badge-alt-bg);     color: var(--pk-badge-alt-fg); }
 </style>`;
 
 export const flutterBadge = `// pk_badge.dart — Parkway Wallet
@@ -357,13 +357,13 @@ export default function PkToggle({ checked, onChange, disabled, platform = "desk
 
 /* parkway-toggle.css — desktop = pill, mobile = 8px radius
 .pk-toggle { width: 40px; height: 20px; border: 0; border-radius: 999px;
-  padding: 2px; background: var(--pk-grey-04); cursor: pointer;
+  padding: 2px; background: var(--pk-track-off); cursor: pointer;
   transition: background .2s ease; }
 .pk-toggle--mobile { border-radius: 8px; }
 .pk-toggle.is-on { background: var(--pk-tangerine-01); }
 .pk-toggle:disabled { background: var(--pk-tangerine-04); cursor: not-allowed; }
 .pk-toggle__knob { display: block; width: 16px; height: 16px; border-radius: 50%;
-  background: var(--pk-white-01); transition: transform .2s ease; }
+  background: var(--pk-knob); transition: transform .2s ease; }
 .pk-toggle--mobile .pk-toggle__knob { border-radius: 5px; }
 .pk-toggle.is-on .pk-toggle__knob { transform: translateX(20px); }
 */`;
@@ -383,12 +383,12 @@ const model = defineModel({ type: Boolean });
 
 <style scoped>
 .pk-toggle { width: 40px; height: 20px; border: 0; border-radius: 999px; padding: 2px;
-  background: var(--pk-grey-04); cursor: pointer; transition: background .2s ease; }
+  background: var(--pk-track-off); cursor: pointer; transition: background .2s ease; }
 .pk-toggle--mobile { border-radius: 8px; }
 .pk-toggle.is-on { background: var(--pk-tangerine-01); }
 .pk-toggle:disabled { background: var(--pk-tangerine-04); cursor: not-allowed; }
 .pk-toggle__knob { display: block; width: 16px; height: 16px; border-radius: 50%;
-  background: var(--pk-white-01); transition: transform .2s ease; }
+  background: var(--pk-knob); transition: transform .2s ease; }
 .pk-toggle--mobile .pk-toggle__knob { border-radius: 5px; }
 .pk-toggle.is-on .pk-toggle__knob { transform: translateX(20px); }
 </style>`;
@@ -437,13 +437,13 @@ export default function PkCheckbox({ checked, onChange, disabled, label }) {
 .pk-check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .pk-check input { position: absolute; opacity: 0; }
 .pk-check__box { width: 20px; height: 20px; border-radius: 6px;
-  border: 1.5px solid var(--pk-grey-04); background: var(--pk-white-01);
+  border: 1.5px solid var(--pk-border); background: var(--pk-field-bg);
   transition: all .15s ease; }
 .pk-check input:checked + .pk-check__box { background: var(--pk-tangerine-01);
   border-color: var(--pk-tangerine-01);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 8.5l3 3 6-6' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-size: contain; }
-.pk-check input:focus-visible + .pk-check__box { outline: 2px solid var(--pk-grey-01); outline-offset: 2px; }
+.pk-check input:focus-visible + .pk-check__box { outline: 2px solid var(--pk-tangerine-01); outline-offset: 2px; }
 */`;
 
 export const vueCheckbox = `<!-- PkCheckbox.vue — Parkway Wallet -->
@@ -464,7 +464,7 @@ const model = defineModel({ type: Boolean });
 .pk-check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .pk-check input { position: absolute; opacity: 0; }
 .pk-check__box { width: 20px; height: 20px; border-radius: 6px;
-  border: 1.5px solid var(--pk-grey-04); background: var(--pk-white-01); transition: all .15s ease; }
+  border: 1.5px solid var(--pk-border); background: var(--pk-field-bg); transition: all .15s ease; }
 .pk-check input:checked + .pk-check__box { background: var(--pk-tangerine-01); border-color: var(--pk-tangerine-01); }
 </style>`;
 
