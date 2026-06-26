@@ -35,6 +35,12 @@ export const MODULES = [
       { id: "badges", label: "Badges", page: "badges", figma: wfig("31766-13029"), status: "building" },
       { id: "toggle", label: "Toggle button", page: "toggle", figma: wfig("31766-13046"), status: "building" },
       { id: "checkbox", label: "Checkbox", page: "checkbox", figma: wfig("31767-13062"), status: "building" },
+      { id: "marquee",            label: "Marquee",             page: "marquee",            figma: wfig("31774-13261"), status: "building" },
+      { id: "transaction-status", label: "Transaction Status",  page: "transaction-status", figma: wfig("31774-13288"), status: "building" },
+      { id: "tabs-toggle",        label: "Tabs Toggle",         page: "tabs-toggle",        figma: wfig("31774-13298"), status: "building" },
+      { id: "settings-tabs",      label: "Settings Tabs",       page: "settings-tabs",      figma: wfig("31774-13304"), status: "building" },
+      { id: "date-picker",        label: "Date Picker",         page: "date-picker",        figma: wfig("31774-13316"), status: "building" },
+      { id: "radio",              label: "Radio Button",        page: "radio",              figma: wfig("31827-38240"), status: "building" },
     ],
   },
   {
