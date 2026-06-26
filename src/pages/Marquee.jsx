@@ -3,8 +3,6 @@ import { FRAMEWORKS } from "../tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
 import { reactMarquee, vueMarquee, flutterMarquee, usageMarquee } from "../snippets/wallet.js";
 
-const FIGMA_NODE = "31774-13261";
-
 const ITEMS = [
   "Link all your accounts in one place.",
   "Bank Account feature is LIVE!",
@@ -21,25 +19,31 @@ const STAR = (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <path
       d="M12 0L13.7541 7.76531L20.4853 3.51472L16.2347 10.2459L24 12L16.2347 13.7541L20.4853 20.4853L13.7541 16.2347L12 24L10.2459 16.2347L3.51472 20.4853L7.76531 13.7541L0 12L7.76531 10.2459L3.51472 3.51472L10.2459 7.76531L12 0Z"
-      fill="#272727"
+      fill="#121212"
     />
   </svg>
 );
 
 function LiveMarquee({ items, speed }) {
+  const [paused, setPaused] = useState(false);
   const track = [...items, ...items];
   return (
-    <div style={{
-      height: 40,
-      width: "100%",
-      background: "#F9956B",
-      overflow: "hidden",
-      display: "flex",
-      alignItems: "center",
-    }}>
+    <div
+      style={{
+        height: 40,
+        width: "100%",
+        background: "#F9956B",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+      }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <div style={{
         display: "inline-flex",
         animation: `pk-marquee-scroll ${speed}s linear infinite`,
+        animationPlayState: paused ? "paused" : "running",
       }}>
         {track.map((text, i) => (
           <span key={i} style={{
@@ -51,7 +55,7 @@ function LiveMarquee({ items, speed }) {
           }}>
             <span style={{
               font: "500 16px/1 Manrope, sans-serif",
-              color: "#272727",
+              color: "#121212",
               whiteSpace: "nowrap",
             }}>{text}</span>
             {STAR}
@@ -77,8 +81,8 @@ export default function Marquee({ fw, setFw }) {
   return (
     <>
       <Lead>
-        Full-width Tangerine-01 announcement ticker, 40 px tall. Messages scroll continuously left with a
-        decorative 8-pointed star between items. Doubles the item list internally for a seamless loop.
+        Full-width Tangerine-01 announcement ticker, 40px tall. Messages scroll left continuously with a
+        star between items; it pauses on hover.
       </Lead>
 
       <SectionHeader label="Playground" desc="Adjust scroll speed; the usage snippet updates." />

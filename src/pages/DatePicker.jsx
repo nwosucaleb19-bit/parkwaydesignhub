@@ -82,30 +82,34 @@ function LiveDatePicker() {
             textAlign: "center",
             padding: "10px 0",
             font: "400 14px/20px Inter, sans-serif",
-            color: i === 0 || i === 6 ? "#F36A6A" : "var(--pk-dp-weekday)",
+            color: i === 0 || i === 6 ? "var(--pk-dp-weekend)" : "var(--pk-dp-weekday)",
           }}>{d}</div>
         ))}
         {getGrid(view.year, view.month).map((d, i) => {
+          if (!d) return <div key={i} style={{ height: 40, margin: "2px 0" }} aria-hidden="true" />;
           const tod = isToday(d);
           const sel = isSel(d);
           return (
-            <div
+            <button
               key={i}
-              onClick={() => d && setSelected(new Date(view.year, view.month, d))}
+              type="button"
+              aria-label={`${MONTHS[view.month]} ${d}, ${view.year}`}
+              aria-pressed={sel}
+              onClick={() => setSelected(new Date(view.year, view.month, d))}
               style={{
-                height: 40,
+                height: 40, width: "100%", border: 0,
                 display: "flex", alignItems: "center", justifyContent: "center",
                 font: `${tod ? "600" : "400"} 14px/20px Inter, sans-serif`,
-                color: sel ? "#fff" : tod ? "#FAAA89" : d ? "var(--pk-dp-day)" : "transparent",
+                color: sel ? "#fff" : tod ? "#FAAA89" : "var(--pk-dp-day)",
                 background: sel ? "#FAAA89" : "transparent",
                 borderRadius: sel ? 8 : 0,
-                cursor: d ? "pointer" : "default",
+                cursor: "pointer",
                 margin: "2px 0",
                 transition: "background .1s ease",
               }}
-              onMouseEnter={(e) => { if (d && !sel) e.currentTarget.style.background = "var(--pk-dp-hover)"; }}
+              onMouseEnter={(e) => { if (!sel) e.currentTarget.style.background = "var(--pk-dp-hover)"; }}
               onMouseLeave={(e) => { if (!sel) e.currentTarget.style.background = "transparent"; }}
-            >{d}</div>
+            >{d}</button>
           );
         })}
       </div>
@@ -146,9 +150,8 @@ export default function DatePicker({ fw, setFw }) {
   return (
     <>
       <Lead>
-        Inline calendar date picker. Today is highlighted in Tangerine; the selected date gets
-        a filled Tangerine cell. All surface and text colours are driven by CSS custom properties
-        that swap automatically when the system switches between light and dark mode.
+        Inline calendar date picker. Today is marked in Tangerine; the selected date gets a filled
+        Tangerine cell. Surface and text colours follow the light/dark theme.
       </Lead>
 
       <div className="ph-stage tall" style={{ marginTop: 14, display: "flex", justifyContent: "center" }}>

@@ -86,6 +86,7 @@
   --pk-dp-chevron:      #121212;
   --pk-dp-weekday:      #121212;
   --pk-dp-day:          #858585;
+  --pk-dp-weekend:      #F36A6A;
   --pk-dp-hover:        #FFF0E8;
   --pk-dp-close:        #9CA3AF;
 
@@ -159,6 +160,7 @@
   --pk-dp-chevron:      #F2F2F0;
   --pk-dp-weekday:      #F2F2F0;
   --pk-dp-day:          #A0A0A0;
+  --pk-dp-weekend:      #FF8585;
   --pk-dp-hover:        #2A2018;
   --pk-dp-close:        #7A7A75;
 

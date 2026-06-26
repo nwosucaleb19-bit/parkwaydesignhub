@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
+import { useTheme } from "../theme.jsx";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
 import { reactRadio, vueRadio, flutterRadio, usageRadio } from "../snippets/wallet.js";
 
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px" };
 
 function LiveRadio({ state, onFlip }) {
+  const { theme } = useTheme();
+  const dark = theme === "dark";
   const checked  = state === "active" || state === "disabled-active";
   const disabled = state === "disabled" || state === "disabled-active";
-  const ring = disabled ? "#BBBBBB" : checked ? "#F9956B" : "#C6C6C6";
-  const dot  = disabled ? "#BBBBBB" : "#F9956B";
+  const ringDefault = dark ? "#3A3A38" : "#C6C6C6";
+  const ringDisabled = dark ? "#4A4A46" : "#BBBBBB";
+  const ring = disabled ? ringDisabled : checked ? "#F9956B" : ringDefault;
+  const dot  = disabled ? ringDisabled : "#F9956B";
   return (
     <button
       type="button"
@@ -21,7 +26,7 @@ function LiveRadio({ state, onFlip }) {
         width: 20, height: 20, borderRadius: "50%", padding: 0,
         cursor: disabled ? "not-allowed" : "pointer",
         border: `1.5px solid ${ring}`,
-        background: "#fff",
+        background: dark ? "transparent" : "#fff",
         display: "grid", placeItems: "center",
         transition: "border-color .15s ease",
       }}
