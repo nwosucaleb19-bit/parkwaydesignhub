@@ -56,6 +56,34 @@ export function CodeBlock({ code, label }) {
   );
 }
 
+// Brand logos for the framework switcher (inline SVG; keyed by tab value).
+// Only react/vue/flutter match — other tab sets (variant/state/etc.) render text only.
+const ReactLogo = (
+  <svg className="ph-tabsvg" viewBox="-11.5 -10.23 23 20.46" aria-hidden="true">
+    <circle r="2.05" fill="#61DAFB" />
+    <g stroke="#61DAFB" strokeWidth="1" fill="none">
+      <ellipse rx="11" ry="4.2" />
+      <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+      <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+    </g>
+  </svg>
+);
+const VueLogo = (
+  <svg className="ph-tabsvg" viewBox="0 0 196.32 170.02" aria-hidden="true">
+    <path d="M120.83 0L98.16 39.26 75.49 0H0l98.16 170.02L196.32 0z" fill="#41B883" />
+    <path d="M120.83 0L98.16 39.26 75.49 0H39.26l58.9 102.01L157.06 0z" fill="#34495E" />
+  </svg>
+);
+const FlutterLogo = (
+  <svg className="ph-tabsvg" viewBox="0 0 256 317" aria-hidden="true">
+    <path fill="#47C5FB" d="M157.67 0L0 157.67l48.78 48.78L255.21 0z" />
+    <path fill="#47C5FB" d="M156.57 145.4L72.16 229.8l48.97 49.34 48.6-48.61 85.48-85.13z" />
+    <path fill="#00569E" d="M121.13 279.13l37.06 37.06h97.02l-85.48-85.48z" />
+    <path fill="#00B5F8" d="M72.04 229.92l48.6-48.61 48.97 48.97-48.6 48.6z" />
+  </svg>
+);
+const FW_LOGOS = { react: ReactLogo, vue: VueLogo, flutter: FlutterLogo };
+
 // Segmented tabs with roving focus + arrow-key navigation.
 export function Tabs({ value, onChange, items, label, small }) {
   const onKey = (e, i) => {
@@ -82,7 +110,7 @@ export function Tabs({ value, onChange, items, label, small }) {
           onClick={() => onChange(k)}
           onKeyDown={(e) => onKey(e, i)}
         >
-          {name}
+          {FW_LOGOS[k]}{name}
         </button>
       ))}
     </div>

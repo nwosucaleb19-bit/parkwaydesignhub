@@ -420,7 +420,8 @@ a { color: inherit; }
 
 /* ── Tabs / segmented ───────────────────────────────────────────────── */
 .ph-tabs { display: inline-flex; background: var(--pk-rail-bg); border: 1px solid var(--pk-line); border-radius: 10px; padding: 3px; gap: 2px; }
-.ph-tab { border: 1px solid transparent; border-radius: 7px; background: transparent; padding: 7px 18px; font: 600 12.5px var(--pk-sans); color: var(--pk-text-muted); cursor: pointer; transition: color .15s var(--pk-ease), background .15s var(--pk-ease); }
+.ph-tab { display: inline-flex; align-items: center; gap: 7px; border: 1px solid transparent; border-radius: 7px; background: transparent; padding: 7px 16px; font: 600 12.5px var(--pk-sans); color: var(--pk-text-muted); cursor: pointer; transition: color .15s var(--pk-ease), background .15s var(--pk-ease); }
+.ph-tabsvg { width: 14px; height: 14px; flex: none; display: block; }
 .ph-tab:hover { color: var(--pk-text); }
 .ph-tab.act { background: var(--pk-raised); border-color: var(--pk-line); color: var(--pk-text); }
 .ph-tab:active { transform: scale(.98); }
