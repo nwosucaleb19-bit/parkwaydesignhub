@@ -16,6 +16,12 @@ import ToastMessage from "./pages/ToastMessage.jsx";
 import Badges from "./pages/Badges.jsx";
 import Toggle from "./pages/Toggle.jsx";
 import Checkbox from "./pages/Checkbox.jsx";
+import Marquee from "./pages/Marquee.jsx";
+import TransactionStatus from "./pages/TransactionStatus.jsx";
+import TabsToggle from "./pages/TabsToggle.jsx";
+import SettingsTabs from "./pages/SettingsTabs.jsx";
+import DatePicker from "./pages/DatePicker.jsx";
+import Radio from "./pages/Radio.jsx";
 import Colors from "./pages/Colors.jsx";
 import Typography from "./pages/Typography.jsx";
 import Spacing from "./pages/Spacing.jsx";
@@ -37,6 +43,12 @@ const PAGES = {
   badges: Badges,
   toggle: Toggle,
   checkbox: Checkbox,
+  marquee: Marquee,
+  "transaction-status": TransactionStatus,
+  "tabs-toggle": TabsToggle,
+  "settings-tabs": SettingsTabs,
+  "date-picker": DatePicker,
+  radio: Radio,
   colors: Colors,
   typography: Typography,
   spacing: Spacing,
