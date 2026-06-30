@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
+import { useTheme } from "../theme.jsx";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
 import { reactCheckbox, vueCheckbox, flutterCheckbox, usageCheckbox } from "../snippets/wallet.js";
 
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px" };
 
 function LiveCheck({ state, onFlip }) {
+  const { theme } = useTheme();
+  const dark = theme === "dark";
   const checked = state === "checked";
   const indeterminate = state === "indeterminate";
   const disabled = state === "disabled";
   const filled = checked || indeterminate;
+  const emptyBorder = dark ? "#3A3A38" : "#DDDDDD";
+  const emptyBg = dark ? "transparent" : "#FFFFFF";
+  const disabledBg = dark ? "transparent" : "#FBFBFB";
+  const disabledBorder = dark ? "#2A2A2A" : "#DDDDDD";
   return (
     <button
       type="button"
@@ -19,8 +26,8 @@ function LiveCheck({ state, onFlip }) {
       onClick={onFlip}
       style={{
         width: 20, height: 20, borderRadius: 6, padding: 0, cursor: disabled ? "not-allowed" : "pointer",
-        border: `1.5px solid ${filled ? "#F9956B" : "#DDDDDD"}`,
-        background: disabled ? "#FBFBFB" : filled ? "#F9956B" : "#FFFFFF",
+        border: `1.5px solid ${disabled ? disabledBorder : filled ? "#F9956B" : emptyBorder}`,
+        background: disabled ? disabledBg : filled ? "#F9956B" : emptyBg,
         display: "grid", placeItems: "center", transition: "all .15s ease",
       }}
     >

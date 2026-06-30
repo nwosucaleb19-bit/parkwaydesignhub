@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
+import { useTheme } from "../theme.jsx";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
 import { reactToggle, vueToggle, flutterToggle, usageToggle } from "../snippets/wallet.js";
 
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px" };
 
 function LiveToggle({ state, platform, onFlip }) {
+  const { theme } = useTheme();
+  const dark = theme === "dark";
   const on = state === "on";
   const disabled = state === "disabled";
-  const track = disabled ? "#FDD5C4" : on ? "#F9956B" : "#DDDDDD";
+  const offTrack = dark ? "#3A3A38" : "#DDDDDD";
+  const disabledTrack = dark ? "#5A4034" : "#FDD5C4";
+  const track = disabled ? disabledTrack : on ? "#F9956B" : offTrack;
   const mobile = platform === "mobile";
   return (
     <button

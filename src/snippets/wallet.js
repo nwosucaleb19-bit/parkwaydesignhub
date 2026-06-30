@@ -23,16 +23,16 @@ export default function PkTextInput({
 
 /* parkway-input.css
 .pk-field { display: grid; gap: 6px; }
-.pk-field__label { font: 600 12px Manrope; color: var(--pk-grey-09); }
+.pk-field__label { font: 600 12px Manrope; color: var(--pk-label); }
 .pk-input { display: flex; align-items: center; gap: 8px; height: 45px;
-  padding: 0 16px; border: 1px solid var(--pk-grey-04); border-radius: 8px;
-  background: var(--pk-white-01); transition: border-color .15s ease; }
+  padding: 0 16px; border: 1px solid var(--pk-border); border-radius: 8px;
+  background: var(--pk-field-bg); transition: border-color .15s ease; }
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
-  font: 400 14px Manrope; color: var(--pk-grey-01); }
-.pk-input input::placeholder { color: var(--pk-grey-02); }
-.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px rgba(249,149,107,.20); }
+  font: 400 14px Manrope; color: var(--pk-text); }
+.pk-input input::placeholder { color: var(--pk-placeholder); }
+.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px var(--pk-focus-ring); }
 .pk-input.is-error { border-color: var(--pk-error); }
-.pk-field__help { font: 400 12px Manrope; color: var(--pk-grey-08); }
+.pk-field__help { font: 400 12px Manrope; color: var(--pk-text-muted); }
 .pk-field__help.is-error { color: var(--pk-error); }
 */`;
 
@@ -56,15 +56,15 @@ const model = defineModel();
 
 <style scoped>
 .pk-field { display: grid; gap: 6px; }
-.pk-field__label { font: 600 12px Manrope; color: var(--pk-grey-09); }
+.pk-field__label { font: 600 12px Manrope; color: var(--pk-label); }
 .pk-input { display: flex; align-items: center; gap: 8px; height: 45px;
-  padding: 0 16px; border: 1px solid var(--pk-grey-04); border-radius: 8px;
-  background: var(--pk-white-01); transition: border-color .15s ease; }
+  padding: 0 16px; border: 1px solid var(--pk-border); border-radius: 8px;
+  background: var(--pk-field-bg); transition: border-color .15s ease; }
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
-  font: 400 14px Manrope; color: var(--pk-grey-01); }
-.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px rgba(249,149,107,.20); }
+  font: 400 14px Manrope; color: var(--pk-text); }
+.pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px var(--pk-focus-ring); }
 .pk-input.is-error { border-color: var(--pk-error); }
-.pk-field__help { font: 400 12px Manrope; color: var(--pk-grey-08); }
+.pk-field__help { font: 400 12px Manrope; color: var(--pk-text-muted); }
 .pk-field__help.is-error { color: var(--pk-error); }
 </style>`;
 
@@ -132,7 +132,7 @@ export default function PkToast({ variant = "success", children }) {
 
 /* parkway-toast.css
 .pk-toast { display: flex; align-items: center; gap: 12px;
-  padding: 20px; border-radius: 10px; background: var(--pk-grey-11);
+  padding: 20px; border-radius: 10px; background: var(--pk-toast-bg);
   font: 500 14px Manrope; color: var(--pk-white-01); }
 .pk-toast__icon { width: 24px; height: 24px; flex: none; border-radius: 50%; }
 .pk-toast--success .pk-toast__icon { background: var(--pk-success); }
@@ -153,7 +153,7 @@ defineProps({ variant: { type: String, default: "success" } }); // success | war
 
 <style scoped>
 .pk-toast { display: flex; align-items: center; gap: 12px; padding: 20px;
-  border-radius: 10px; background: var(--pk-grey-11);
+  border-radius: 10px; background: var(--pk-toast-bg);
   font: 500 14px Manrope; color: var(--pk-white-01); }
 .pk-toast__icon { width: 24px; height: 24px; flex: none; border-radius: 50%; }
 .pk-toast--success .pk-toast__icon { background: var(--pk-success); }
@@ -283,10 +283,10 @@ export default function PkBadge({ status = "success", children }) {
 /* parkway-badge.css
 .pk-badge { display: inline-flex; align-items: center; height: 22px;
   padding: 0 10px; border-radius: 11px; font: 600 11px Manrope; }
-.pk-badge--success   { background: #E7F7EA; color: #1F8A3B; }
-.pk-badge--failed    { background: #FDECEC; color: var(--pk-error); }
-.pk-badge--pending   { background: var(--pk-buff-04); color: var(--pk-buff-07); }
-.pk-badge--alternate { background: var(--pk-grey-05); color: var(--pk-grey-09); }
+.pk-badge--success   { background: var(--pk-badge-success-bg); color: var(--pk-badge-success-fg); }
+.pk-badge--failed    { background: var(--pk-badge-failed-bg);  color: var(--pk-badge-failed-fg); }
+.pk-badge--pending   { background: var(--pk-badge-pending-bg); color: var(--pk-badge-pending-fg); }
+.pk-badge--alternate { background: var(--pk-badge-alt-bg);     color: var(--pk-badge-alt-fg); }
 */`;
 
 export const vueBadge = `<!-- PkBadge.vue — Parkway Wallet -->
@@ -301,10 +301,10 @@ defineProps({ status: { type: String, default: "success" } }); // success | fail
 <style scoped>
 .pk-badge { display: inline-flex; align-items: center; height: 22px;
   padding: 0 10px; border-radius: 11px; font: 600 11px Manrope; }
-.pk-badge--success   { background: #E7F7EA; color: #1F8A3B; }
-.pk-badge--failed    { background: #FDECEC; color: var(--pk-error); }
-.pk-badge--pending   { background: var(--pk-buff-04); color: var(--pk-buff-07); }
-.pk-badge--alternate { background: var(--pk-grey-05); color: var(--pk-grey-09); }
+.pk-badge--success   { background: var(--pk-badge-success-bg); color: var(--pk-badge-success-fg); }
+.pk-badge--failed    { background: var(--pk-badge-failed-bg);  color: var(--pk-badge-failed-fg); }
+.pk-badge--pending   { background: var(--pk-badge-pending-bg); color: var(--pk-badge-pending-fg); }
+.pk-badge--alternate { background: var(--pk-badge-alt-bg);     color: var(--pk-badge-alt-fg); }
 </style>`;
 
 export const flutterBadge = `// pk_badge.dart — Parkway Wallet
@@ -357,13 +357,13 @@ export default function PkToggle({ checked, onChange, disabled, platform = "desk
 
 /* parkway-toggle.css — desktop = pill, mobile = 8px radius
 .pk-toggle { width: 40px; height: 20px; border: 0; border-radius: 999px;
-  padding: 2px; background: var(--pk-grey-04); cursor: pointer;
+  padding: 2px; background: var(--pk-track-off); cursor: pointer;
   transition: background .2s ease; }
 .pk-toggle--mobile { border-radius: 8px; }
 .pk-toggle.is-on { background: var(--pk-tangerine-01); }
 .pk-toggle:disabled { background: var(--pk-tangerine-04); cursor: not-allowed; }
 .pk-toggle__knob { display: block; width: 16px; height: 16px; border-radius: 50%;
-  background: var(--pk-white-01); transition: transform .2s ease; }
+  background: var(--pk-knob); transition: transform .2s ease; }
 .pk-toggle--mobile .pk-toggle__knob { border-radius: 5px; }
 .pk-toggle.is-on .pk-toggle__knob { transform: translateX(20px); }
 */`;
@@ -383,12 +383,12 @@ const model = defineModel({ type: Boolean });
 
 <style scoped>
 .pk-toggle { width: 40px; height: 20px; border: 0; border-radius: 999px; padding: 2px;
-  background: var(--pk-grey-04); cursor: pointer; transition: background .2s ease; }
+  background: var(--pk-track-off); cursor: pointer; transition: background .2s ease; }
 .pk-toggle--mobile { border-radius: 8px; }
 .pk-toggle.is-on { background: var(--pk-tangerine-01); }
 .pk-toggle:disabled { background: var(--pk-tangerine-04); cursor: not-allowed; }
 .pk-toggle__knob { display: block; width: 16px; height: 16px; border-radius: 50%;
-  background: var(--pk-white-01); transition: transform .2s ease; }
+  background: var(--pk-knob); transition: transform .2s ease; }
 .pk-toggle--mobile .pk-toggle__knob { border-radius: 5px; }
 .pk-toggle.is-on .pk-toggle__knob { transform: translateX(20px); }
 </style>`;
@@ -437,13 +437,13 @@ export default function PkCheckbox({ checked, onChange, disabled, label }) {
 .pk-check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .pk-check input { position: absolute; opacity: 0; }
 .pk-check__box { width: 20px; height: 20px; border-radius: 6px;
-  border: 1.5px solid var(--pk-grey-04); background: var(--pk-white-01);
+  border: 1.5px solid var(--pk-border); background: var(--pk-field-bg);
   transition: all .15s ease; }
 .pk-check input:checked + .pk-check__box { background: var(--pk-tangerine-01);
   border-color: var(--pk-tangerine-01);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 8.5l3 3 6-6' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-size: contain; }
-.pk-check input:focus-visible + .pk-check__box { outline: 2px solid var(--pk-grey-01); outline-offset: 2px; }
+.pk-check input:focus-visible + .pk-check__box { outline: 2px solid var(--pk-tangerine-01); outline-offset: 2px; }
 */`;
 
 export const vueCheckbox = `<!-- PkCheckbox.vue — Parkway Wallet -->
@@ -464,7 +464,7 @@ const model = defineModel({ type: Boolean });
 .pk-check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .pk-check input { position: absolute; opacity: 0; }
 .pk-check__box { width: 20px; height: 20px; border-radius: 6px;
-  border: 1.5px solid var(--pk-grey-04); background: var(--pk-white-01); transition: all .15s ease; }
+  border: 1.5px solid var(--pk-border); background: var(--pk-field-bg); transition: all .15s ease; }
 .pk-check input:checked + .pk-check__box { background: var(--pk-tangerine-01); border-color: var(--pk-tangerine-01); }
 </style>`;
 
@@ -491,4 +491,1279 @@ export function usageCheckbox(fw, checked) {
     return `PkCheckbox(\n  value: ${checked ? "true" : "false"},\n  onChanged: (v) => setState(() => agreed = v ?? false),\n)`;
   if (fw === "vue") return `<PkCheckbox v-model="agreed" label="I agree" />`;
   return `<PkCheckbox checked={${checked ? "true" : "false"}} onChange={setAgreed} label="I agree" />`;
+}
+
+/* ── Marquee ─────────────────────────────────────────────────────────── */
+export const reactMarquee = `// PkMarquee.jsx — Parkway Wallet
+import './parkway-marquee.css';
+
+const STAR = (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 0L13.7541 7.76531L20.4853 3.51472L16.2347 10.2459L24 12L16.2347 13.7541L20.4853 20.4853L13.7541 16.2347L12 24L10.2459 16.2347L3.51472 20.4853L7.76531 13.7541L0 12L7.76531 10.2459L3.51472 3.51472L10.2459 7.76531L12 0Z"
+      fill="var(--pk-grey-01)" />
+  </svg>
+);
+
+export default function PkMarquee({ items = [], speed = 40, paused = false }) {
+  const track = [...items, ...items];
+  return (
+    <div className="pk-marquee" aria-label="announcement ticker">
+      <div
+        className="pk-marquee__track"
+        style={{ animationDuration: \`\${speed}s\`, animationPlayState: paused ? 'paused' : 'running' }}
+      >
+        {track.map((text, i) => (
+          <span key={i} className="pk-marquee__item">
+            <span className="pk-marquee__text">{text}</span>
+            {STAR}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* parkway-marquee.css
+.pk-marquee {
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: var(--pk-tangerine-01);
+}
+.pk-marquee__track {
+  display: inline-flex;
+  animation: pk-marquee-scroll linear infinite;
+}
+@keyframes pk-marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.pk-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 26px;
+  flex-shrink: 0;
+}
+.pk-marquee__text {
+  font: 500 16px/1 Manrope, sans-serif;
+  color: var(--pk-grey-01);
+  white-space: nowrap;
+}
+*/`;
+
+export const vueMarquee = `<!-- PkMarquee.vue — Parkway Wallet -->
+<script setup>
+import { computed } from 'vue';
+const props = withDefaults(defineProps({
+  items: { type: Array, default: () => [] },
+  speed: { type: Number, default: 40 },
+  paused: { type: Boolean, default: false },
+}), {});
+const track = computed(() => [...props.items, ...props.items]);
+</script>
+
+<template>
+  <div class="pk-marquee" aria-label="announcement ticker">
+    <div
+      class="pk-marquee__track"
+      :style="{ animationDuration: speed + 's', animationPlayState: paused ? 'paused' : 'running' }"
+    >
+      <span v-for="(text, i) in track" :key="i" class="pk-marquee__item">
+        <span class="pk-marquee__text">{{ text }}</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 0L13.7541 7.76531L20.4853 3.51472L16.2347 10.2459L24 12L16.2347 13.7541L20.4853 20.4853L13.7541 16.2347L12 24L10.2459 16.2347L3.51472 20.4853L7.76531 13.7541L0 12L7.76531 10.2459L3.51472 3.51472L10.2459 7.76531L12 0Z"
+            fill="var(--pk-grey-01)" />
+        </svg>
+      </span>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.pk-marquee {
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: var(--pk-tangerine-01);
+}
+.pk-marquee__track {
+  display: inline-flex;
+  animation: pk-marquee-scroll linear infinite;
+}
+@keyframes pk-marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.pk-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 26px;
+  flex-shrink: 0;
+}
+.pk-marquee__text {
+  font: 500 16px/1 Manrope, sans-serif;
+  color: var(--pk-grey-01);
+  white-space: nowrap;
+}
+</style>`;
+
+export const flutterMarquee = `// pk_marquee.dart — Parkway Wallet
+import 'package:flutter/material.dart';
+import 'parkway_tokens.dart';
+
+class PkMarquee extends StatefulWidget {
+  const PkMarquee({
+    super.key,
+    required this.items,
+    this.speed = 40,
+  });
+
+  final List<String> items;
+  /// Scroll cycle duration in seconds. Higher = slower.
+  final int speed;
+
+  @override
+  State<PkMarquee> createState() => _PkMarqueeState();
+}
+
+class _PkMarqueeState extends State<PkMarquee>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: widget.speed),
+      lowerBound: 0,
+      upperBound: 0.5,
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final track = [...widget.items, ...widget.items];
+    return Container(
+      height: 40,
+      color: PkColors.tangerine01,
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(),
+      child: AnimatedBuilder(
+        animation: _ctrl,
+        builder: (context, child) => FractionalTranslation(
+          translation: Offset(-_ctrl.value, 0),
+          child: child,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: track
+              .map((text) => _PkMarqueeItem(text: text))
+              .toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class _PkMarqueeItem extends StatelessWidget {
+  const _PkMarqueeItem({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 26),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            text,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+              height: 1,
+              color: PkColors.grey01,
+            ),
+          ),
+          const SizedBox(width: 12),
+          const _StarIcon(),
+        ],
+      ),
+    );
+  }
+}
+
+class _StarIcon extends StatelessWidget {
+  const _StarIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 24,
+      height: 24,
+      child: CustomPaint(painter: _StarPainter()),
+    );
+  }
+}
+
+class _StarPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final path = Path()
+      ..moveTo(12, 0)
+      ..lineTo(13.7541, 7.76531)
+      ..lineTo(20.4853, 3.51472)
+      ..lineTo(16.2347, 10.2459)
+      ..lineTo(24, 12)
+      ..lineTo(16.2347, 13.7541)
+      ..lineTo(20.4853, 20.4853)
+      ..lineTo(13.7541, 16.2347)
+      ..lineTo(12, 24)
+      ..lineTo(10.2459, 16.2347)
+      ..lineTo(3.51472, 20.4853)
+      ..lineTo(7.76531, 13.7541)
+      ..lineTo(0, 12)
+      ..lineTo(7.76531, 10.2459)
+      ..lineTo(3.51472, 3.51472)
+      ..lineTo(10.2459, 7.76531)
+      ..close();
+    canvas.drawPath(path, Paint()..color = PkColors.grey01);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter _) => false;
+}`;
+
+export function usageMarquee(fw, speed) {
+  const items = `[\n  'Link all your accounts in one place.',\n  'Bank Account feature is LIVE!',\n  'New NDD Feature Out Soon',\n]`;
+  if (fw === "flutter")
+    return `PkMarquee(\n  items: const [\n    'Link all your accounts in one place.',\n    'Bank Account feature is LIVE!',\n    'New NDD Feature Out Soon',\n  ],\n  speed: ${speed},\n)`;
+  if (fw === "vue")
+    return `<PkMarquee\n  :items="${items.replace(/"/g, "'").replace(/\n/g, "\\n")}"\n  :speed="${speed}"\n/>`;
+  return `<PkMarquee\n  items={${items}}\n  speed={${speed}}\n/>`;
+}
+
+/* ── Transaction Status ──────────────────────────────────────────────── */
+export const reactTransactionStatus = `// PkTransactionFilters.jsx — Parkway Wallet
+// Covers both Transaction Type (fluid) and Transaction Status (fixed-width) filter rows.
+// Dark mode: wrap a parent with class="dark" or data-theme="dark".
+import './parkway-transaction-filters.css';
+
+const TX_TYPES = [
+  { key: 'transfer',   label: 'Transfer' },
+  { key: 'receive',    label: 'Receive' },
+  { key: 'stamp-duty', label: 'Stamp Duty' },
+];
+
+const TX_STATUSES = [
+  { key: 'successful', label: 'Successful' },
+  { key: 'pending',    label: 'Pending' },
+  { key: 'failed',     label: 'Failed' },
+];
+
+function PkFilterGroup({ label, options, value, onChange, fluid = false }) {
+  return (
+    <div className="pk-filter-group">
+      <span className="pk-filter-group__label">{label}</span>
+      <div className={\`pk-filter-group__row\${fluid ? ' is-fluid' : ''}\`}>
+        {options.map((opt) => (
+          <button
+            key={opt.key}
+            type="button"
+            className={\`pk-filter-btn\${value === opt.key ? ' is-active' : ''}\${fluid ? ' is-fluid' : ''}\`}
+            onClick={() => onChange?.(opt.key)}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function PkTransactionType({ value = 'transfer', onChange }) {
+  return <PkFilterGroup label="Transaction Type" options={TX_TYPES} value={value} onChange={onChange} fluid />;
+}
+
+export function PkTransactionStatus({ value = 'successful', onChange }) {
+  return <PkFilterGroup label="Transaction Status" options={TX_STATUSES} value={value} onChange={onChange} />;
+}
+
+/* parkway-transaction-filters.css
+
+/* ── Tokens (swap for dark mode) ── */
+:root {
+  --pk-filter-type-bg:    #F0F0F0;
+  --pk-filter-type-text:  #121212;
+  --pk-filter-stat-bg:    #FBFBFB;
+  --pk-filter-stat-text:  #C6C6C6;
+}
+[data-theme="dark"], .dark {
+  --pk-filter-type-bg:    #242424;
+  --pk-filter-type-text:  #FFFFFF;
+  --pk-filter-stat-bg:    #1F1F1F;
+  --pk-filter-stat-text:  #FFFFFF;
+}
+
+.pk-filter-group { display: flex; flex-direction: column; gap: 15px; width: 100%; }
+.pk-filter-group__label { font: 400 12px/1 Manrope, sans-serif; color: #999; }
+.pk-filter-group__row { display: flex; gap: 16px; }
+.pk-filter-group__row.is-fluid { width: 100%; }
+
+.pk-filter-btn {
+  height: 38px; width: 101px; padding: 0 24px;
+  border-radius: 8px; border: 2px solid transparent;
+  background: var(--pk-filter-stat-bg);
+  font: 600 12px/1 Manrope, sans-serif;
+  color: var(--pk-filter-stat-text);
+  cursor: pointer;
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.pk-filter-btn.is-fluid {
+  flex: 1 0 0; width: auto;
+  background: var(--pk-filter-type-bg);
+  color: var(--pk-filter-type-text);
+}
+.pk-filter-btn.is-active {
+  border-color: var(--pk-tangerine-01);
+  background: transparent;
+  color: var(--pk-tangerine-01);
+}
+*/`;
+
+export const vueTransactionStatus = `<!-- PkTransactionFilters.vue — Parkway Wallet -->
+<script setup>
+const props = defineProps({
+  typeValue:   { type: String, default: 'transfer' },
+  statusValue: { type: String, default: 'successful' },
+});
+const emit = defineEmits(['update:typeValue', 'update:statusValue']);
+
+const TX_TYPES = [
+  { key: 'transfer',   label: 'Transfer' },
+  { key: 'receive',    label: 'Receive' },
+  { key: 'stamp-duty', label: 'Stamp Duty' },
+];
+const TX_STATUSES = [
+  { key: 'successful', label: 'Successful' },
+  { key: 'pending',    label: 'Pending' },
+  { key: 'failed',     label: 'Failed' },
+];
+</script>
+
+<template>
+  <div class="pk-filters">
+    <!-- Transaction Type -->
+    <div class="pk-filter-group">
+      <span class="pk-filter-group__label">Transaction Type</span>
+      <div class="pk-filter-group__row is-fluid">
+        <button
+          v-for="opt in TX_TYPES" :key="opt.key"
+          type="button"
+          class="pk-filter-btn is-fluid"
+          :class="{ 'is-active': typeValue === opt.key }"
+          @click="emit('update:typeValue', opt.key)"
+        >{{ opt.label }}</button>
+      </div>
+    </div>
+    <!-- Transaction Status -->
+    <div class="pk-filter-group">
+      <span class="pk-filter-group__label">Transaction Status</span>
+      <div class="pk-filter-group__row">
+        <button
+          v-for="opt in TX_STATUSES" :key="opt.key"
+          type="button"
+          class="pk-filter-btn"
+          :class="{ 'is-active': statusValue === opt.key }"
+          @click="emit('update:statusValue', opt.key)"
+        >{{ opt.label }}</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+:root {
+  --pk-filter-type-bg: #F0F0F0; --pk-filter-type-text: #121212;
+  --pk-filter-stat-bg: #FBFBFB; --pk-filter-stat-text: #C6C6C6;
+}
+:root[data-theme="dark"] {
+  --pk-filter-type-bg: #242424; --pk-filter-type-text: #FFFFFF;
+  --pk-filter-stat-bg: #1F1F1F; --pk-filter-stat-text: #FFFFFF;
+}
+.pk-filters { display: flex; flex-direction: column; gap: 24px; width: 100%; }
+.pk-filter-group { display: flex; flex-direction: column; gap: 15px; }
+.pk-filter-group__label { font: 400 12px/1 Manrope, sans-serif; color: #999; }
+.pk-filter-group__row { display: flex; gap: 16px; }
+.pk-filter-group__row.is-fluid { width: 100%; }
+.pk-filter-btn {
+  height: 38px; width: 101px; padding: 0 24px; border-radius: 8px;
+  border: 2px solid transparent;
+  background: var(--pk-filter-stat-bg); color: var(--pk-filter-stat-text);
+  font: 600 12px/1 Manrope, sans-serif; cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.pk-filter-btn.is-fluid { flex: 1 0 0; width: auto; background: var(--pk-filter-type-bg); color: var(--pk-filter-type-text); }
+.pk-filter-btn.is-active { border-color: var(--pk-tangerine-01); background: transparent; color: var(--pk-tangerine-01); }
+</style>`;
+
+export const flutterTransactionStatus = `// pk_transaction_filters.dart — Parkway Wallet
+import 'package:flutter/material.dart';
+import 'parkway_tokens.dart';
+
+// ── Tokens ──────────────────────────────────────────────────────────────
+class _FilterTokens {
+  final Color inactiveBg;
+  final Color inactiveText;
+  const _FilterTokens({ required this.inactiveBg, required this.inactiveText });
+}
+
+const _light = (
+  type:   _FilterTokens(inactiveBg: Color(0xFFF0F0F0), inactiveText: Color(0xFF121212)),
+  status: _FilterTokens(inactiveBg: Color(0xFFFBFBFB), inactiveText: Color(0xFFC6C6C6)),
+);
+const _dark = (
+  type:   _FilterTokens(inactiveBg: Color(0xFF242424), inactiveText: Color(0xFFFFFFFF)),
+  status: _FilterTokens(inactiveBg: Color(0xFF1F1F1F), inactiveText: Color(0xFFFFFFFF)),
+);
+
+// ── PkFilterGroup ────────────────────────────────────────────────────────
+class PkFilterGroup extends StatelessWidget {
+  const PkFilterGroup({
+    super.key,
+    required this.label,
+    required this.options,
+    required this.value,
+    required this.onChanged,
+    this.fluid = false,
+    this.dark = false,
+  });
+
+  final String label;
+  final List<(String, String)> options;
+  final String value;
+  final ValueChanged<String> onChanged;
+  final bool fluid;
+  final bool dark;
+
+  @override
+  Widget build(BuildContext context) {
+    final tok = dark ? (fluid ? _dark.type : _dark.status) : (fluid ? _light.type : _light.status);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontFamily: 'Manrope', fontSize: 12, color: Color(0xFF999999))),
+        const SizedBox(height: 15),
+        Row(children: options.map(((String, String) opt) {
+          final active = opt.\$1 == value;
+          return Expanded(
+            flex: fluid ? 1 : 0,
+            child: Padding(
+              padding: EdgeInsets.only(right: opt == options.last ? 0 : 16),
+              child: GestureDetector(
+                onTap: () => onChanged(opt.\$1),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  height: 38,
+                  width: fluid ? double.infinity : 101,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: active ? Colors.transparent : tok.inactiveBg,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: active ? PkColors.tangerine01 : Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
+                  child: Text(opt.\$2,
+                    style: TextStyle(
+                      fontFamily: 'Manrope', fontWeight: FontWeight.w600, fontSize: 12,
+                      color: active ? PkColors.tangerine01 : tok.inactiveText,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList()),
+      ],
+    );
+  }
+}`;
+
+export function usageTransactionStatus(fw, typeVal, statusVal) {
+  if (fw === "flutter")
+    return `// Dark mode is driven by the ThemeMode passed to MaterialApp.\n// Transaction Type\nPkFilterGroup(\n  label: 'Transaction Type',\n  options: const [('transfer','Transfer'),('receive','Receive'),('stamp-duty','Stamp Duty')],\n  value: '${typeVal}',\n  onChanged: (v) => setState(() => txnType = v),\n  fluid: true,\n),\n\n// Transaction Status\nPkFilterGroup(\n  label: 'Transaction Status',\n  options: const [('successful','Successful'),('pending','Pending'),('failed','Failed')],\n  value: '${statusVal}',\n  onChanged: (v) => setState(() => txnStatus = v),\n)`;
+  if (fw === "vue")
+    return `<!-- Dark mode: set data-theme="dark" on :root or a wrapping element -->\n<PkTransactionFilters\n  v-model:typeValue="txnType"\n  v-model:statusValue="txnStatus"\n/>`;
+  return `{/* Dark mode: set data-theme="dark" on :root — CSS vars handle the rest */}\n<PkTransactionType   value="${typeVal}"   onChange={setTxnType} />\n<PkTransactionStatus value="${statusVal}" onChange={setTxnStatus} />`;
+}
+
+/* ── Tabs Toggle (Pay Now / Scheduled) ───────────────────────────────── */
+export const reactTabsToggle = `// PkTabsToggle.jsx — Parkway Wallet
+// Dark mode: set data-theme="dark" on :root — CSS vars handle the rest.
+import './parkway-tabs-toggle.css';
+
+export default function PkTabsToggle({ tabs = [], value, onChange }) {
+  const idx = tabs.findIndex(([k]) => k === value);
+  return (
+    <div className="pk-tabs-toggle">
+      <div className="pk-tabs-toggle__pill" style={{ transform: \`translateX(\${idx * 175}px)\` }} />
+      {tabs.map(([key, label]) => (
+        <button
+          key={key}
+          type="button"
+          className="pk-tabs-toggle__btn"
+          onClick={() => onChange?.(key)}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* parkway-tabs-toggle.css
+
+:root {
+  --pk-tabs-toggle-bg:          #F9F9F9;
+  --pk-tabs-toggle-pill-bg:     #FFFFFF;
+  --pk-tabs-toggle-pill-border: #FDD5C4;
+  --pk-tabs-toggle-text:        #000000;
+}
+[data-theme="dark"] {
+  --pk-tabs-toggle-bg:          #242424;
+  --pk-tabs-toggle-pill-bg:     #242424;
+  --pk-tabs-toggle-pill-border: #F9956B;
+  --pk-tabs-toggle-text:        #FFFFFF;
+}
+
+.pk-tabs-toggle {
+  position: relative; display: flex;
+  width: 343px; height: 48px;
+  background: var(--pk-tabs-toggle-bg);
+  border-radius: 40px; padding: 4px; gap: 15px;
+}
+.pk-tabs-toggle__pill {
+  position: absolute; top: 4px; left: 4px;
+  width: 160px; height: 40px; border-radius: 20px;
+  background: var(--pk-tabs-toggle-pill-bg);
+  border: 1px solid var(--pk-tabs-toggle-pill-border);
+  transition: transform .2s ease; pointer-events: none;
+}
+.pk-tabs-toggle__btn {
+  flex: 0 0 160px; height: 40px; border-radius: 20px;
+  border: 0; background: transparent; position: relative; z-index: 1;
+  font: 600 14px/1 Manrope, sans-serif;
+  color: var(--pk-tabs-toggle-text);
+  cursor: pointer;
+}
+*/`;
+
+export const vueTabsToggle = `<!-- PkTabsToggle.vue — Parkway Wallet -->
+<!-- Dark mode: set data-theme="dark" on :root — CSS vars handle the rest. -->
+<script setup>
+import { computed } from 'vue';
+const props = defineProps({
+  tabs:       { type: Array,  default: () => [] },
+  modelValue: { type: String, default: '' },
+});
+const emit = defineEmits(['update:modelValue']);
+const idx = computed(() => props.tabs.findIndex(([k]) => k === props.modelValue));
+</script>
+
+<template>
+  <div class="pk-tabs-toggle">
+    <div class="pk-tabs-toggle__pill" :style="{ transform: \`translateX(\${idx * 175}px)\` }" />
+    <button
+      v-for="([key, label]) in tabs"
+      :key="key"
+      type="button"
+      class="pk-tabs-toggle__btn"
+      @click="emit('update:modelValue', key)"
+    >{{ label }}</button>
+  </div>
+</template>
+
+<style scoped>
+:root {
+  --pk-tabs-toggle-bg:          #F9F9F9;
+  --pk-tabs-toggle-pill-bg:     #FFFFFF;
+  --pk-tabs-toggle-pill-border: #FDD5C4;
+  --pk-tabs-toggle-text:        #000000;
+}
+:root[data-theme="dark"] {
+  --pk-tabs-toggle-bg:          #242424;
+  --pk-tabs-toggle-pill-bg:     #242424;
+  --pk-tabs-toggle-pill-border: #F9956B;
+  --pk-tabs-toggle-text:        #FFFFFF;
+}
+.pk-tabs-toggle {
+  position: relative; display: flex;
+  width: 343px; height: 48px;
+  background: var(--pk-tabs-toggle-bg);
+  border-radius: 40px; padding: 4px; gap: 15px;
+}
+.pk-tabs-toggle__pill {
+  position: absolute; top: 4px; left: 4px;
+  width: 160px; height: 40px; border-radius: 20px;
+  background: var(--pk-tabs-toggle-pill-bg);
+  border: 1px solid var(--pk-tabs-toggle-pill-border);
+  transition: transform .2s ease; pointer-events: none;
+}
+.pk-tabs-toggle__btn {
+  flex: 0 0 160px; height: 40px; border-radius: 20px;
+  border: 0; background: transparent; position: relative; z-index: 1;
+  font: 600 14px/1 Manrope, sans-serif;
+  color: var(--pk-tabs-toggle-text);
+  cursor: pointer;
+}
+</style>`;
+
+export const flutterTabsToggle = `// pk_tabs_toggle.dart — Parkway Wallet
+import 'package:flutter/material.dart';
+import 'parkway_tokens.dart';
+
+class PkTabsToggle extends StatelessWidget {
+  const PkTabsToggle({
+    super.key,
+    required this.tabs,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final List<(String, String)> tabs;
+  final String value;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final containerBg   = dark ? const Color(0xFF242424) : const Color(0xFFF9F9F9);
+    final pillBg        = dark ? const Color(0xFF242424) : Colors.white;
+    final pillBorder    = dark ? PkColors.tangerine01    : PkColors.tangerine04;
+    final textColor     = dark ? Colors.white            : Colors.black;
+
+    final idx = tabs.indexWhere((t) => t.\$1 == value);
+    return Container(
+      width: 343, height: 48,
+      decoration: BoxDecoration(color: containerBg, borderRadius: BorderRadius.circular(40)),
+      padding: const EdgeInsets.all(4),
+      child: Stack(children: [
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          left: idx * 175.0, top: 0, bottom: 0, width: 160,
+          child: Container(
+            decoration: BoxDecoration(
+              color: pillBg,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: pillBorder),
+            ),
+          ),
+        ),
+        Row(children: tabs.map(((String, String) t) => GestureDetector(
+          onTap: () => onChanged(t.\$1),
+          child: SizedBox(
+            width: 160,
+            child: Center(child: Text(t.\$2,
+              style: TextStyle(
+                fontFamily: 'Manrope', fontWeight: FontWeight.w600,
+                fontSize: 14, color: textColor,
+              ),
+            )),
+          ),
+        )).toList()),
+      ]),
+    );
+  }
+}`;
+
+export function usageTabsToggle(fw, value) {
+  const tabs = `[['pay-now', 'Pay Now'], ['scheduled', 'Scheduled']]`;
+  if (fw === "flutter")
+    return `PkTabsToggle(\n  tabs: const [('pay-now', 'Pay Now'), ('scheduled', 'Scheduled')],\n  value: '${value}',\n  onChanged: (v) => setState(() => tab = v),\n)`;
+  if (fw === "vue")
+    return `<PkTabsToggle\n  :tabs="[['pay-now', 'Pay Now'], ['scheduled', 'Scheduled']]"\n  v-model="tab"\n/>`;
+  return `<PkTabsToggle\n  tabs={${tabs}}\n  value="${value}"\n  onChange={setTab}\n/>`;
+}
+
+/* ── Date Picker ─────────────────────────────────────────────────────── */
+export const reactDatePicker = `// PkDatePicker.jsx — Parkway Wallet
+import { useState } from 'react';
+import './parkway-date-picker.css';
+
+const MONTHS = ['January','February','March','April','May','June',
+  'July','August','September','October','November','December'];
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function getCalendarGrid(year, month) {
+  const startDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const cells = Array(startDay).fill(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+  while (cells.length % 7) cells.push(null);
+  return cells;
+}
+
+export default function PkDatePicker({ defaultValue = null, onSelect, onClose }) {
+  const today = new Date();
+  const [view, setView] = useState({ year: today.getFullYear(), month: today.getMonth() });
+  const [selected, setSelected] = useState(defaultValue);
+
+  const prev = () => setView(v =>
+    v.month === 0 ? { year: v.year - 1, month: 11 } : { ...v, month: v.month - 1 });
+  const next = () => setView(v =>
+    v.month === 11 ? { year: v.year + 1, month: 0 } : { ...v, month: v.month + 1 });
+
+  const isToday   = (d) => d && view.year === today.getFullYear()
+    && view.month === today.getMonth() && d === today.getDate();
+  const isSelected = (d) => selected && view.year === selected.getFullYear()
+    && view.month === selected.getMonth() && d === selected.getDate();
+
+  return (
+    <div className="pk-datepicker">
+      <div className="pk-datepicker__header">
+        <span className="pk-datepicker__title">
+          {MONTHS[view.month]} {view.year}
+        </span>
+        <div className="pk-datepicker__nav">
+          <button type="button" className="pk-datepicker__chevron" onClick={prev} aria-label="Previous month">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M15 18l-6-6 6-6" stroke="#121212" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <button type="button" className="pk-datepicker__chevron" onClick={next} aria-label="Next month">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M9 18l6-6-6-6" stroke="#121212" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div className="pk-datepicker__grid">
+        {DAYS.map((d, i) => (
+          <div key={d} className={\`pk-datepicker__weekday\${i === 0 || i === 6 ? ' is-weekend' : ''}\`}>{d}</div>
+        ))}
+        {getCalendarGrid(view.year, view.month).map((d, i) => (
+          <div
+            key={i}
+            className={\`pk-datepicker__day\${!d ? ' is-empty' : ''}\${isToday(d) ? ' is-today' : ''}\${isSelected(d) ? ' is-selected' : ''}\`}
+            onClick={() => d && setSelected(new Date(view.year, view.month, d))}
+          >{d}</div>
+        ))}
+      </div>
+
+      <div className="pk-datepicker__ctas">
+        <button type="button" className="pk-datepicker__close" onClick={onClose}>Close</button>
+        <button type="button" className="pk-datepicker__select" onClick={() => onSelect?.(selected)}>Select</button>
+      </div>
+    </div>
+  );
+}
+
+/* parkway-date-picker.css
+
+:root {
+  --pk-dp-bg:      #FFFFFF;  --pk-dp-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --pk-dp-title:   #121212;  --pk-dp-chevron: #121212;
+  --pk-dp-weekday: #121212;  --pk-dp-day:    #858585;
+  --pk-dp-hover:   #FFF0E8;  --pk-dp-close:  #9CA3AF;
+}
+[data-theme="dark"] {
+  --pk-dp-bg:      #232323;  --pk-dp-shadow: 0 2px 20px rgba(0,0,0,0.40);
+  --pk-dp-title:   #F2F2F0;  --pk-dp-chevron: #F2F2F0;
+  --pk-dp-weekday: #F2F2F0;  --pk-dp-day:    #A0A0A0;
+  --pk-dp-hover:   #2A2018;  --pk-dp-close:  #7A7A75;
+}
+
+.pk-datepicker {
+  background: var(--pk-dp-bg); box-shadow: var(--pk-dp-shadow);
+  border-radius: 8px; padding: 25px; width: 326px;
+  display: flex; flex-direction: column; gap: 20px;
+  font-family: Inter, system-ui, sans-serif;
+}
+.pk-datepicker__header { display: flex; justify-content: space-between; align-items: center; }
+.pk-datepicker__title { font: 500 17px/25px Inter, sans-serif; color: var(--pk-dp-title); }
+.pk-datepicker__nav { display: flex; gap: 10px; }
+.pk-datepicker__chevron {
+  background: none; border: 0; padding: 2px; cursor: pointer;
+  display: flex; align-items: center; border-radius: 4px;
+}
+.pk-datepicker__chevron svg path { stroke: var(--pk-dp-chevron); }
+.pk-datepicker__chevron:hover { background: var(--pk-dp-hover); }
+.pk-datepicker__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.pk-datepicker__weekday {
+  text-align: center; padding: 10px 2.5px;
+  font: 400 15px/20px Inter, sans-serif; color: var(--pk-dp-weekday);
+}
+.pk-datepicker__weekday.is-weekend { color: #F36A6A; }
+.pk-datepicker__day {
+  height: 40px; display: flex; align-items: center; justify-content: center;
+  font: 400 15px/20px Inter, sans-serif; color: var(--pk-dp-day);
+  cursor: pointer; border-radius: 8px; margin: 2px 0;
+}
+.pk-datepicker__day.is-empty { pointer-events: none; }
+.pk-datepicker__day:not(.is-empty):hover { background: var(--pk-dp-hover); }
+.pk-datepicker__day.is-today { font-weight: 600; color: #FAAA89; }
+.pk-datepicker__day.is-selected { background: #FAAA89; color: #fff; font-weight: 400; }
+.pk-datepicker__ctas { display: flex; justify-content: flex-end; gap: 20px; }
+.pk-datepicker__close {
+  background: none; border: 0; padding: 10px 20px; border-radius: 4px;
+  font: 400 15px/20px Inter, sans-serif; color: var(--pk-dp-close); cursor: pointer;
+}
+.pk-datepicker__select {
+  background: #FAAA89; border: 0; padding: 10px 20px; border-radius: 4px;
+  font: 400 15px/20px Inter, sans-serif; color: #fff; cursor: pointer;
+}
+*/`;
+
+export const vueDatePicker = `<!-- PkDatePicker.vue — Parkway Wallet -->
+<script setup>
+import { ref, computed } from 'vue';
+
+const emit = defineEmits(['select', 'close']);
+
+const MONTHS = ['January','February','March','April','May','June',
+  'July','August','September','October','November','December'];
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+const today = new Date();
+const view = ref({ year: today.getFullYear(), month: today.getMonth() });
+const selected = ref(null);
+
+function getGrid(year, month) {
+  const start = new Date(year, month, 1).getDay();
+  const total = new Date(year, month + 1, 0).getDate();
+  const cells = Array(start).fill(null);
+  for (let d = 1; d <= total; d++) cells.push(d);
+  while (cells.length % 7) cells.push(null);
+  return cells;
+}
+
+const grid = computed(() => getGrid(view.value.year, view.value.month));
+
+const prev = () => view.value = view.value.month === 0
+  ? { year: view.value.year - 1, month: 11 }
+  : { ...view.value, month: view.value.month - 1 };
+const next = () => view.value = view.value.month === 11
+  ? { year: view.value.year + 1, month: 0 }
+  : { ...view.value, month: view.value.month + 1 };
+
+const isToday = (d) => d && view.value.year === today.getFullYear()
+  && view.value.month === today.getMonth() && d === today.getDate();
+const isSelected = (d) => selected.value
+  && view.value.year === selected.value.getFullYear()
+  && view.value.month === selected.value.getMonth()
+  && d === selected.value.getDate();
+const pick = (d) => { if (d) selected.value = new Date(view.value.year, view.value.month, d); };
+</script>
+
+<template>
+  <div class="pk-datepicker">
+    <div class="pk-datepicker__header">
+      <span class="pk-datepicker__title">{{ MONTHS[view.month] }} {{ view.year }}</span>
+      <div class="pk-datepicker__nav">
+        <button type="button" class="pk-datepicker__chevron" @click="prev" aria-label="Previous month">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18l-6-6 6-6" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="pk-datepicker__chevron" @click="next" aria-label="Next month">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="pk-datepicker__grid">
+      <div v-for="(d, i) in DAYS" :key="d" class="pk-datepicker__weekday" :class="{ 'is-weekend': i === 0 || i === 6 }">{{ d }}</div>
+      <div
+        v-for="(d, i) in grid" :key="i"
+        class="pk-datepicker__day"
+        :class="{ 'is-empty': !d, 'is-today': isToday(d), 'is-selected': isSelected(d) }"
+        @click="pick(d)"
+      >{{ d }}</div>
+    </div>
+    <div class="pk-datepicker__ctas">
+      <button type="button" class="pk-datepicker__close" @click="emit('close')">Close</button>
+      <button type="button" class="pk-datepicker__select" @click="emit('select', selected)">Select</button>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.pk-datepicker {
+  background: #fff; border-radius: 8px; padding: 25px; width: 326px;
+  display: flex; flex-direction: column; gap: 20px; font-family: Inter, system-ui, sans-serif;
+}
+.pk-datepicker__header { display: flex; justify-content: space-between; align-items: center; }
+.pk-datepicker__title { font: 500 17px/25px Inter, sans-serif; color: #121212; }
+.pk-datepicker__nav { display: flex; gap: 10px; }
+.pk-datepicker__chevron { background: none; border: 0; padding: 2px; cursor: pointer; display: flex; border-radius: 4px; }
+.pk-datepicker__chevron:hover { background: #F5F5F5; }
+.pk-datepicker__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.pk-datepicker__weekday { text-align: center; padding: 10px 2.5px; font: 400 15px/20px Inter, sans-serif; color: #121212; }
+.pk-datepicker__weekday.is-weekend { color: #F36A6A; }
+.pk-datepicker__day { height: 40px; display: flex; align-items: center; justify-content: center; font: 400 15px/20px Inter, sans-serif; color: #858585; cursor: pointer; border-radius: 8px; margin: 2px 0; }
+.pk-datepicker__day.is-empty { pointer-events: none; }
+.pk-datepicker__day:not(.is-empty):hover { background: #FFF0E8; }
+.pk-datepicker__day.is-today { font-weight: 600; color: #FAAA89; }
+.pk-datepicker__day.is-selected { background: #FAAA89; color: #fff; }
+.pk-datepicker__ctas { display: flex; justify-content: flex-end; gap: 20px; }
+.pk-datepicker__close { background: none; border: 0; padding: 10px 20px; border-radius: 4px; font: 400 15px/20px Inter, sans-serif; color: #9CA3AF; cursor: pointer; }
+.pk-datepicker__select { background: #FAAA89; border: 0; padding: 10px 20px; border-radius: 4px; font: 400 15px/20px Inter, sans-serif; color: #fff; cursor: pointer; }
+</style>`;
+
+export const flutterDatePicker = `// pk_date_picker.dart — Parkway Wallet
+import 'package:flutter/material.dart';
+
+const _months = ['January','February','March','April','May','June',
+  'July','August','September','October','November','December'];
+const _days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const _kAccent = Color(0xFFFAAA89);
+const _kWeekend = Color(0xFFF36A6A);
+const _kDay = Color(0xFF858585);
+const _kHeader = Color(0xFF121212);
+const _kMuted = Color(0xFF9CA3AF);
+
+class PkDatePicker extends StatefulWidget {
+  const PkDatePicker({ super.key, this.initialDate, this.onSelect, this.onClose });
+  final DateTime? initialDate;
+  final ValueChanged<DateTime?>? onSelect;
+  final VoidCallback? onClose;
+
+  @override
+  State<PkDatePicker> createState() => _PkDatePickerState();
+}
+
+class _PkDatePickerState extends State<PkDatePicker> {
+  late DateTime _view;
+  DateTime? _selected;
+  final _today = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    _view = DateTime(widget.initialDate?.year ?? _today.year, widget.initialDate?.month ?? _today.month);
+    _selected = widget.initialDate;
+  }
+
+  List<int?> _grid() {
+    final first = DateTime(_view.year, _view.month, 1).weekday % 7;
+    final last  = DateTime(_view.year, _view.month + 1, 0).day;
+    final cells = List<int?>.filled(first, null);
+    for (var d = 1; d <= last; d++) cells.add(d);
+    while (cells.length % 7 != 0) cells.add(null);
+    return cells;
+  }
+
+  bool _isToday(int? d) => d != null && _view.year == _today.year
+    && _view.month == _today.month && d == _today.day;
+  bool _isSel(int? d) => d != null && _selected != null
+    && _view.year == _selected!.year && _view.month == _selected!.month && d == _selected!.day;
+
+  void _prev() => setState(() => _view = DateTime(_view.year, _view.month - 1));
+  void _next() => setState(() => _view = DateTime(_view.year, _view.month + 1));
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 326, padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text('\${_months[_view.month - 1]} \${_view.year}',
+            style: const TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500, fontSize: 17, color: _kHeader)),
+          Row(children: [
+            _ChevronBtn(left: true,  onTap: _prev),
+            const SizedBox(width: 10),
+            _ChevronBtn(left: false, onTap: _next),
+          ]),
+        ]),
+        const SizedBox(height: 15),
+        GridView.count(crossAxisCount: 7, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: 4, children: [
+          ..._days.asMap().entries.map((e) => Center(child: Text(e.value,
+            style: TextStyle(fontFamily: 'Inter', fontSize: 15,
+              color: e.key == 0 || e.key == 6 ? _kWeekend : _kHeader)))),
+          ..._grid().map((d) => d == null ? const SizedBox() : GestureDetector(
+            onTap: () => setState(() => _selected = DateTime(_view.year, _view.month, d)),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 100),
+              decoration: BoxDecoration(
+                color: _isSel(d) ? _kAccent : Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              alignment: Alignment.center,
+              child: Text('\$d', style: TextStyle(
+                fontFamily: 'Inter', fontSize: 15,
+                fontWeight: _isToday(d) ? FontWeight.w600 : FontWeight.w400,
+                color: _isSel(d) ? Colors.white : _isToday(d) ? _kAccent : _kDay,
+              )),
+            ),
+          )),
+        ]),
+        const SizedBox(height: 4),
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          TextButton(onPressed: widget.onClose, child: const Text('Close',
+            style: TextStyle(fontFamily: 'Inter', fontSize: 15, color: _kMuted))),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            onPressed: () => widget.onSelect?.call(_selected),
+            style: ElevatedButton.styleFrom(backgroundColor: _kAccent, foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), elevation: 0),
+            child: const Text('Select', style: TextStyle(fontFamily: 'Inter', fontSize: 15)),
+          ),
+        ]),
+      ]),
+    );
+  }
+}
+
+class _ChevronBtn extends StatelessWidget {
+  const _ChevronBtn({ required this.left, required this.onTap });
+  final bool left;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: onTap,
+    child: Icon(left ? Icons.chevron_left : Icons.chevron_right, color: _kHeader, size: 24),
+  );
+}`;
+
+export function usageDatePicker(fw) {
+  if (fw === "flutter")
+    return `PkDatePicker(\n  initialDate: DateTime.now(),\n  onSelect: (date) => setState(() => picked = date),\n  onClose: () => Navigator.pop(context),\n)`;
+  if (fw === "vue")
+    return `<PkDatePicker @select="onDateSelect" @close="showPicker = false" />`;
+  return `<PkDatePicker\n  onSelect={(date) => setPickedDate(date)}\n  onClose={() => setOpen(false)}\n/>`;
+}
+
+/* ── Radio Button ────────────────────────────────────────────────────── */
+export const reactRadio = `// PkRadio.jsx — Parkway Wallet
+import './parkway-radio.css';
+
+export function PkRadio({ checked = false, disabled = false, onChange, id, children }) {
+  return (
+    <label className={\`pk-radio\${disabled ? ' is-disabled' : ''}\`} htmlFor={id}>
+      <input
+        id={id}
+        type="radio"
+        className="pk-radio__input"
+        checked={checked}
+        disabled={disabled}
+        onChange={(e) => onChange?.(e.target.checked)}
+      />
+      <span className="pk-radio__control" aria-hidden="true" />
+      {children && <span className="pk-radio__label">{children}</span>}
+    </label>
+  );
+}
+
+export function PkRadioGroup({ name, options = [], value, onChange }) {
+  return (
+    <div className="pk-radio-group" role="radiogroup">
+      {options.map(({ key, label, disabled }) => (
+        <PkRadio
+          key={key}
+          id={\`\${name}-\${key}\`}
+          checked={value === key}
+          disabled={disabled}
+          onChange={() => !disabled && onChange?.(key)}
+        >
+          {label}
+        </PkRadio>
+      ))}
+    </div>
+  );
+}
+
+/* parkway-radio.css
+.pk-radio { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+.pk-radio.is-disabled { cursor: not-allowed; opacity: 1; }
+
+.pk-radio__input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+
+.pk-radio__control {
+  flex-shrink: 0;
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid #C6C6C6; background: #fff;
+  box-sizing: border-box;
+  transition: border-color .15s ease, box-shadow .15s ease;
+  display: flex; align-items: center; justify-content: center;
+}
+.pk-radio__input:checked + .pk-radio__control {
+  border-color: var(--pk-tangerine-01);
+  box-shadow: inset 0 0 0 4px var(--pk-tangerine-01);
+}
+.pk-radio.is-disabled .pk-radio__control { border-color: #BBBBBB; }
+.pk-radio.is-disabled .pk-radio__input:checked + .pk-radio__control {
+  border-color: #BBBBBB; box-shadow: inset 0 0 0 4px #BBBBBB;
+}
+.pk-radio__label { font: 500 14px/1 Manrope, sans-serif; color: #121212; }
+.pk-radio.is-disabled .pk-radio__label { color: #BBBBBB; }
+
+.pk-radio-group { display: flex; flex-direction: column; gap: 16px; }
+*/`;
+
+export const vueRadio = `<!-- PkRadio.vue — Parkway Wallet -->
+<script setup>
+const props = defineProps({
+  modelValue: { type: String, default: '' },
+  options: { type: Array, default: () => [] },
+  name: { type: String, required: true },
+});
+const emit = defineEmits(['update:modelValue']);
+</script>
+
+<template>
+  <div class="pk-radio-group" role="radiogroup">
+    <label
+      v-for="opt in options"
+      :key="opt.key"
+      class="pk-radio"
+      :class="{ 'is-disabled': opt.disabled }"
+    >
+      <input
+        type="radio"
+        class="pk-radio__input"
+        :name="name"
+        :value="opt.key"
+        :checked="modelValue === opt.key"
+        :disabled="opt.disabled"
+        @change="emit('update:modelValue', opt.key)"
+      />
+      <span class="pk-radio__control" aria-hidden="true" />
+      <span class="pk-radio__label">{{ opt.label }}</span>
+    </label>
+  </div>
+</template>
+
+<style scoped>
+.pk-radio { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+.pk-radio.is-disabled { cursor: not-allowed; }
+.pk-radio__input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+.pk-radio__control {
+  flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid #C6C6C6; background: #fff; box-sizing: border-box;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.pk-radio__input:checked + .pk-radio__control {
+  border-color: var(--pk-tangerine-01);
+  box-shadow: inset 0 0 0 4px var(--pk-tangerine-01);
+}
+.pk-radio.is-disabled .pk-radio__control { border-color: #BBBBBB; }
+.pk-radio.is-disabled .pk-radio__input:checked + .pk-radio__control {
+  border-color: #BBBBBB; box-shadow: inset 0 0 0 4px #BBBBBB;
+}
+.pk-radio__label { font: 500 14px/1 Manrope, sans-serif; color: #121212; }
+.pk-radio.is-disabled .pk-radio__label { color: #BBBBBB; }
+.pk-radio-group { display: flex; flex-direction: column; gap: 16px; }
+</style>`;
+
+export const flutterRadio = `// pk_radio.dart — Parkway Wallet
+import 'package:flutter/material.dart';
+import 'parkway_tokens.dart';
+
+class PkRadioOption<T> {
+  const PkRadioOption({ required this.value, required this.label, this.disabled = false });
+  final T value;
+  final String label;
+  final bool disabled;
+}
+
+class PkRadioGroup<T> extends StatelessWidget {
+  const PkRadioGroup({
+    super.key,
+    required this.options,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final List<PkRadioOption<T>> options;
+  final T value;
+  final ValueChanged<T> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: options.map((opt) => Padding(
+        padding: EdgeInsets.only(bottom: opt == options.last ? 0 : 16),
+        child: _PkRadioTile<T>(
+          option: opt,
+          selected: value == opt.value,
+          onTap: () { if (!opt.disabled) onChanged(opt.value); },
+        ),
+      )).toList(),
+    );
+  }
+}
+
+class _PkRadioTile<T> extends StatelessWidget {
+  const _PkRadioTile({ required this.option, required this.selected, required this.onTap });
+  final PkRadioOption<T> option;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ringColor = option.disabled
+        ? const Color(0xFFBBBBBB)
+        : selected ? PkColors.tangerine01 : const Color(0xFFC6C6C6);
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 20, height: 20,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              border: Border.all(color: ringColor, width: 1.5),
+            ),
+            child: selected ? Center(
+              child: Container(
+                width: 10, height: 10,
+                decoration: BoxDecoration(shape: BoxShape.circle, color: ringColor),
+              ),
+            ) : null,
+          ),
+          const SizedBox(width: 10),
+          Text(option.label,
+            style: TextStyle(
+              fontFamily: 'Manrope', fontWeight: FontWeight.w500, fontSize: 14,
+              color: option.disabled ? const Color(0xFFBBBBBB) : const Color(0xFF121212),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}`;
+
+export function usageRadio(fw, checked) {
+  const c = checked ? "true" : "false";
+  if (fw === "flutter")
+    return `PkRadio(\n  checked: ${c},\n  onChanged: (v) => setState(() => isSelected = v),\n  child: const Text('Physical Card'),\n)`;
+  if (fw === "vue")
+    return `<PkRadio :checked="${c}" @change="isSelected = $event">\n  Physical Card\n</PkRadio>`;
+  return `<PkRadio checked={${c}} onChange={setIsSelected}>\n  Physical Card\n</PkRadio>`;
 }
