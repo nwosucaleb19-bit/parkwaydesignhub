@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Envelope, Check } from "@phosphor-icons/react";
 import { FRAMEWORKS } from "../tokens.js";
 import { RC_INPUT } from "../readycash-tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
@@ -66,7 +67,7 @@ function LiveInput({ theme, state }) {
         opacity: disabled ? 0.5 : 1,
         transition: "border-color .15s ease, background .15s ease",
       }}>
-        <span aria-hidden="true" style={{ fontSize: 20, lineHeight: 1, color: textColor, flexShrink: 0 }}>✉</span>
+        <Envelope size={20} color={textColor} style={{ flexShrink: 0 }} />
         <input
           type="email"
           placeholder={disabled ? "" : "name@example.com"}
@@ -83,7 +84,7 @@ function LiveInput({ theme, state }) {
           }}
           readOnly
         />
-        {hasSuccess && <span aria-hidden="true" style={{ color: RC_INPUT.border.success, fontSize: 18, flexShrink: 0 }}>✓</span>}
+        {hasSuccess && <Check size={18} color={RC_INPUT.border.success} style={{ flexShrink: 0 }} />}
       </div>
 
       <span style={{

@@ -27,8 +27,10 @@ import InputsPin6 from "./pages/InputsPin6.jsx";
 import InputsPin4 from "./pages/InputsPin4.jsx";
 import InputsContact from "./pages/InputsContact.jsx";
 import InputsSearch from "./pages/InputsSearch.jsx";
+import InputsDatePicker from "./pages/InputsDatePicker.jsx";
 import Icons from "./pages/Icons.jsx";
 import Logo from "./pages/Logo.jsx";
+import RcToasts from "./pages/RcToasts.jsx";
 import ComingSoon from "./pages/ComingSoon.jsx";
 import Placeholder from "./pages/Placeholder.jsx";
 
@@ -53,9 +55,11 @@ const PAGES = {
   "inputs-pin-6":    InputsPin6,
   "inputs-pin-4":    InputsPin4,
   "inputs-contact":  InputsContact,
-  "inputs-search":   InputsSearch,
+  "inputs-search":      InputsSearch,
+  "inputs-datepicker":  InputsDatePicker,
   icons: Icons,
   logo: Logo,
+  "rc-toasts": RcToasts,
   "product-soon": ComingSoon,
 };
 

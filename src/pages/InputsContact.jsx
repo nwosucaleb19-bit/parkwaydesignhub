@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CaretDown, Check } from "@phosphor-icons/react";
 import { FRAMEWORKS } from "../tokens.js";
 import { RC_INPUT } from "../readycash-tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
@@ -59,7 +60,7 @@ function LiveContact({ theme, state }) {
         }}>
           <span style={{ fontSize: 18, lineHeight: 1 }}>🇳🇬</span>
           <span style={{ fontFamily: RC_INPUT.font.family, fontSize: 14, color: textColor, fontWeight: 500 }}>+234</span>
-          <span aria-hidden="true" style={{ fontSize: 10, color: RC_INPUT.text.placeholder }}>▾</span>
+          <CaretDown size={12} color={RC_INPUT.text.placeholder} />
         </div>
 
         {/* Phone number field */}
@@ -80,7 +81,7 @@ function LiveContact({ theme, state }) {
         />
 
         {state === "success" && (
-          <span aria-hidden="true" style={{ paddingRight: 14, color: RC_INPUT.border.success, fontSize: 18 }}>✓</span>
+          <Check size={18} color={RC_INPUT.border.success} style={{ paddingRight: 14 }} />
         )}
       </div>
 
@@ -93,6 +94,7 @@ function LiveContact({ theme, state }) {
 
 const reactSnippet = `// RcContactInput.jsx — ReadyCash Contact Input (React)
 // Figma: Input Fields 350:10987 · requires readycash-tokens.css
+// Icons: @phosphor-icons/react
 
 const COUNTRIES = [
   { code: "NG", dial: "+234", flag: "🇳🇬" },
@@ -155,9 +157,7 @@ export default function RcContactInput({
         >
           <span>{country.flag}</span>
           <span>{country.dial}</span>
-          <span aria-hidden="true" style={{ fontSize: 10, color: "#838799" }}>
-            {pickerOpen ? "▴" : "▾"}
-          </span>
+          <CaretDown size={12} color="#838799" style={{ transform: pickerOpen ? "rotate(180deg)" : "none", transition: "transform .2s ease" }} />
         </button>
 
         {/* number input */}

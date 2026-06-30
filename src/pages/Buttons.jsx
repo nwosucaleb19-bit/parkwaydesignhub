@@ -17,7 +17,11 @@ function LiveButton({ variant, size, state, platform, btn, fontFamily }) {
   const label = size === "small" ? "Sign in" : "Get a demo";
   const w = btn.widths[size];
   const textColor = disabled ? btn.textDisabled : (pal?.textColor || btn.text);
-  const radius = platform === "mobile" && btn.radiusMobile ? btn.radiusMobile : btn.radius;
+  // Parkway: desktop=pill(radius), mobile=rect(radiusMobile)
+  // RC: desktop=rounded(radiusRounded), mobile=rect(radius)
+  const radius = btn.radiusMobile
+    ? (platform === "mobile" ? btn.radiusMobile : btn.radius)
+    : (platform === "desktop" ? (btn.radiusRounded ?? btn.radius) : btn.radius);
   return (
     <button
       type="button"
@@ -108,7 +112,7 @@ export default function Buttons({ fw, setFw, product }) {
   const [linkState, setLinkState] = useState("default");
 
   const isLink = btnStyle === "link";
-  const fontFamily = isRC ? "'Noto Sans', sans-serif" : "Manrope, sans-serif";
+  const fontFamily = "Manrope, sans-serif";
   const sizeOptions = isRC ? ["small", "medium", "large", "xlarge"] : ["small", "icon", "medium", "large", "xlarge"];
 
   const filledImpl  = isRC
@@ -137,12 +141,10 @@ export default function Buttons({ fw, setFw, product }) {
 
       <SectionHeader label="Playground" desc="Pick a style, then tune it; the preview and snippet update together." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
-        {!isRC && (
-          <div style={ROW}>
-            <span className="ph-rowlabel">Style</span>
-            <Tabs small value={btnStyle} onChange={setBtnStyle} label="Style" items={[["filled", "Filled"], ["link", "Link"]]} />
-          </div>
-        )}
+        <div style={ROW}>
+          <span className="ph-rowlabel">Style</span>
+          <Tabs small value={btnStyle} onChange={setBtnStyle} label="Style" items={[["filled", "Filled"], ["link", "Link"]]} />
+        </div>
 
         {isLink ? (
           <>
@@ -169,12 +171,10 @@ export default function Buttons({ fw, setFw, product }) {
               <span className="ph-rowlabel">State</span>
               <Tabs small value={state} onChange={setState} label="State" items={[["default", "Default"], ["hover", "Hover"], ["disabled", "Disabled"]]} />
             </div>
-            {!isRC && (
-              <div style={{ ...ROW, borderBottom: 0 }}>
-                <span className="ph-rowlabel">Platform</span>
-                <Tabs small value={platform} onChange={setPlatform} label="Platform" items={[["desktop", "Desktop"], ["mobile", "Mobile"]]} />
-              </div>
-            )}
+            <div style={{ ...ROW, borderBottom: 0 }}>
+              <span className="ph-rowlabel">Platform</span>
+              <Tabs small value={platform} onChange={setPlatform} label="Platform" items={[["mobile", "Mobile"], ["desktop", "Desktop"]]} />
+            </div>
           </>
         )}
       </div>
@@ -193,7 +193,7 @@ export default function Buttons({ fw, setFw, product }) {
         </>
       ) : (
         <>
-          <CodeBlock code={isRC ? rcUsageSnippet(fw, variant, size, state) : usageSnippet(fw, variant, size, state, platform)} label="Usage — reflects the controls above" />
+          <CodeBlock code={isRC ? rcUsageSnippet(fw, variant, size, state, platform === "desktop") : usageSnippet(fw, variant, size, state, platform)} label="Usage — reflects the controls above" />
           <CodeBlock code={filledImpl[fw]} label={filledLabel[fw]} />
         </>
       )}

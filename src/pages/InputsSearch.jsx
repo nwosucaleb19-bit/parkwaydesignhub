@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MagnifyingGlass, X } from "@phosphor-icons/react";
 import { FRAMEWORKS } from "../tokens.js";
 import { RC_INPUT } from "../readycash-tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
@@ -36,7 +37,7 @@ function LiveSearch({ state }) {
         background: bg,
         transition: "border-color .15s, background .15s",
       }}>
-        <span aria-hidden="true" style={{ fontSize: 18, color: RC_INPUT.text.placeholder, flexShrink: 0 }}>🔍</span>
+        <MagnifyingGlass size={18} color={RC_INPUT.text.placeholder} style={{ flexShrink: 0 }} />
         <input
           type="search"
           placeholder="Search..."
@@ -56,7 +57,7 @@ function LiveSearch({ state }) {
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer", color: "#fff", fontSize: 11, flexShrink: 0,
           }} aria-label="Clear search">
-            ✕
+            <X size={11} color="#fff" />
           </button>
         )}
       </div>
@@ -76,7 +77,7 @@ function LiveSearch({ state }) {
               fontFamily: RC_INPUT.font.family, fontSize: 15,
               color: RC_INPUT.text.input, cursor: "pointer",
             }}>
-              <span aria-hidden="true" style={{ fontSize: 14, color: RC_INPUT.text.placeholder }}>🔍</span>
+              <MagnifyingGlass size={14} color={RC_INPUT.text.placeholder} />
               {r}
             </div>
           ))}
@@ -88,6 +89,7 @@ function LiveSearch({ state }) {
 
 const reactSnippet = `// RcSearchInput.jsx — ReadyCash Search Bar (React)
 // Figma: Input Fields 350:12586 · requires readycash-tokens.css
+// Icons: import { MagnifyingGlass, X } from "@phosphor-icons/react"
 
 export default function RcSearchInput({
   placeholder = "Search…",
@@ -112,7 +114,7 @@ export default function RcSearchInput({
         border: \`1px solid \${border}\`, background: bg,
         transition: "border-color .15s, background .15s",
       }}>
-        <span aria-hidden="true" style={{ fontSize: 18, color: "#838799" }}>🔍</span>
+        <MagnifyingGlass size={18} color="#838799" />
         <input
           type="search"
           placeholder={placeholder}
@@ -139,7 +141,7 @@ export default function RcSearchInput({
               cursor: "pointer", color: "#fff", fontSize: 11,
             }}
           >
-            ✕
+            <X size={11} color="#fff" />
           </button>
         )}
       </div>
@@ -157,7 +159,7 @@ export default function RcSearchInput({
               fontFamily: "'Noto Sans', sans-serif", fontSize: 15,
               borderBottom: i < suggestions.length - 1 ? "1px solid #9ea2b322" : "none",
             }}>
-              <span style={{ fontSize: 14, color: "#838799" }}>🔍</span>
+              <MagnifyingGlass size={14} color="#838799" />
               {s}
             </div>
           ))}

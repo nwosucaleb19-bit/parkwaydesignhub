@@ -597,10 +597,11 @@ class RcInput extends StatelessWidget {
   }
 }`;
 
-export const rcUsageSnippet = (fw, variant, size, state) => {
+export const rcUsageSnippet = (fw, variant, size, state, rounded = false) => {
   const dis = state === "disabled";
   const label = size === "small" ? "Sign in" : "Get a demo";
+  const roundedProp = rounded ? " rounded" : "";
   if (fw === "flutter")
-    return `RcButton(\n  label: '${label}',\n  variant: RcVariant.${variant},\n  size: RcSize.${size},\n  onPressed: ${dis ? "null, // disabled" : "() => handleTap(),"}\n)`;
-  return `<RcButton variant="${variant}" size="${size}"${dis ? " disabled" : ""}>\n  ${label}\n</RcButton>`;
+    return `RcButton(\n  label: '${label}',\n  variant: RcVariant.${variant},\n  size: RcSize.${size},${rounded ? "\n  rounded: true," : ""}\n  onPressed: ${dis ? "null, // disabled" : "() => handleTap(),"}\n)`;
+  return `<RcButton variant="${variant}" size="${size}"${roundedProp}${dis ? " disabled" : ""}>\n  ${label}\n</RcButton>`;
 };

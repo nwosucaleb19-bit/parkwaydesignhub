@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CaretDown, Check } from "@phosphor-icons/react";
 import { FRAMEWORKS } from "../tokens.js";
 import { RC_INPUT } from "../readycash-tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
@@ -58,7 +59,7 @@ function LiveDropdown({ theme, state }) {
         <span style={{ flex: 1, fontFamily: RC_INPUT.font.family, fontSize: RC_INPUT.font.inputSize, color: isOpen ? textColor : RC_INPUT.text.placeholder }}>
           {isOpen ? SAMPLE_OPTIONS[0] : "Select account type"}
         </span>
-        <span aria-hidden="true" style={{ color: RC_INPUT.text.placeholder, fontSize: 18, lineHeight: 1, transform: isOpen ? "rotate(180deg)" : "none", transition: "transform .2s ease" }}>⌄</span>
+        <CaretDown size={18} color={RC_INPUT.text.placeholder} style={{ flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "none", transition: "transform .2s ease" }} />
       </div>
 
       {isOpen && (
@@ -79,7 +80,7 @@ function LiveDropdown({ theme, state }) {
               fontWeight: i === 0 ? 600 : 400,
             }}>
               {opt}
-              {i === 0 && <span aria-hidden="true" style={{ float: "right" }}>✓</span>}
+              {i === 0 && <Check size={16} color="var(--pk-accent)" style={{ float: "right" }} />}
             </div>
           ))}
         </div>
@@ -103,6 +104,7 @@ const STATE_ROWS = [
 ];
 
 const reactSnippet = `// RcDropdown.jsx — ReadyCash dropdown input (React)
+import { CaretDown, Check } from "@phosphor-icons/react";
 import "./readycash-tokens.css";
 
 const OPTIONS = [{ value: "savings", label: "Savings Account" }, /* … */];
@@ -146,7 +148,7 @@ export default function RcDropdown({
         <span style={{ flex: 1, textAlign: "left" }}>
           {selected ? selected.label : "Select…"}
         </span>
-        <span aria-hidden="true" style={{ transform: open ? "rotate(180deg)" : "none" }}>⌄</span>
+        <CaretDown style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform .2s ease" }} />
       </button>
       {open && (
         <div style={{ position: "absolute", top: "100%", left: 0, right: 0, marginTop: 4,
