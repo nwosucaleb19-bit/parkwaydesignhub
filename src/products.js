@@ -106,9 +106,10 @@ export const PRODUCTS = [
             ],
           },
           { id: "typography", label: "Typography", page: "typography", status: "live" },
-          { id: "spacing", label: "Spacing", page: "spacing", status: "live" },
-          { id: "shadows", label: "Shadows", page: "shadows", status: "building" },
-          { id: "icons", label: "Icons", page: "icons", status: "building" },
+          { id: "spacing",    label: "Spacing",    page: "spacing",    status: "live" },
+          { id: "grid",       label: "Grid",       page: "grid",       status: "live" },
+          { id: "shadows",    label: "Shadows",    page: "shadows",    status: "building" },
+          { id: "icons",      label: "Icons",      page: "icons",      status: "building" },
         ],
       },
       {
