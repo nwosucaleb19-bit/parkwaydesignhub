@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { CheckCircle, XCircle } from "@phosphor-icons/react";
+import { CheckCircle } from "@phosphor-icons/react/dist/csr/CheckCircle";
+import { XCircle }     from "@phosphor-icons/react/dist/csr/XCircle";
 import { FRAMEWORKS } from "../tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
 

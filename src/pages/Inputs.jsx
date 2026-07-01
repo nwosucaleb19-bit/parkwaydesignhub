@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Envelope, Check } from "@phosphor-icons/react";
+import { Envelope } from "@phosphor-icons/react/dist/csr/Envelope";
+import { Check }    from "@phosphor-icons/react/dist/csr/Check";
 import { FRAMEWORKS } from "../tokens.js";
 import { RC_INPUT } from "../readycash-tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";

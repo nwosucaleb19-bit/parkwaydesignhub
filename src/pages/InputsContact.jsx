@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { CaretDown, Check } from "@phosphor-icons/react";
+import { CaretDown } from "@phosphor-icons/react/dist/csr/CaretDown";
+import { Check }     from "@phosphor-icons/react/dist/csr/Check";
 import { FRAMEWORKS } from "../tokens.js";
 import { RC_INPUT } from "../readycash-tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";

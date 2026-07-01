@@ -36,6 +36,7 @@ import InputsDatePicker from "./pages/InputsDatePicker.jsx";
 import Icons from "./pages/Icons.jsx";
 import Logo from "./pages/Logo.jsx";
 import RcToasts from "./pages/RcToasts.jsx";
+import RcToggle from "./pages/RcToggle.jsx";
 import ComingSoon from "./pages/ComingSoon.jsx";
 import Placeholder from "./pages/Placeholder.jsx";
 
@@ -70,6 +71,7 @@ const PAGES = {
   icons: Icons,
   logo: Logo,
   "rc-toasts": RcToasts,
+  "rc-toggle": RcToggle,
   "product-soon": ComingSoon,
 };
 

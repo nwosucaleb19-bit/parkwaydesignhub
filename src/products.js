@@ -80,6 +80,7 @@ export const PRODUCTS = [
           },
           { id: "navigation", label: "Navigation", status: "soon" },
           { id: "inputs-datepicker", label: "Date Picker", page: "inputs-datepicker", node: "29639:419449", status: "live" },
+          { id: "rc-toggle", label: "Toggle", page: "rc-toggle", node: "29767:419932", status: "live" },
           { id: "rc-toasts", label: "Toasts", page: "rc-toasts", node: "29629:419386", status: "live" },
         ],
       },

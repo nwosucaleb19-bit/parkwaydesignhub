@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { MagnifyingGlass, X } from "@phosphor-icons/react";
+import { MagnifyingGlass } from "@phosphor-icons/react/dist/csr/MagnifyingGlass";
+import { X }               from "@phosphor-icons/react/dist/csr/X";
 import { FRAMEWORKS } from "../tokens.js";
 import { RC_INPUT } from "../readycash-tokens.js";
 import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
