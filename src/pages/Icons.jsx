@@ -52,8 +52,9 @@ export default function Icons({ fw, setFw }) {
   return (
     <>
       <Lead>
-        <strong>Phosphor</strong> is Parkway's icon set. Browse the curated set, copy an import,
-        or install it for your framework.
+        <strong>Phosphor</strong> is Parkway's icon set. This page previews a curated, finance-first
+        selection — <strong>not</strong> the full library. To use any icon, install Phosphor for your
+        framework (below) and import what you need.
       </Lead>
 
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4, flexWrap: "wrap" }}>
@@ -69,12 +70,17 @@ export default function Icons({ fw, setFw }) {
         </span>
       </div>
 
-      <SectionHeader label="Curated set" desc="A small slice of Phosphor's library — the full set ships thousands of icons across six weights." />
+      <SectionHeader label="Curated set" desc="A finance-first preview — not the full library. Phosphor ships 1,500+ icons across six weights; install the package to use any of them." />
       <div className="ph-icongrid">
         {CURATED.map(([name, Icon]) => (
           <Cell key={name} name={name} Icon={Icon} weight={weight} />
         ))}
       </div>
+      <p className="ph-note">
+        Need an icon that isn't here? Browse the full set at{" "}
+        <a href="https://phosphoricons.com" target="_blank" rel="noreferrer" style={{ color: "var(--pk-accent-ink)" }}>phosphoricons.com</a>{" "}
+        and install the package below — the hub only previews a representative subset.
+      </p>
 
       <SectionHeader label="Install & use" desc="Phosphor ships first-party packages for web (React), Vue, and Flutter." />
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
