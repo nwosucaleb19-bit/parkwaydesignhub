@@ -38,7 +38,7 @@ function RcDatePicker({ onClose, onSelect }) {
   const isToday = (d) =>
     d === today.getDate() && viewM === today.getMonth() && viewY === today.getFullYear();
   const isPicked = (d) =>
-    picked && d === picked.d && viewM === picked.m && viewY === picked.y;
+    !!(picked && d === picked.d && viewM === picked.m && viewY === picked.y);
 
   const S = {
     wrap: {
@@ -117,7 +117,7 @@ function RcDatePicker({ onClose, onSelect }) {
             role={d ? "button" : undefined}
             tabIndex={d ? 0 : undefined}
             aria-label={d ? `${MONTHS[viewM]} ${d}, ${viewY}` : undefined}
-            aria-pressed={d && isPicked(d)}
+            aria-pressed={d ? isPicked(d) : undefined}
             onKeyDown={(e) => e.key === "Enter" && d && setPicked({ y: viewY, m: viewM, d })}
           >
             {d ?? ""}

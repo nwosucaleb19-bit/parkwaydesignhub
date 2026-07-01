@@ -82,7 +82,7 @@ function LivePin6({ state }) {
 }
 
 const reactSnippet = `// RcPinInput.jsx — ReadyCash PIN Input 6 Digits (React)
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import "./readycash-tokens.css";
 
 export default function RcPinInput({
@@ -92,6 +92,7 @@ export default function RcPinInput({
   state = "idle",  // "idle" | "error" | "success" | "disabled"
 }) {
   const refs = Array.from({ length: digits }, () => useRef(null));
+  const [focused, setFocused] = useState(-1);
   const arr  = value.padEnd(digits, "").split("").slice(0, digits);
   const disabled = state === "disabled";
 
@@ -117,10 +118,12 @@ export default function RcPinInput({
           key={i} ref={refs[i]} type="text" inputMode="numeric"
           maxLength={1} value={ch || ""} readOnly
           onKeyDown={e => handleKey(e, i)}
+          onFocus={() => setFocused(i)}
+          onBlur={() => setFocused(-1)}
           disabled={disabled}
           style={{
             width: 48, height: 56, textAlign: "center", fontSize: 20,
-            border: \`\${document.activeElement === refs[i]?.current ? "2" : "1"}px solid \${BORDER[state]}\`,
+            border: \`\${focused === i ? "2" : "1"}px solid \${BORDER[state]}\`,
             borderRadius: 4, background: BG[state] || "transparent",
             fontFamily: "'Noto Sans', sans-serif",
             color: "#141519", outline: "none",
