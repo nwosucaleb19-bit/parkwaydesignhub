@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { useTheme } from "../theme.jsx";
-import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 import {
   reactTabsToggle,
   vueTabsToggle,
@@ -96,7 +96,12 @@ export default function TabsToggle({ fw, setFw }) {
         its colours follow the light/dark theme.
       </Lead>
 
-      <PreviewStage mode={mode} setMode={setMode} tall>
+      <SectionHeader label="Playground" desc="Switch tabs, or switch the preview between light and dark." />
+      <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} divider={false} />
+      </div>
+
+      <PreviewStage mode={mode} tall>
         <LiveTabsToggle value={active} onChange={setActive} />
       </PreviewStage>
 

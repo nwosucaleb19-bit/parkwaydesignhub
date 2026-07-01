@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { useTheme } from "../theme.jsx";
-import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 import { reactMarquee, vueMarquee, flutterMarquee, usageMarquee } from "../snippets/wallet.js";
 
 const ITEMS = [
@@ -90,13 +90,14 @@ export default function Marquee({ fw, setFw }) {
 
       <SectionHeader label="Playground" desc="Adjust scroll speed; the usage snippet updates." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px" }}>
           <span className="ph-rowlabel">Speed</span>
           <Tabs small value={speedKey} onChange={setSpeedKey} label="Speed" items={SPEEDS.map(([k, n]) => [k, n])} />
         </div>
       </div>
 
-      <PreviewStage mode={mode} setMode={setMode} tall stageStyle={{ padding: 0, overflow: "hidden" }}>
+      <PreviewStage mode={mode} tall stageStyle={{ padding: 0, overflow: "hidden" }}>
         <LiveMarquee items={ITEMS} speed={speed} />
       </PreviewStage>
 

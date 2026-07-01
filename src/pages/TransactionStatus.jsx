@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { useTheme } from "../theme.jsx";
-import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 import {
   reactTransactionStatus,
   vueTransactionStatus,
@@ -101,7 +101,12 @@ export default function TransactionStatus({ fw, setFw }) {
         Inactive surfaces follow the light/dark theme.
       </Lead>
 
-      <PreviewStage mode={mode} setMode={setMode} tall stageStyle={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <SectionHeader label="Playground" desc="Toggle the filters, or switch the preview between light and dark." />
+      <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} divider={false} />
+      </div>
+
+      <PreviewStage mode={mode} tall stageStyle={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <FilterGroup
           groupLabel="Transaction Type"
           options={TX_TYPES}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { useTheme } from "../theme.jsx";
-import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 import { reactBadge, vueBadge, flutterBadge, usageBadge } from "../snippets/wallet.js";
 
 // [key, label, { light:[bg,fg], dark:[bg,fg] }]
@@ -40,13 +40,14 @@ export default function Badges({ fw, setFw }) {
 
       <SectionHeader label="Playground" desc="Pick a status; the usage snippet updates. All four shown for reference." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px" }}>
           <span className="ph-rowlabel">Status</span>
           <Tabs small value={status} onChange={setStatus} label="Status" items={BADGES.map(([k, n]) => [k, n])} />
         </div>
       </div>
 
-      <PreviewStage mode={mode} setMode={setMode} tall>
+      <PreviewStage mode={mode} tall>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
           {BADGES.map(([k, n, c]) => {
             const [bg, fg] = dark ? c.dark : c.light;

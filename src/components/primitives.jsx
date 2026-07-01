@@ -30,35 +30,31 @@ export function Stage({ children, tall, caption }) {
   return <div className={`ph-stage center${tall ? " tall" : ""}`}>{children}</div>;
 }
 
-// Preview stage with its OWN Light/Dark toggle, independent of the app theme.
-// The page owns `mode`/`setMode`; the stage re-scopes the design tokens via
-// data-theme, so the preview can be dark inside a light app (and vice versa).
-export function PreviewStage({ mode, setMode, tall, center, stageStyle, children }) {
+// Playground control row that switches the preview between Light and Dark.
+// It lives inside the page's playground block so every preview control sits
+// in one place. Uses the same segmented Tabs as the other rows.
+const PG_ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px" };
+export function ModeRow({ mode, setMode, divider = true }) {
   return (
-    <div className="ph-previewwrap">
-      <div className="ph-previewbar">
-        <span className="ph-previewbar-label">Preview</span>
-        <div className="ph-modetoggle" role="group" aria-label="Preview mode">
-          {[["light", "Light"], ["dark", "Dark"]].map(([m, label]) => (
-            <button
-              key={m}
-              type="button"
-              className={`ph-modebtn${mode === m ? " act" : ""}`}
-              aria-pressed={mode === m}
-              onClick={() => setMode(m)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div
-        className={`ph-stage${center ? " center" : ""}${tall ? " tall" : ""}`}
-        data-theme={mode}
-        style={stageStyle}
-      >
-        {children}
-      </div>
+    <div style={divider ? { ...PG_ROW, borderBottom: "1px solid var(--pk-line-soft)" } : PG_ROW}>
+      <span className="ph-rowlabel">Mode</span>
+      <Tabs small value={mode} onChange={setMode} label="Preview mode" items={[["light", "Light"], ["dark", "Dark"]]} />
+    </div>
+  );
+}
+
+// Preview stage themed by a local `mode` (light/dark), independent of the app
+// theme. The Light/Dark control lives in the playground via <ModeRow>; here the
+// stage re-scopes the design tokens via data-theme, so the preview can be dark
+// inside a light app (and vice versa).
+export function PreviewStage({ mode, tall, center, stageStyle, children }) {
+  return (
+    <div
+      className={`ph-stage${center ? " center" : ""}${tall ? " tall" : ""}`}
+      data-theme={mode}
+      style={stageStyle}
+    >
+      {children}
     </div>
   );
 }

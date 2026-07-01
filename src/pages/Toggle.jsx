@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { useTheme } from "../theme.jsx";
-import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 import { reactToggle, vueToggle, flutterToggle, usageToggle } from "../snippets/wallet.js";
 
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px" };
@@ -60,6 +60,7 @@ export default function Toggle({ fw, setFw }) {
 
       <SectionHeader label="Playground" desc="Toggle it directly, or force a state below." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} />
         <div style={{ ...ROW, borderBottom: "1px solid var(--pk-line-soft)" }}>
           <span className="ph-rowlabel">State</span>
           <Tabs small value={state} onChange={setState} label="State" items={STATES.map(([k, n]) => [k, n])} />
@@ -70,7 +71,7 @@ export default function Toggle({ fw, setFw }) {
         </div>
       </div>
 
-      <PreviewStage mode={mode} setMode={setMode} tall>
+      <PreviewStage mode={mode} tall>
         <LiveToggle state={state} platform={platform} dark={mode === "dark"} onFlip={flip} />
       </PreviewStage>
 

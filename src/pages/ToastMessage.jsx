@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { useTheme } from "../theme.jsx";
-import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 import { reactToast, vueToast, flutterToast, usageToast } from "../snippets/wallet.js";
 
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px" };
@@ -55,13 +55,14 @@ export default function ToastMessage({ fw, setFw }) {
 
       <SectionHeader label="Playground" desc="Switch the variant; the preview and snippet update together." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} />
         <div style={ROW}>
           <span className="ph-rowlabel">Variant</span>
           <Tabs small value={variant} onChange={setVariant} label="Variant" items={[["success", "Success"], ["warning", "Warning"]]} />
         </div>
       </div>
 
-      <PreviewStage mode={mode} setMode={setMode} tall>
+      <PreviewStage mode={mode} tall>
         <LiveToast variant={variant} />
       </PreviewStage>
 
