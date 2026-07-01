@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
-import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { useTheme } from "../theme.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
 import {
   reactTabsToggle,
   vueTabsToggle,
@@ -77,6 +78,8 @@ const PROPS_ROWS = [
 ];
 
 export default function TabsToggle({ fw, setFw }) {
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   const [active, setActive] = useState("pay-now");
 
   const impl = { react: reactTabsToggle, vue: vueTabsToggle, flutter: flutterTabsToggle };
@@ -93,9 +96,9 @@ export default function TabsToggle({ fw, setFw }) {
         its colours follow the light/dark theme.
       </Lead>
 
-      <div className="ph-stage tall" style={{ marginTop: 14 }}>
+      <PreviewStage mode={mode} setMode={setMode} tall>
         <LiveTabsToggle value={active} onChange={setActive} />
-      </div>
+      </PreviewStage>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
       <CodeBlock code={usageTabsToggle(fw, active)} label="Usage — reflects active tab above" />

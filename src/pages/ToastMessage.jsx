@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
-import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { useTheme } from "../theme.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
 import { reactToast, vueToast, flutterToast, usageToast } from "../snippets/wallet.js";
 
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px" };
@@ -43,6 +44,8 @@ const PROPS_ROWS = [
 ];
 
 export default function ToastMessage({ fw, setFw }) {
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   const [variant, setVariant] = useState("success");
   const impl = { react: reactToast, vue: vueToast, flutter: flutterToast };
   const label = { react: "PkToast.jsx + parkway-toast.css", vue: "PkToast.vue", flutter: "pk_toast.dart" };
@@ -58,9 +61,9 @@ export default function ToastMessage({ fw, setFw }) {
         </div>
       </div>
 
-      <div className="ph-stage tall" style={{ marginTop: 14 }}>
+      <PreviewStage mode={mode} setMode={setMode} tall>
         <LiveToast variant={variant} />
-      </div>
+      </PreviewStage>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
       <CodeBlock code={usageToast(fw, variant)} label="Usage — reflects the control above" />

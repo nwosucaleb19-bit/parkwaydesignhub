@@ -23,7 +23,10 @@
 }
 
 /* ── Theme tokens — LIGHT (ref: hashtask) ───────────────────────────── */
-:root {
+/* Attribute selectors (not :root-only) so a nested [data-theme] scope — e.g.
+   a component preview — can re-declare these tokens independently of the app. */
+:root,
+[data-theme="light"] {
   --pk-canvas: #FFFFFF;
   --pk-rail-bg: #FBFBFA;
   --pk-panel-bg: #FFFFFF;
@@ -106,7 +109,7 @@
 }
 
 /* ── Theme tokens — DARK (ref: Knowledge Base) ──────────────────────── */
-:root[data-theme="dark"] {
+[data-theme="dark"] {
   --pk-canvas: #1A1A1A;
   --pk-rail-bg: #0E0E0E;
   --pk-panel-bg: #161616;
@@ -443,6 +446,16 @@ a { color: inherit; }
 .ph-stage.center { display: grid; place-items: center; min-height: 200px; }
 .ph-stage.tall { min-height: 280px; }
 .ph-stagecap { font: 600 10.5px var(--pk-sans); letter-spacing: 2px; text-transform: uppercase; color: var(--pk-text-faint); margin: 0 0 22px; }
+
+/* Preview stage with its own Light/Dark mode toggle (independent of app theme) */
+.ph-previewwrap { margin-top: 14px; }
+.ph-previewbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.ph-previewbar-label { font: 600 10.5px var(--pk-sans); letter-spacing: 2px; text-transform: uppercase; color: var(--pk-text-faint); }
+.ph-modetoggle { display: inline-flex; background: var(--pk-stage); border: 1px solid var(--pk-line); border-radius: 8px; padding: 3px; gap: 2px; }
+.ph-modebtn { border: 0; background: transparent; border-radius: 6px; padding: 4px 12px; font: 600 11.5px var(--pk-sans); color: var(--pk-text-muted); cursor: pointer; transition: background .15s var(--pk-ease), color .15s var(--pk-ease); }
+.ph-modebtn:hover { color: var(--pk-text); }
+.ph-modebtn.act { background: var(--pk-panel-bg); color: var(--pk-text); box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+.ph-previewwrap .ph-stage { margin-top: 0; }
 
 /* ── Code block (fixed dark) ────────────────────────────────────────── */
 .ph-code { margin: 18px 0 0; border-radius: 11px; overflow: hidden; background: var(--pk-code-bg); border: 1px solid var(--pk-code-line); }

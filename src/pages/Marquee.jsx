@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
-import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { useTheme } from "../theme.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
 import { reactMarquee, vueMarquee, flutterMarquee, usageMarquee } from "../snippets/wallet.js";
 
 const ITEMS = [
@@ -73,6 +74,8 @@ const PROPS_ROWS = [
 ];
 
 export default function Marquee({ fw, setFw }) {
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   const [speedKey, setSpeedKey] = useState("normal");
   const speed = SPEEDS.find(([k]) => k === speedKey)?.[2] ?? 40;
   const impl = { react: reactMarquee, vue: vueMarquee, flutter: flutterMarquee };
@@ -93,9 +96,9 @@ export default function Marquee({ fw, setFw }) {
         </div>
       </div>
 
-      <div className="ph-stage tall" style={{ marginTop: 14, padding: 0, overflow: "hidden" }}>
+      <PreviewStage mode={mode} setMode={setMode} tall stageStyle={{ padding: 0, overflow: "hidden" }}>
         <LiveMarquee items={ITEMS} speed={speed} />
-      </div>
+      </PreviewStage>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
       <CodeBlock code={usageMarquee(fw, speed)} label="Usage — reflects the control above" />

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
-import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { useTheme } from "../theme.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage } from "../components/primitives.jsx";
 import {
   reactTransactionStatus,
   vueTransactionStatus,
@@ -80,6 +81,8 @@ const PROPS_ROWS = [
 ];
 
 export default function TransactionStatus({ fw, setFw }) {
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   const [typeVal,   setTypeVal]   = useState("stamp-duty");
   const [statusVal, setStatusVal] = useState("successful");
 
@@ -98,7 +101,7 @@ export default function TransactionStatus({ fw, setFw }) {
         Inactive surfaces follow the light/dark theme.
       </Lead>
 
-      <div className="ph-stage tall" style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 24 }}>
+      <PreviewStage mode={mode} setMode={setMode} tall stageStyle={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <FilterGroup
           groupLabel="Transaction Type"
           options={TX_TYPES}
@@ -117,7 +120,7 @@ export default function TransactionStatus({ fw, setFw }) {
           bgVar="--pk-filter-stat-bg"
           textVar="--pk-filter-stat-text"
         />
-      </div>
+      </PreviewStage>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
       <CodeBlock

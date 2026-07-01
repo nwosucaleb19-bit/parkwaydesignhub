@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BTN, FRAMEWORKS } from "../tokens.js";
-import { Lead, SectionHeader, Tabs, Select, CodeBlock } from "../components/primitives.jsx";
+import { useTheme } from "../theme.jsx";
+import { Lead, SectionHeader, Tabs, Select, CodeBlock, PreviewStage } from "../components/primitives.jsx";
 import { reactButton, vueButton, flutterButton, usageSnippet } from "../snippets/index.js";
 import { reactLink, vueLink, flutterLink, usageLink } from "../snippets/wallet.js";
 
@@ -79,6 +80,8 @@ const LINK_STATES = [
 ];
 
 export default function Buttons({ fw, setFw }) {
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   const [btnStyle, setBtnStyle] = useState("filled");
   // filled controls
   const [variant, setVariant] = useState("primary");
@@ -143,9 +146,9 @@ export default function Buttons({ fw, setFw }) {
         )}
       </div>
 
-      <div className="ph-stage tall" style={{ marginTop: 14 }}>
+      <PreviewStage mode={mode} setMode={setMode} tall>
         {isLink ? <LiveLink icon={linkIcon} state={linkState} /> : <LiveButton variant={variant} size={size} state={state} platform={platform} />}
-      </div>
+      </PreviewStage>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
       {isLink ? (
