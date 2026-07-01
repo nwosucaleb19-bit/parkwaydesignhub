@@ -2,7 +2,8 @@ import { useState } from "react";
 import { CaretLeft }  from "@phosphor-icons/react/dist/csr/CaretLeft";
 import { CaretRight } from "@phosphor-icons/react/dist/csr/CaretRight";
 import { FRAMEWORKS } from "../tokens.js";
-import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { useTheme } from "../theme.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 
 // ── Design tokens ────────────────────────────────────────────────────────────
 const ACCENT     = "var(--pk-accent)";        // #F9956B tangerine
@@ -448,6 +449,8 @@ const PROPS_ROWS = [
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px", borderBottom: "1px solid var(--pk-line-soft)" };
 
 export default function InputsDatePicker({ fw, setFw }) {
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   return (
     <>
       <Lead>
@@ -458,9 +461,12 @@ export default function InputsDatePicker({ fw, setFw }) {
       </Lead>
 
       <SectionHeader label="Playground" desc="Click any date to select it. Use the chevrons to change the month." />
-      <div className="ph-stage" style={{ marginTop: 14, minHeight: 440, display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: 24, paddingBottom: 24, overflow: "visible" }}>
-        <RcDatePicker onClose={() => {}} onSelect={() => {}} />
+      <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} divider={false} />
       </div>
+      <PreviewStage mode={mode} stageStyle={{ minHeight: 440, display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: 24, paddingBottom: 24, overflow: "visible" }}>
+        <RcDatePicker onClose={() => {}} onSelect={() => {}} />
+      </PreviewStage>
 
       <SectionHeader label="Export component" />
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />

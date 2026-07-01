@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { useTheme } from "../theme.jsx";
-import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 
 // ─── Token reference ───────────────────────────────────────────────────────
 // ON  track : #FAAA89 (primary-50 tangerine) — direct from Figma node 29767:419932
@@ -15,9 +15,7 @@ const ROW = {
   gap: 14, padding: "14px 2px",
 };
 
-function LiveToggle({ state, onFlip }) {
-  const { theme } = useTheme();
-  const dark = theme === "dark";
+function LiveToggle({ state, dark, onFlip }) {
   const on = state === "on";
   const disabled = state === "disabled";
   const offTrack = dark ? "#3A3A38" : "#DDDDDD";
@@ -261,6 +259,8 @@ const IMPL_LABEL = {
 };
 
 export default function RcToggle({ fw, setFw }) {
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   const [state, setState] = useState("on");
   const flip = () => setState((s) => (s === "on" ? "off" : "on"));
 
@@ -274,6 +274,7 @@ export default function RcToggle({ fw, setFw }) {
 
       <SectionHeader label="Playground" desc="Click the toggle or force a state below." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} />
         <div style={ROW}>
           <span className="ph-rowlabel">State</span>
           <Tabs small value={state} onChange={setState} label="State"
@@ -281,9 +282,9 @@ export default function RcToggle({ fw, setFw }) {
         </div>
       </div>
 
-      <div className="ph-stage tall" style={{ marginTop: 14 }}>
-        <LiveToggle state={state} onFlip={flip} />
-      </div>
+      <PreviewStage mode={mode} tall>
+        <LiveToggle state={state} dark={mode === "dark"} onFlip={flip} />
+      </PreviewStage>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
       <CodeBlock code={usageSnippet(fw, state, state === "on")} label="Usage — reflects the control above" />

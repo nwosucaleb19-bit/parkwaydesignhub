@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { RC_INPUT } from "../readycash-tokens.js";
-import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { useTheme } from "../theme.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 
 const STATE_TABS = [
   ["empty",    "Empty"],
@@ -236,6 +237,8 @@ const PROPS_ROWS = [
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px", borderBottom: "1px solid var(--pk-line-soft)" };
 
 export default function InputsPin6({ fw, setFw }) {
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   const [state, setState] = useState("empty");
 
   const code  = fw === "flutter" ? flutterSnippet : reactSnippet;
@@ -253,15 +256,16 @@ export default function InputsPin6({ fw, setFw }) {
 
       <SectionHeader label="Playground" />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} />
         <div style={{ ...ROW, borderBottom: 0 }}>
           <span className="ph-rowlabel">State</span>
           <Tabs small value={state} onChange={setState} label="State" items={STATE_TABS} />
         </div>
       </div>
 
-      <div className="ph-stage tall" style={{ marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <PreviewStage mode={mode} tall stageStyle={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <LivePin6 state={state} />
-      </div>
+      </PreviewStage>
 
       <SectionHeader label="State tokens — border colour" />
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>

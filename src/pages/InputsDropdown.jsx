@@ -3,7 +3,8 @@ import { CaretDown } from "@phosphor-icons/react/dist/csr/CaretDown";
 import { Check }     from "@phosphor-icons/react/dist/csr/Check";
 import { FRAMEWORKS } from "../tokens.js";
 import { RC_INPUT } from "../readycash-tokens.js";
-import { Lead, SectionHeader, Tabs, CodeBlock } from "../components/primitives.jsx";
+import { useTheme } from "../theme.jsx";
+import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 
 const THEME_TABS = [["outline", "Outline"], ["filled", "Filled"]];
 const STATE_TABS = [
@@ -261,6 +262,8 @@ const PROPS_ROWS = [
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px", borderBottom: "1px solid var(--pk-line-soft)" };
 
 export default function InputsDropdown({ fw, setFw }) {
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   const [theme, setTheme] = useState("outline");
   const [state, setState] = useState("default");
 
@@ -278,6 +281,7 @@ export default function InputsDropdown({ fw, setFw }) {
 
       <SectionHeader label="Playground" desc="Switch theme and state to preview the dropdown trigger." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} />
         <div style={ROW}>
           <span className="ph-rowlabel">Theme</span>
           <Tabs small value={theme} onChange={setTheme} label="Theme" items={THEME_TABS} />
@@ -288,9 +292,9 @@ export default function InputsDropdown({ fw, setFw }) {
         </div>
       </div>
 
-      <div className="ph-stage tall" style={{ marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", overflow: "visible", minHeight: state === "open" ? 240 : undefined }}>
+      <PreviewStage mode={mode} tall stageStyle={{ display: "flex", alignItems: "center", justifyContent: "center", overflow: "visible", minHeight: state === "open" ? 240 : undefined }}>
         <LiveDropdown theme={theme} state={state} />
-      </div>
+      </PreviewStage>
 
       <SectionHeader label="State tokens" />
       <div style={{ borderRadius: 10, border: "1px solid var(--pk-line)", overflow: "hidden", marginTop: 8 }}>
