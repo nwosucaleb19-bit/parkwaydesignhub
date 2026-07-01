@@ -94,12 +94,17 @@ export default function Icons({ fw, setFw, product }) {
         </span>
       </div>
 
-      <SectionHeader label="Curated set" desc="A small slice of Phosphor's library — the full set ships thousands of icons across six weights." />
+      <SectionHeader label="Curated set" desc="A finance-first preview — not the full library. Phosphor ships 1,500+ icons across six weights; install the package to use any of them." />
       <div className="ph-icongrid">
         {CURATED.map(([name, Icon]) => (
           <Cell key={name} name={name} Icon={Icon} weight={weight} />
         ))}
       </div>
+      <p className="ph-note">
+        Need an icon that isn't here? Browse the full set at{" "}
+        <a href="https://phosphoricons.com" target="_blank" rel="noreferrer" style={{ color: "var(--pk-accent-ink)" }}>phosphoricons.com</a>{" "}
+        and install the package below — the hub only previews a representative subset.
+      </p>
 
       <SectionHeader label="Install & use" desc="Phosphor ships first-party packages for web (React), Vue, and Flutter." />
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />

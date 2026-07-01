@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BTN, FRAMEWORKS } from "../tokens.js";
-import { Lead, SectionHeader, Tabs, Select, CodeBlock } from "../components/primitives.jsx";
+import { useTheme } from "../theme.jsx";
+import { Lead, SectionHeader, Tabs, Select, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
 import { reactButton, vueButton, flutterButton, usageSnippet } from "../snippets/index.js";
 import { reactLink, vueLink, flutterLink, usageLink } from "../snippets/wallet.js";
 import { rcReactButton, rcVueButton, rcFlutterButton, rcUsageSnippet } from "../snippets/readycash-snippets.js";
@@ -100,7 +101,8 @@ export default function Buttons({ fw, setFw, product }) {
   const btn = t?.btn || BTN;
   const isRC = !!t;
   const variantTabs = isRC ? RC_VARIANT_TABS : PK_VARIANT_TABS;
-
+  const app = useTheme();
+  const [mode, setMode] = useState(app.theme);
   const [btnStyle, setBtnStyle] = useState("filled");
   // filled controls
   const [variant, setVariant] = useState("primary");
@@ -141,6 +143,7 @@ export default function Buttons({ fw, setFw, product }) {
 
       <SectionHeader label="Playground" desc="Pick a style, then tune it; the preview and snippet update together." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
+        <ModeRow mode={mode} setMode={setMode} />
         <div style={ROW}>
           <span className="ph-rowlabel">Style</span>
           <Tabs small value={btnStyle} onChange={setBtnStyle} label="Style" items={[["filled", "Filled"], ["link", "Link"]]} />
@@ -179,11 +182,11 @@ export default function Buttons({ fw, setFw, product }) {
         )}
       </div>
 
-      <div className="ph-stage tall" style={{ marginTop: 14 }}>
+      <PreviewStage mode={mode} tall>
         {isLink
           ? <LiveLink icon={linkIcon} state={linkState} />
           : <LiveButton variant={variant} size={size} state={state} platform={platform} btn={btn} fontFamily={fontFamily} />}
-      </div>
+      </PreviewStage>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
       {isLink ? (
