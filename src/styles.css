@@ -23,7 +23,10 @@
 }
 
 /* ── Theme tokens — LIGHT (ref: hashtask) ───────────────────────────── */
-:root {
+/* Attribute selectors (not :root-only) so a nested [data-theme] scope — e.g.
+   a component preview — can re-declare these tokens independently of the app. */
+:root,
+[data-theme="light"] {
   --pk-canvas: #FFFFFF;
   --pk-rail-bg: #FBFBFA;
   --pk-panel-bg: #FFFFFF;
@@ -106,7 +109,7 @@
 }
 
 /* ── Theme tokens — DARK (ref: Knowledge Base) ──────────────────────── */
-:root[data-theme="dark"] {
+[data-theme="dark"] {
   --pk-canvas: #1A1A1A;
   --pk-rail-bg: #0E0E0E;
   --pk-panel-bg: #161616;
