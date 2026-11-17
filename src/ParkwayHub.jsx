@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./styles.css";
+import "./wallet.css";
 import { DEFAULT_PAGE, moduleOf } from "./nav.js";
 import { PRODUCTS, DEFAULT_PRODUCT, getProduct, applyAccent } from "./products.js";
 import { figmaHref } from "./tokens.js";
@@ -21,6 +22,10 @@ import TransactionStatus from "./pages/TransactionStatus.jsx";
 import TabsToggle from "./pages/TabsToggle.jsx";
 import DatePicker from "./pages/DatePicker.jsx";
 import Radio from "./pages/Radio.jsx";
+import Dropdown from "./pages/Dropdown.jsx";
+import InputFeedback from "./pages/InputFeedback.jsx";
+import Keypad from "./pages/Keypad.jsx";
+import AmountPill from "./pages/AmountPill.jsx";
 import Colors from "./pages/Colors.jsx";
 import Typography from "./pages/Typography.jsx";
 import Spacing from "./pages/Spacing.jsx";
@@ -56,6 +61,10 @@ const PAGES = {
   "tabs-toggle": TabsToggle,
   "date-picker": DatePicker,
   radio: Radio,
+  dropdown: Dropdown,
+  "input-feedback": InputFeedback,
+  keypad: Keypad,
+  "amount-pill": AmountPill,
   colors: Colors,
   typography: Typography,
   spacing: Spacing,

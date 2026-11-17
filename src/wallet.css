@@ -1,0 +1,262 @@
+/* ════════════════════════════════════════════════════════════════════
+   Parkway Wallet components — live previews (Keypad, Date Picker,
+   Amount Pill, Input Feedback, Dropdown). Values from the ParkwayWallet
+   Figma file; tokens re-declare per [data-theme] so previews follow the
+   playground's Light/Dark control.
+   ════════════════════════════════════════════════════════════════════ */
+
+:root,
+[data-theme="light"] {
+  --pk-tangerine: #F9956B;
+  --pk-tangerine-hover: #FBBFA6;
+  --pk-tangerine-disabled: #FDD5C4;
+
+  --pk-key-bg: #F0F0F0;
+  --pk-key-bg-active: #E2E2E2;
+  --pk-key-text: #121212;
+  --pk-link-muted: #444444;
+
+  --pk-pill-bg: #F4F4F4;
+  --pk-pill-text: #000000;
+  --pk-pill-selected-bg: rgba(249, 149, 107, 0.10);
+
+  --pk-feedback-error-bg: rgba(255, 0, 0, 0.10);
+  --pk-feedback-error-fg: #FC5555;
+  --pk-feedback-success-bg: #DCF5E3;
+  --pk-feedback-success-fg: #379557;
+
+  --pk-cal-bg: #FFFFFF;
+  --pk-cal-text: #000000;
+  --pk-cal-weekday: rgba(60, 60, 67, 0.30);
+  --pk-cal-muted: #C6C6C6;
+  --pk-cal-selected-bg: #FEEAE1;
+  --pk-cal-hover: #FFF5F0;
+
+  --pk-menu-bg: #FFFFFF;
+  --pk-menu-hover: #FEF1EA;
+
+  --pk-sf: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+  --pk-inter: "Inter", system-ui, sans-serif;
+}
+
+[data-theme="dark"] {
+  --pk-key-bg: #242424;
+  --pk-key-bg-active: #303030;
+  --pk-key-text: #F2F2F0;
+  --pk-link-muted: #A5A5A0;
+
+  --pk-pill-bg: #242424;
+  --pk-pill-text: #F2F2F0;
+  --pk-pill-selected-bg: rgba(249, 149, 107, 0.16);
+
+  --pk-feedback-error-bg: rgba(255, 97, 102, 0.14);
+  --pk-feedback-error-fg: #FF7A7A;
+  --pk-feedback-success-bg: #16331C;
+  --pk-feedback-success-fg: #6BBF74;
+
+  --pk-cal-bg: #1C1C1C;
+  --pk-cal-text: #F2F2F0;
+  --pk-cal-weekday: rgba(235, 235, 245, 0.30);
+  --pk-cal-muted: #555552;
+  --pk-cal-selected-bg: rgba(249, 149, 107, 0.18);
+  --pk-cal-hover: #2A2018;
+
+  --pk-menu-bg: #232323;
+  --pk-menu-hover: #2A2018;
+}
+
+/* Screen-reader-only text (live announcements). */
+.ph-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ── Keypad (PIN / Passcode) ──────────────────────────────────────── */
+.ph-keypad { display: flex; flex-direction: column; align-items: center; gap: 16px; font-family: var(--pk-sans); border-radius: 12px; }
+.ph-keypad:focus-visible { outline: 2px solid var(--pk-accent); outline-offset: 8px; }
+.ph-keypad__head { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 32px 0; }
+.ph-keypad__boxes { display: flex; gap: 13px; }
+.ph-keypad__box {
+  width: 44px; height: 44px; border: 1px solid var(--pk-tfield-border); border-radius: 8px;
+  display: grid; place-items: center; font: 700 20px var(--pk-sans); color: var(--pk-key-text);
+  transition: border-color .15s ease;
+}
+.ph-keypad__box.is-active { border-color: var(--pk-tangerine); }
+.ph-keypad__dots { display: flex; gap: 16px; }
+.ph-keypad__dot { position: relative; width: 15px; height: 15px; }
+.ph-keypad__dot img { position: absolute; display: block; max-width: none; }
+.ph-keypad__dot img.is-filled { left: 0; top: 0; }
+.ph-keypad__dot img.is-empty { left: -1px; top: -1px; }
+.ph-keypad__forgot {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font: 500 12px var(--pk-sans); letter-spacing: -0.24px; color: var(--pk-link-muted);
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.ph-keypad__grid { display: grid; grid-template-columns: repeat(3, 68px); gap: 32px; }
+.ph-keypad__key {
+  width: 68px; height: 68px; border-radius: 100px; border: 0; padding: 0;
+  background: var(--pk-key-bg); color: var(--pk-key-text); font: 700 20px var(--pk-sans);
+  display: grid; place-items: center; cursor: pointer;
+  transition: background .12s ease, transform .12s ease;
+}
+.ph-keypad__key:hover { background: var(--pk-key-bg-active); }
+.ph-keypad__key:active { transform: scale(0.95); }
+.ph-keypad__key--ghost { background: transparent; }
+.ph-keypad__key--ghost:hover { background: var(--pk-key-bg); }
+.ph-keypad__key--back { width: 59px; height: 59px; border-radius: 8px; background: transparent; place-self: center; }
+.ph-keypad__key--back:hover { background: var(--pk-key-bg); }
+.ph-keypad__key:disabled { cursor: default; opacity: .4; }
+.ph-keypad__key img { display: block; }
+/* Backspace glyph uses the Figma SVG as a mask so it follows the text colour in dark mode. */
+.ph-keypad__backspace {
+  width: 32px; height: 32px; background: var(--pk-key-text);
+  -webkit-mask: url("/assets/wallet/backspace.svg") center / 32px 32px no-repeat;
+  mask: url("/assets/wallet/backspace.svg") center / 32px 32px no-repeat;
+}
+.ph-keypad__spacer { width: 68px; height: 68px; }
+
+/* ── Date picker (Wallet, iOS-style) ──────────────────────────────── */
+.ph-cal {
+  background: var(--pk-cal-bg); width: 324px; max-width: 100%;
+  padding: 12px 16px; display: flex; flex-direction: column; gap: 32px;
+  transition: background .2s ease;
+}
+.ph-cal__body { display: flex; flex-direction: column; gap: 7px; }
+.ph-cal__head { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; }
+.ph-cal__title {
+  display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; padding: 0; cursor: pointer;
+  font: 600 14.7px/20.75px var(--pk-inter); letter-spacing: -0.37px; color: var(--pk-cal-text);
+}
+.ph-cal__title svg { color: var(--pk-tangerine); transition: transform .2s ease; }
+.ph-cal__title[aria-expanded="true"] svg { transform: rotate(90deg); }
+.ph-cal__nav { display: flex; gap: 8px; }
+.ph-cal__navbtn { background: none; border: 0; padding: 0; cursor: pointer; display: flex; color: var(--pk-tangerine); border-radius: 4px; }
+.ph-cal__navbtn:hover { background: var(--pk-cal-hover); }
+.ph-cal__week, .ph-cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); column-gap: 3.46px; margin: 0 -10px; }
+.ph-cal__grid { row-gap: 4.32px; }
+.ph-cal__wd {
+  text-align: center; text-transform: uppercase;
+  font: 600 11.24px/15.56px var(--pk-inter); color: var(--pk-cal-weekday);
+}
+.ph-cal__day {
+  position: relative; height: 44px; border: 0; padding: 0; background: none; cursor: pointer;
+  display: grid; place-items: center; border-radius: 22px;
+  font: 400 17.29px/20.75px var(--pk-sf); color: var(--pk-cal-text);
+}
+.ph-cal__day::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 38px; height: 38px;
+  transform: translate(-50%, -50%); border-radius: 50%; background: transparent; transition: background .12s ease;
+}
+.ph-cal__day > span { position: relative; }
+.ph-cal__day:not([aria-disabled="true"]):hover::before { background: var(--pk-cal-hover); }
+.ph-cal__day:focus-visible { outline-offset: -2px; }
+.ph-cal__day.is-today { color: var(--pk-tangerine); }
+.ph-cal__day.is-selected { color: var(--pk-tangerine); font: 500 20.75px/25px var(--pk-sf); }
+.ph-cal__day.is-selected::before,
+.ph-cal__day.is-selected:hover::before { background: var(--pk-cal-selected-bg); }
+/* aria-disabled (not :disabled) so out-of-range days stay reachable with the arrow keys */
+.ph-cal__day[aria-disabled="true"] { color: var(--pk-cal-muted); cursor: default; }
+.ph-cal__day--empty { height: 44px; }
+.ph-cal__months { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 8px 0; }
+.ph-cal__month {
+  height: 44px; border: 0; border-radius: 22px; background: none; cursor: pointer;
+  font: 400 17.29px/20.75px var(--pk-sf); color: var(--pk-cal-text);
+}
+.ph-cal__month:hover { background: var(--pk-cal-hover); }
+.ph-cal__month.is-selected { background: var(--pk-cal-selected-bg); color: var(--pk-tangerine); font-weight: 500; }
+.ph-cal__timerow {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  padding: 14px 0 0; background: none; border: 0; cursor: pointer; text-align: left;
+  font: 600 17.29px/20.75px var(--pk-sans); letter-spacing: 0.33px; color: var(--pk-cal-text);
+}
+.ph-cal__timerow-r { display: inline-flex; align-items: center; gap: 6px; }
+.ph-cal__timeval { font: 600 15px var(--pk-sans); color: var(--pk-tangerine); letter-spacing: 0; }
+.ph-cal__timerow img { display: block; transition: transform .2s ease; }
+.ph-cal__timerow[aria-expanded="true"] img { transform: rotate(90deg); }
+.ph-cal__time { display: flex; align-items: center; gap: 8px; padding-top: 12px; }
+/* Custom caret: the native select arrow sits flush to the edge, so hide it and inset our own. */
+.ph-cal__selwrap { position: relative; display: inline-flex; }
+.ph-cal__select {
+  -webkit-appearance: none; appearance: none;
+  height: 40px; padding: 0 34px 0 14px; border: 1px solid var(--pk-tfield-border); border-radius: 8px;
+  background: transparent; color: var(--pk-cal-text); font: 600 15px var(--pk-sans); cursor: pointer;
+}
+.ph-cal__select:focus-visible { outline: 2px solid var(--pk-accent); outline-offset: 1px; }
+.ph-cal__selcaret {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  display: flex; color: var(--pk-text-muted); pointer-events: none;
+}
+.ph-cal__colon { font: 600 15px var(--pk-sans); color: var(--pk-cal-text); }
+.ph-cal__ampm { display: inline-flex; margin-left: auto; border: 1px solid var(--pk-tfield-border); border-radius: 8px; overflow: hidden; }
+.ph-cal__ampm button {
+  height: 38px; padding: 0 12px; border: 0; background: transparent; cursor: pointer;
+  font: 600 13px var(--pk-sans); color: var(--pk-cal-text);
+}
+.ph-cal__ampm button[aria-pressed="true"] { background: var(--pk-cal-selected-bg); color: var(--pk-tangerine); }
+.ph-cal__cta {
+  width: 100%; border: 0; border-radius: 8px; padding: 8px 16px; cursor: pointer;
+  background: var(--pk-tangerine); color: #FFFFFF; font: 600 14px/1.8 var(--pk-sans);
+  transition: background .15s ease;
+}
+.ph-cal__cta:hover:not(:disabled) { background: var(--pk-tangerine-hover); }
+.ph-cal__cta:disabled { background: var(--pk-tangerine-disabled); cursor: not-allowed; }
+
+/* ── Amount pill ──────────────────────────────────────────────────── */
+.ph-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 335px; max-width: 100%; }
+.ph-pill {
+  position: relative; overflow: hidden; height: 45px; padding: 12px 16px;
+  border: 2px solid transparent; border-radius: 10px; background: var(--pk-pill-bg); cursor: pointer;
+  font: 600 12px/1.415 var(--pk-sans); color: var(--pk-pill-text); white-space: nowrap;
+  transition: background .15s ease, border-color .15s ease;
+}
+.ph-pill:hover { border-color: var(--pk-tangerine-disabled); }
+.ph-pill[aria-checked="true"] { background: var(--pk-pill-selected-bg); border-color: var(--pk-tangerine); }
+.ph-pill__check { position: absolute; top: -2px; right: -2px; display: block; pointer-events: none; }
+.ph-pill:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── Input feedback message ───────────────────────────────────────── */
+.ph-feedback {
+  display: flex; align-items: center; gap: 6px; padding: 8px; border-radius: 10px; width: 100%;
+  font: 600 12px/1.415 var(--pk-sans);
+}
+.ph-feedback img { display: block; flex: none; }
+.ph-feedback--error { background: var(--pk-feedback-error-bg); color: var(--pk-feedback-error-fg); }
+.ph-feedback--success { background: var(--pk-feedback-success-bg); color: var(--pk-feedback-success-fg); }
+.ph-feedback-wrap { width: 335px; max-width: 100%; display: grid; gap: 10px; }
+
+/* ── Text input: leading icon ─────────────────────────────────────── */
+.ph-tfield__lead { display: flex; color: var(--pk-text-muted); flex: none; }
+
+/* ── Dropdown (Nigerian states) ───────────────────────────────────── */
+.ph-dd { position: relative; }
+.ph-dd__trigger {
+  width: 100%; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: left;
+  display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; height: 100%;
+  font: 400 14px var(--pk-sans); color: var(--pk-text);
+}
+.ph-dd__trigger:focus-visible { outline: none; }
+.ph-dd__trigger:disabled { cursor: not-allowed; color: var(--pk-text-faint); }
+.ph-dd__value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ph-dd__value.is-placeholder { color: var(--pk-tfield-ph); }
+.ph-dd__chev { display: flex; color: var(--pk-text-muted); transition: transform .2s ease; }
+.ph-dd__trigger[aria-expanded="true"] .ph-dd__chev { transform: rotate(180deg); }
+.ph-dd__menu {
+  position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 20;
+  max-height: 240px; overflow-y: auto; margin: 0; padding: 6px; list-style: none;
+  background: var(--pk-menu-bg); border: 1px solid var(--pk-line); border-radius: 8px;
+  box-shadow: var(--pk-shadow-lg);
+}
+.ph-dd__opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 10px 12px; border-radius: 6px; cursor: pointer;
+  font: 400 14px var(--pk-sans); color: var(--pk-text);
+}
+.ph-dd__opt.is-active { background: var(--pk-menu-hover); }
+.ph-dd__opt[aria-selected="true"] { font-weight: 600; color: var(--pk-accent-ink); }
+.ph-dd__opt svg { color: var(--pk-tangerine); flex: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ph-keypad__key, .ph-cal__day::before, .ph-pill, .ph-dd__chev,
+  .ph-cal__title svg, .ph-cal__timerow img { transition: none; }
+  .ph-keypad__key:active { transform: none; }
+}

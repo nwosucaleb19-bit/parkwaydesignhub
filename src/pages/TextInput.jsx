@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { useTheme } from "../theme.jsx";
 import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
-import { CaretDown } from "../iconography/index.js";
+import { CurrencyNgn } from "../iconography/index.js";
 import { reactTextInput, vueTextInput, flutterTextInput, usageTextInput } from "../snippets/wallet.js";
 
 const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px", borderBottom: "1px solid var(--pk-line-soft)" };
@@ -24,6 +24,7 @@ function LiveInput({ addon, state }) {
     <div className="ph-tfield">
       <label className="ph-tfield__label" htmlFor="pk-demo-input">Amount</label>
       <span className={`ph-tfield__box${error ? " err" : ""}${disabled ? " dis" : ""}`}>
+        {addon === "icon" && <span className="ph-tfield__lead" aria-hidden="true"><CurrencyNgn size={18} /></span>}
         <input
           id="pk-demo-input"
           value={val}
@@ -33,7 +34,6 @@ function LiveInput({ addon, state }) {
           aria-invalid={error || undefined}
           autoComplete="off"
         />
-        {addon === "icon" && <span className="ph-tfield__chev"><CaretDown size={16} /></span>}
       </span>
       {addon === "helper" && !error && (
         <span className="ph-tfield__help">
@@ -56,7 +56,7 @@ const PROPS_ROWS = [
   ["placeholder", "string", "—", "Grey-02 placeholder; ends with the example pattern where useful."],
   ["helper", "string", "—", "Muted helper line under the field (e.g. limits)."],
   ["error", "string", "—", "Error message; turns the border and helper red, sets aria-invalid."],
-  ["trailingIcon", "node", "—", "Optional trailing glyph — e.g. a caret for select-style inputs."],
+  ["leadingIcon", "node", "—", "Optional glyph on the left of the field (e.g. ₦ for amounts). Decorative — the label carries the meaning. For a pick-list, use Dropdown instead."],
   ["disabled", "boolean", "false", "Grey-06 fill, non-interactive."],
 ];
 
@@ -76,7 +76,7 @@ export default function TextInput({ fw, setFw }) {
         <ModeRow mode={mode} setMode={setMode} />
         <div style={ROW}>
           <span className="ph-rowlabel">Add-on</span>
-          <Tabs small value={addon} onChange={setAddon} label="Add-on" items={[["none", "None"], ["icon", "Icon"], ["helper", "Helper"]]} />
+          <Tabs small value={addon} onChange={setAddon} label="Add-on" items={[["none", "None"], ["icon", "Leading icon"], ["helper", "Helper"]]} />
         </div>
         <div style={{ ...ROW, borderBottom: 0 }}>
           <span className="ph-rowlabel">State</span>
@@ -136,6 +136,7 @@ export default function TextInput({ fw, setFw }) {
             <li>Don't use the placeholder as the label.</li>
             <li>Don't disable a field without explaining why.</li>
             <li>Don't validate on every keystroke — wait for blur or submit.</li>
+            <li>Don't add a caret to fake a select — use the Dropdown component.</li>
           </ul>
         </div>
       </div>

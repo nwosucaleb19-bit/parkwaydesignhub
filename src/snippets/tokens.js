@@ -52,6 +52,16 @@ export const cssTokens = `:root {
   --pk-badge-failed-bg:  #FDECEC;          --pk-badge-failed-fg:  var(--pk-error);
   --pk-badge-pending-bg: var(--pk-buff-04); --pk-badge-pending-fg: var(--pk-buff-07);
   --pk-badge-alt-bg:     var(--pk-grey-05); --pk-badge-alt-fg:     var(--pk-grey-09);
+
+  /* Wallet component surfaces (ParkwayWallet Figma) */
+  --pk-key-bg: #F0F0F0;                         /* keypad keys */
+  --pk-pill-bg: #F4F4F4;                        /* amount pill, default */
+  --pk-pill-selected-bg: rgba(249, 149, 107, .10);
+  --pk-feedback-error-bg: rgba(255, 0, 0, .10); --pk-feedback-error-fg: #FC5555;
+  --pk-feedback-success-bg: #DCF5E3;            --pk-feedback-success-fg: #379557;
+  --pk-calendar-weekday: rgba(60, 60, 67, .30);
+  --pk-calendar-muted: var(--pk-grey-03);       /* out-of-range dates */
+  --pk-calendar-selected-bg: var(--pk-tangerine-05);
 }
 
 /* Dark mode — set data-theme="dark" on <html>. Only the semantic layer flips;
@@ -74,6 +84,15 @@ export const cssTokens = `:root {
   --pk-badge-failed-bg:  #3A1D1E;  --pk-badge-failed-fg:  #FF6166;
   --pk-badge-pending-bg: #2A2414;  --pk-badge-pending-fg: #D8B86A;
   --pk-badge-alt-bg:     #262626;  --pk-badge-alt-fg:     #A5A5A0;
+
+  --pk-key-bg: #242424;
+  --pk-pill-bg: #242424;
+  --pk-pill-selected-bg: rgba(249, 149, 107, .16);
+  --pk-feedback-error-bg: rgba(255, 97, 102, .14); --pk-feedback-error-fg: #FF7A7A;
+  --pk-feedback-success-bg: #16331C;               --pk-feedback-success-fg: #6BBF74;
+  --pk-calendar-weekday: rgba(235, 235, 245, .30);
+  --pk-calendar-muted: #555552;
+  --pk-calendar-selected-bg: rgba(249, 149, 107, .18);
 }`;
 
 export const tailwindTokens = `// tailwind.config.js — Parkway design tokens
@@ -165,6 +184,18 @@ abstract class PkSurfaceLight {
   static const placeholder = PkColors.grey02;
   static const trackOff = PkColors.grey04;
   static const toast = PkColors.grey11;
+  static const surface = PkColors.white01;
+  // Wallet component surfaces
+  static const keyBg = Color(0xFFF0F0F0);
+  static const pill = Color(0xFFF4F4F4);
+  static const pillSelected = Color(0x1AF9956B);       // tangerine @ 10%
+  static const feedbackErrorBg = Color(0x1AFF0000);    // red @ 10%
+  static const feedbackErrorFg = Color(0xFFFC5555);
+  static const feedbackSuccessBg = Color(0xFFDCF5E3);
+  static const feedbackSuccessFg = Color(0xFF379557);
+  static const calendarWeekday = Color(0x4D3C3C43);    // #3C3C43 @ 30%
+  static const calendarMuted = PkColors.grey03;
+  static const calendarSelected = PkColors.tangerine05;
 }
 
 abstract class PkSurfaceDark {
@@ -175,6 +206,17 @@ abstract class PkSurfaceDark {
   static const placeholder = Color(0xFF7A7A75);
   static const trackOff = Color(0xFF3A3A38);
   static const toast = Color(0xFF0E0E0E);
+  static const surface = Color(0xFF161616);
+  static const keyBg = Color(0xFF242424);
+  static const pill = Color(0xFF242424);
+  static const pillSelected = Color(0x29F9956B);
+  static const feedbackErrorBg = Color(0x24FF6166);
+  static const feedbackErrorFg = Color(0xFFFF7A7A);
+  static const feedbackSuccessBg = Color(0xFF16331C);
+  static const feedbackSuccessFg = Color(0xFF6BBF74);
+  static const calendarWeekday = Color(0x4DEBEBF5);
+  static const calendarMuted = Color(0xFF555552);
+  static const calendarSelected = Color(0x2EF9956B);
 }
 
 abstract class PkSpacing {

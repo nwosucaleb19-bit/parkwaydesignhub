@@ -1,188 +1,258 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FRAMEWORKS } from "../tokens.js";
 import { useTheme } from "../theme.jsx";
 import { Lead, SectionHeader, Tabs, CodeBlock, PreviewStage, ModeRow } from "../components/primitives.jsx";
-import {
-  reactDatePicker,
-  vueDatePicker,
-  flutterDatePicker,
-  usageDatePicker,
-} from "../snippets/wallet.js";
+import { CaretDown, CaretLeft, CaretRight } from "../iconography/index.js";
+import { reactDatePicker, vueDatePicker, flutterDatePicker, usageDatePicker } from "../snippets/date-picker.js";
 
-const MONTHS = [
-  "January","February","March","April","May","June",
-  "July","August","September","October","November","December",
-];
-const DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const ROW = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, padding: "14px 2px", borderBottom: "1px solid var(--pk-line-soft)" };
 
-function getGrid(year, month) {
-  const startDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const cells = Array(startDay).fill(null);
-  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
-  while (cells.length % 7) cells.push(null);
-  return cells;
-}
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const WEEKDAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+const HOURS = Array.from({ length: 12 }, (_, i) => i + 1);
+const MINUTES = Array.from({ length: 60 }, (_, i) => i);
 
-function LiveDatePicker() {
-  const today = new Date();
-  const [view, setView]       = useState({ year: today.getFullYear(), month: today.getMonth() });
+const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const sameDay = (a, b) => !!a && !!b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+const pad = (n) => String(n).padStart(2, "0");
+const fmtTime = (t) => `${t.h}:${pad(t.min)} ${t.pm ? "PM" : "AM"}`;
+const longDate = (d) => d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+
+function LiveCalendar({ withTime, disablePast, onChoose }) {
+  const today = startOfDay(new Date());
+  const [view, setView] = useState({ y: today.getFullYear(), m: today.getMonth() });
   const [selected, setSelected] = useState(null);
+  const [focusDate, setFocusDate] = useState(today);
+  const [monthView, setMonthView] = useState(false);
+  const [timeOpen, setTimeOpen] = useState(false);
+  const [time, setTime] = useState(null);
+  const gridRef = useRef(null);
+  const moved = useRef(false);
 
-  const prev = () => setView((v) => v.month === 0 ? { year: v.year - 1, month: 11 } : { ...v, month: v.month - 1 });
-  const next = () => setView((v) => v.month === 11 ? { year: v.year + 1, month: 0 } : { ...v, month: v.month + 1 });
+  const isDisabled = (d) => disablePast && d < today;
+  const inView = (d) => !!d && d.getFullYear() === view.y && d.getMonth() === view.m;
 
-  const isToday = (d) => d && view.year === today.getFullYear() && view.month === today.getMonth() && d === today.getDate();
-  const isSel   = (d) => d && selected && view.year === selected.getFullYear() && view.month === selected.getMonth() && d === selected.getDate();
+  // After an arrow-key move, put focus on the new roving day.
+  useEffect(() => {
+    if (!moved.current) return;
+    moved.current = false;
+    gridRef.current?.querySelector('[tabindex="0"]')?.focus();
+  }, [focusDate, view]);
+
+  const shiftMonth = (delta) => setView((v) => {
+    const d = new Date(v.y, v.m + delta, 1);
+    return { y: d.getFullYear(), m: d.getMonth() };
+  });
+  const prev = () => (monthView ? setView((v) => ({ ...v, y: v.y - 1 })) : shiftMonth(-1));
+  const next = () => (monthView ? setView((v) => ({ ...v, y: v.y + 1 })) : shiftMonth(1));
+
+  const lead = new Date(view.y, view.m, 1).getDay();
+  const count = new Date(view.y, view.m + 1, 0).getDate();
+  const tabDay = inView(focusDate) ? focusDate.getDate()
+    : inView(selected) ? selected.getDate()
+    : inView(today) ? today.getDate() : 1;
+
+  const onDayKey = (e, date) => {
+    const delta = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key];
+    if (!delta) return;
+    e.preventDefault();
+    const n = new Date(date.getFullYear(), date.getMonth(), date.getDate() + delta);
+    moved.current = true;
+    setFocusDate(n);
+    if (!inView(n)) setView({ y: n.getFullYear(), m: n.getMonth() });
+  };
+
+  const pick = (date) => {
+    if (isDisabled(date)) return;
+    setSelected(date);
+    setFocusDate(date);
+  };
+
+  const toggleTime = () => {
+    setTimeOpen((o) => !o);
+    if (!time) setTime({ h: 12, min: 0, pm: true });
+  };
+
+  const ready = selected && (!withTime || time);
+  const choose = () => {
+    if (!ready) return;
+    const out = new Date(selected);
+    if (withTime) out.setHours((time.h % 12) + (time.pm ? 12 : 0), time.min);
+    onChoose(out);
+  };
 
   return (
-    <div style={{
-      background:    "var(--pk-dp-bg)",
-      boxShadow:     "var(--pk-dp-shadow)",
-      borderRadius:  8,
-      padding:       25,
-      width:         326,
-      display:       "flex",
-      flexDirection: "column",
-      gap:           20,
-      fontFamily:    "Inter, system-ui, sans-serif",
-      transition:    "background .2s ease, box-shadow .2s ease",
-    }}>
-      {/* Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ font: "500 17px/25px Inter, sans-serif", color: "var(--pk-dp-title)" }}>
-          {MONTHS[view.month]} {view.year}
-        </span>
-        <div style={{ display: "flex", gap: 10 }}>
-          {[prev, next].map((fn, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={fn}
-              aria-label={i === 0 ? "Previous month" : "Next month"}
-              style={{
-                background: "none", border: 0, padding: 2,
-                cursor: "pointer", display: "flex", alignItems: "center", borderRadius: 4,
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                {i === 0
-                  ? <path d="M15 18l-6-6 6-6" stroke="var(--pk-dp-chevron)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  : <path d="M9 18l6-6-6-6" stroke="var(--pk-dp-chevron)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                }
-              </svg>
+    <div className="ph-cal">
+      <div className="ph-cal__body">
+        <div className="ph-cal__head">
+          <button type="button" className="ph-cal__title" aria-expanded={monthView} onClick={() => setMonthView((v) => !v)}>
+            {MONTHS[view.m]} {view.y}
+            <CaretRight size={12} weight="bold" aria-hidden="true" />
+          </button>
+          <div className="ph-cal__nav">
+            <button type="button" className="ph-cal__navbtn" onClick={prev} aria-label={monthView ? "Previous year" : "Previous month"}>
+              <CaretLeft size={20} weight="bold" />
             </button>
-          ))}
+            <button type="button" className="ph-cal__navbtn" onClick={next} aria-label={monthView ? "Next year" : "Next month"}>
+              <CaretRight size={20} weight="bold" />
+            </button>
+          </div>
         </div>
+
+        {monthView ? (
+          <div className="ph-cal__months">
+            {MONTHS.map((name, i) => (
+              <button
+                key={name}
+                type="button"
+                className={`ph-cal__month${i === view.m ? " is-selected" : ""}`}
+                aria-pressed={i === view.m}
+                onClick={() => { setView((v) => ({ ...v, m: i })); setMonthView(false); }}
+              >
+                {name.slice(0, 3)}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <>
+            <div className="ph-cal__week" aria-hidden="true">
+              {WEEKDAYS.map((w) => <span key={w} className="ph-cal__wd">{w}</span>)}
+            </div>
+            <div className="ph-cal__grid" ref={gridRef} role="group" aria-label={`${MONTHS[view.m]} ${view.y}`}>
+              {Array.from({ length: lead }, (_, i) => <span key={`b${i}`} className="ph-cal__day--empty" aria-hidden="true" />)}
+              {Array.from({ length: count }, (_, i) => {
+                const d = i + 1;
+                const date = new Date(view.y, view.m, d);
+                const sel = sameDay(date, selected);
+                const tod = sameDay(date, today);
+                const dis = isDisabled(date);
+                return (
+                  <button
+                    key={d}
+                    type="button"
+                    className={`ph-cal__day${sel ? " is-selected" : ""}${tod && !sel ? " is-today" : ""}`}
+                    tabIndex={d === tabDay ? 0 : -1}
+                    aria-label={longDate(date)}
+                    aria-pressed={sel}
+                    aria-current={tod ? "date" : undefined}
+                    aria-disabled={dis || undefined}
+                    onClick={() => pick(date)}
+                    onKeyDown={(e) => onDayKey(e, date)}
+                  >
+                    <span>{d}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        {withTime && (
+          <>
+            <button type="button" className="ph-cal__timerow" aria-expanded={timeOpen} onClick={toggleTime}>
+              Select Time
+              <span className="ph-cal__timerow-r">
+                {time && <span className="ph-cal__timeval">{fmtTime(time)}</span>}
+                <img src="/assets/wallet/caret-right.svg" width="24" height="24" alt="" />
+              </span>
+            </button>
+            {timeOpen && time && (
+              <div className="ph-cal__time" role="group" aria-label="Time">
+                <span className="ph-cal__selwrap">
+                  <select className="ph-cal__select" aria-label="Hour" value={time.h} onChange={(e) => setTime({ ...time, h: +e.target.value })}>
+                    {HOURS.map((h) => <option key={h} value={h}>{h}</option>)}
+                  </select>
+                  <span className="ph-cal__selcaret" aria-hidden="true"><CaretDown size={14} weight="bold" /></span>
+                </span>
+                <span className="ph-cal__colon" aria-hidden="true">:</span>
+                <span className="ph-cal__selwrap">
+                  <select className="ph-cal__select" aria-label="Minute" value={time.min} onChange={(e) => setTime({ ...time, min: +e.target.value })}>
+                    {MINUTES.map((m) => <option key={m} value={m}>{pad(m)}</option>)}
+                  </select>
+                  <span className="ph-cal__selcaret" aria-hidden="true"><CaretDown size={14} weight="bold" /></span>
+                </span>
+                <span className="ph-cal__ampm">
+                  <button type="button" aria-pressed={!time.pm} onClick={() => setTime({ ...time, pm: false })}>AM</button>
+                  <button type="button" aria-pressed={time.pm} onClick={() => setTime({ ...time, pm: true })}>PM</button>
+                </span>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
-      {/* Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)" }}>
-        {DAYS.map((d, i) => (
-          <div key={d} style={{
-            textAlign: "center",
-            padding: "10px 0",
-            font: "400 14px/20px Inter, sans-serif",
-            color: i === 0 || i === 6 ? "var(--pk-dp-weekend)" : "var(--pk-dp-weekday)",
-          }}>{d}</div>
-        ))}
-        {getGrid(view.year, view.month).map((d, i) => {
-          if (!d) return <div key={i} style={{ height: 40, margin: "2px 0" }} aria-hidden="true" />;
-          const tod = isToday(d);
-          const sel = isSel(d);
-          return (
-            <button
-              key={i}
-              type="button"
-              aria-label={`${MONTHS[view.month]} ${d}, ${view.year}`}
-              aria-pressed={!!sel}
-              onClick={() => setSelected(new Date(view.year, view.month, d))}
-              style={{
-                height: 40, width: "100%", border: 0,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                font: `${tod ? "600" : "400"} 14px/20px Inter, sans-serif`,
-                color: sel ? "#fff" : tod ? "#FAAA89" : "var(--pk-dp-day)",
-                background: sel ? "#FAAA89" : "transparent",
-                borderRadius: sel ? 8 : 0,
-                cursor: "pointer",
-                margin: "2px 0",
-                transition: "background .1s ease",
-              }}
-              onMouseEnter={(e) => { if (!sel) e.currentTarget.style.background = "var(--pk-dp-hover)"; }}
-              onMouseLeave={(e) => { if (!sel) e.currentTarget.style.background = "transparent"; }}
-            >{d}</button>
-          );
-        })}
-      </div>
-
-      {/* CTAs */}
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: 20 }}>
-        <button type="button" style={{
-          background: "none", border: 0, padding: "10px 20px", borderRadius: 4,
-          font: "400 14px/20px Inter, sans-serif", color: "var(--pk-dp-close)", cursor: "pointer",
-        }}>
-          Close
-        </button>
-        <button type="button" style={{
-          background: "#FAAA89", border: 0, padding: "10px 20px", borderRadius: 4,
-          font: "400 14px/20px Inter, sans-serif", color: "#fff", cursor: "pointer",
-        }}>
-          Select
-        </button>
-      </div>
+      <button type="button" className="ph-cal__cta" disabled={!ready} onClick={choose}>Choose</button>
     </div>
   );
 }
 
+const VARIANTS = [["date", "Date"], ["datetime", "Date & time"]];
+
 const PROPS_ROWS = [
-  ["defaultValue / initialDate", "Date | null", "null",     "Pre-selected date on first render."],
-  ["onSelect",                   "function",    "—",        "Called with the chosen Date when Select is pressed."],
-  ["onClose",                    "function",    "—",        "Called when Close is pressed — hide the picker in the parent."],
+  ["value / v-model", "Date | null", "null", "Selected date. Shown with a pale-tangerine circle."],
+  ["withTime", "boolean", "false", "Adds the “Select Time” row (hour, minute, AM/PM)."],
+  ["minDate / maxDate", "Date", "—", "Dates outside the range are greyed and can't be picked."],
+  ["onChoose", "(date) => void", "—", "Fires when Choose is pressed. Includes the time when withTime is on."],
 ];
 
 export default function DatePicker({ fw, setFw }) {
   const app = useTheme();
   const [mode, setMode] = useState(app.theme);
+  const [variant, setVariant] = useState("date");
+  const [past, setPast] = useState("allowed");
+  const [event, setEvent] = useState("");
+  const withTime = variant === "datetime";
   const impl = { react: reactDatePicker, vue: vueDatePicker, flutter: flutterDatePicker };
-  const labelMap = {
-    react:   "PkDatePicker.jsx + parkway-date-picker.css",
-    vue:     "PkDatePicker.vue",
-    flutter: "pk_date_picker.dart",
+  const labelMap = { react: "PkDatePicker.jsx + parkway-date-picker.css", vue: "PkDatePicker.vue", flutter: "pk_date_picker.dart" };
+
+  const onChoose = (d) => {
+    const opts = { weekday: "short", day: "numeric", month: "short", year: "numeric" };
+    if (withTime) Object.assign(opts, { hour: "numeric", minute: "2-digit", hour12: true });
+    setEvent(`onChoose(${d.toLocaleString("en-GB", opts)})`);
   };
 
   return (
     <>
       <Lead>
-        Inline calendar date picker. Today is marked in Tangerine; the selected date gets a filled
-        Tangerine cell. Surface and text colours follow the light/dark theme.
+        A month calendar with a full-width Choose button, in iOS style. Today's date is tangerine; the
+        selected date gets a pale-tangerine circle. The Date & time variant adds a “Select Time” row.
+        Tap the month title to jump to another month.
       </Lead>
 
-      <SectionHeader label="Playground" desc="Click a date, or switch the preview between light and dark." />
+      <SectionHeader label="Playground" desc="Pick a date, then Choose. With the keyboard, arrow keys move between days." />
       <div style={{ border: "1px solid var(--pk-line)", borderRadius: 12, padding: "2px 18px", marginTop: 6 }}>
-        <ModeRow mode={mode} setMode={setMode} divider={false} />
+        <ModeRow mode={mode} setMode={setMode} />
+        <div style={ROW}>
+          <span className="ph-rowlabel">Variant</span>
+          <Tabs small value={variant} onChange={(v) => { setVariant(v); setEvent(""); }} label="Variant" items={VARIANTS} />
+        </div>
+        <div style={{ ...ROW, borderBottom: 0 }}>
+          <span className="ph-rowlabel">Past dates</span>
+          <Tabs small value={past} onChange={setPast} label="Past dates" items={[["allowed", "Allowed"], ["disabled", "Disabled"]]} />
+        </div>
       </div>
 
-      <PreviewStage mode={mode} tall stageStyle={{ display: "flex", justifyContent: "center" }}>
-        <LiveDatePicker />
+      <PreviewStage mode={mode} tall stageStyle={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+        <LiveCalendar key={variant} withTime={withTime} disablePast={past === "disabled"} onChoose={onChoose} />
+        <p className="ph-statedesc" aria-live="polite" style={{ margin: 0, minHeight: 18, fontFamily: "var(--pk-mono)" }}>
+          {event ? `→ ${event}` : ""}
+        </p>
       </PreviewStage>
 
       <Tabs value={fw} onChange={setFw} items={FRAMEWORKS} label="Framework" />
-      <CodeBlock code={usageDatePicker(fw)} label="Usage" />
+      <CodeBlock code={usageDatePicker(fw, withTime, past === "disabled")} label="Usage — reflects the controls above" />
       <CodeBlock code={impl[fw]} label={labelMap[fw]} />
 
-      <SectionHeader label="Visual states" />
+      <SectionHeader label="Day states" />
       <div className="ph-statelist">
         {[
-          ["Default day",      "var(--pk-dp-day)",  false, "Inactive date cell — adapts per theme."],
-          ["Today",            "#FAAA89",            false, "Current date — SemiBold Tangerine text, fixed across themes."],
-          ["Selected",         "#FAAA89",            true,  "Chosen date — Tangerine filled cell, white text."],
-          ["Weekend header",   "#F36A6A",            false, "Sun/Sat column headers — fixed across themes."],
+          ["Default", "var(--pk-cal-text)", false, "SF Pro Display Regular 17.3 — black in light mode, off-white in dark."],
+          ["Today", "#F9956B", false, "Tangerine text, no fill."],
+          ["Selected", "#F9956B", true, "38px Tangerine-05 circle, tangerine Medium 20.7."],
+          ["Out of range", "var(--pk-cal-muted)", false, "Grey-03. Shown but can't be picked (minDate / maxDate)."],
         ].map(([name, color, filled, desc]) => (
           <div key={name} className="ph-stateline">
-            <span className="ph-statedot" style={{
-              background: filled ? color : "transparent",
-              border: `2px solid ${color}`,
-            }} />
+            <span className="ph-statedot" style={{ background: filled ? "#FEEAE1" : "transparent", border: `2px solid ${color}` }} />
             <span className="ph-statelabel">{name}</span>
             <span className="ph-statedesc">{desc}</span>
           </div>
@@ -211,16 +281,16 @@ export default function DatePicker({ fw, setFw }) {
         <div>
           <p className="ph-guidehead"><span className="ph-dot ok" aria-hidden="true" />Do</p>
           <ul className="ph-guidelist">
-            <li>Render inside a popover or bottom sheet — don't inline directly in a form.</li>
-            <li>Pre-fill with the nearest valid date when a constraint exists (e.g. future-only).</li>
-            <li>Let CSS vars drive dark mode automatically; no manual theme prop needed.</li>
+            <li>Show it in a bottom sheet on mobile — the Choose button closes the sheet.</li>
+            <li>Set minDate for future-only flows like scheduled transfers.</li>
+            <li>Use Date & time only when the time actually matters (e.g. scheduling).</li>
           </ul>
         </div>
         <div>
           <p className="ph-guidehead"><span className="ph-dot err" aria-hidden="true" />Don't</p>
           <ul className="ph-guidelist">
-            <li>Don't substitute Manrope — this component uses Inter per the Wallet spec.</li>
-            <li>Don't allow past dates for future-only contexts without disabling or greying them.</li>
+            <li>Don't hide out-of-range dates — grey them so the grid stays aligned.</li>
+            <li>Don't use it for birthdays far in the past — a typed date field is faster.</li>
           </ul>
         </div>
       </div>

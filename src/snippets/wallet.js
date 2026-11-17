@@ -7,14 +7,14 @@
 /* ── Text Input ─────────────────────────────────────────────────────── */
 export const reactTextInput = `// PkTextInput.jsx — Parkway Wallet
 export default function PkTextInput({
-  label, placeholder, helper, error, disabled, trailingIcon, ...rest
+  label, placeholder, helper, error, disabled, leadingIcon, ...rest
 }) {
   return (
     <label className="pk-field">
       {label && <span className="pk-field__label">{label}</span>}
       <span className={\`pk-input\${error ? " is-error" : ""}\`}>
+        {leadingIcon && <span className="pk-input__icon" aria-hidden="true">{leadingIcon}</span>}
         <input placeholder={placeholder} disabled={disabled} aria-invalid={!!error} {...rest} />
-        {trailingIcon}
       </span>
       {(error || helper) && <span className={\`pk-field__help\${error ? " is-error" : ""}\`}>{error || helper}</span>}
     </label>
@@ -30,6 +30,7 @@ export default function PkTextInput({
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
   font: 400 14px Manrope; color: var(--pk-text); }
 .pk-input input::placeholder { color: var(--pk-placeholder); }
+.pk-input__icon { display: flex; flex: none; color: var(--pk-text-muted); }
 .pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px var(--pk-focus-ring); }
 .pk-input.is-error { border-color: var(--pk-error); }
 .pk-field__help { font: 400 12px Manrope; color: var(--pk-text-muted); }
@@ -47,8 +48,8 @@ const model = defineModel();
   <label class="pk-field">
     <span v-if="label" class="pk-field__label">{{ label }}</span>
     <span class="pk-input" :class="{ 'is-error': error }">
+      <span v-if="$slots.icon" class="pk-input__icon" aria-hidden="true"><slot name="icon" /></span>
       <input v-model="model" :placeholder="placeholder" :disabled="disabled" :aria-invalid="!!error" />
-      <slot name="icon" />
     </span>
     <span v-if="error || helper" class="pk-field__help" :class="{ 'is-error': error }">{{ error || helper }}</span>
   </label>
@@ -62,6 +63,7 @@ const model = defineModel();
   background: var(--pk-field-bg); transition: border-color .15s ease; }
 .pk-input input { flex: 1; border: 0; outline: 0; background: none;
   font: 400 14px Manrope; color: var(--pk-text); }
+.pk-input__icon { display: flex; flex: none; color: var(--pk-text-muted); }
 .pk-input:focus-within { border-color: var(--pk-tangerine-01); box-shadow: 0 0 0 3px var(--pk-focus-ring); }
 .pk-input.is-error { border-color: var(--pk-error); }
 .pk-field__help { font: 400 12px Manrope; color: var(--pk-text-muted); }
@@ -74,11 +76,11 @@ import 'parkway_tokens.dart';
 
 class PkTextInput extends StatelessWidget {
   const PkTextInput({super.key, this.label, this.hint, this.helper,
-    this.error, this.enabled = true, this.suffixIcon});
+    this.error, this.enabled = true, this.prefixIcon});
 
   final String? label, hint, helper, error;
   final bool enabled;
-  final Widget? suffixIcon;
+  final Widget? prefixIcon; // leading icon, left of the text
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +95,8 @@ class PkTextInput extends StatelessWidget {
       TextField(
         enabled: enabled,
         decoration: InputDecoration(
-          hintText: hint, suffixIcon: suffixIcon, errorText: error,
+          hintText: hint, prefixIcon: prefixIcon, errorText: error,
+          prefixIconColor: PkColors.grey08,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           enabledBorder: border(PkColors.grey04),
           focusedBorder: border(PkColors.tangerine01),
@@ -111,7 +114,7 @@ export function usageTextInput(fw, extra, state) {
   if (fw === "flutter")
     return `PkTextInput(
   label: 'Amount',
-  hint: 'Placeholder text',${extra === "helper" ? "\n  helper: 'Your remaining daily transfer limit is N200,000.00'," : ""}${err ? "\n  error: 'Enter a valid amount'," : ""}${dis ? "\n  enabled: false," : ""}${extra === "icon" ? "\n  suffixIcon: const Icon(Icons.expand_more)," : ""}
+  hint: 'Placeholder text',${extra === "helper" ? "\n  helper: 'Your remaining daily transfer limit is N200,000.00'," : ""}${err ? "\n  error: 'Enter a valid amount'," : ""}${dis ? "\n  enabled: false," : ""}${extra === "icon" ? "\n  prefixIcon: const Icon(PhosphorIconsRegular.currencyNgn, size: 18)," : ""}
 )`;
   const tag = "PkTextInput";
   const open = `<${tag}
@@ -119,8 +122,8 @@ export function usageTextInput(fw, extra, state) {
   placeholder="Placeholder text"${extra === "helper" ? `\n  helper="Your remaining daily transfer limit is N200,000.00"` : ""}${err ? `\n  error="Enter a valid amount"` : ""}${dis ? "\n  disabled" : ""}`;
   if (extra === "icon") {
     // Vue passes the icon via a slot, so the element can't self-close.
-    if (fw === "vue") return `${open}\n>\n  <template #icon><CaretDown /></template>\n</${tag}>`;
-    return `${open}\n  trailingIcon={<CaretDown />}\n/>`;
+    if (fw === "vue") return `${open}\n>\n  <template #icon><PhCurrencyNgn :size="18" /></template>\n</${tag}>`;
+    return `${open}\n  leadingIcon={<CurrencyNgn size={18} />}\n/>`;
   }
   return `${open}\n/>`;
 }
@@ -1223,360 +1226,6 @@ export function usageTabsToggle(fw, value) {
   if (fw === "vue")
     return `<PkTabsToggle\n  :tabs="[['pay-now', 'Pay Now'], ['scheduled', 'Scheduled']]"\n  v-model="tab"\n/>`;
   return `<PkTabsToggle\n  tabs={${tabs}}\n  value="${value}"\n  onChange={setTab}\n/>`;
-}
-
-/* ── Date Picker ─────────────────────────────────────────────────────── */
-export const reactDatePicker = `// PkDatePicker.jsx — Parkway Wallet
-import { useState } from 'react';
-import './parkway-date-picker.css';
-
-const MONTHS = ['January','February','March','April','May','June',
-  'July','August','September','October','November','December'];
-const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-
-function getCalendarGrid(year, month) {
-  const startDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const cells = Array(startDay).fill(null);
-  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
-  while (cells.length % 7) cells.push(null);
-  return cells;
-}
-
-export default function PkDatePicker({ defaultValue = null, onSelect, onClose }) {
-  const today = new Date();
-  const [view, setView] = useState({ year: today.getFullYear(), month: today.getMonth() });
-  const [selected, setSelected] = useState(defaultValue);
-
-  const prev = () => setView(v =>
-    v.month === 0 ? { year: v.year - 1, month: 11 } : { ...v, month: v.month - 1 });
-  const next = () => setView(v =>
-    v.month === 11 ? { year: v.year + 1, month: 0 } : { ...v, month: v.month + 1 });
-
-  const isToday   = (d) => d && view.year === today.getFullYear()
-    && view.month === today.getMonth() && d === today.getDate();
-  const isSelected = (d) => selected && view.year === selected.getFullYear()
-    && view.month === selected.getMonth() && d === selected.getDate();
-
-  return (
-    <div className="pk-datepicker">
-      <div className="pk-datepicker__header">
-        <span className="pk-datepicker__title">
-          {MONTHS[view.month]} {view.year}
-        </span>
-        <div className="pk-datepicker__nav">
-          <button type="button" className="pk-datepicker__chevron" onClick={prev} aria-label="Previous month">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M15 18l-6-6 6-6" stroke="#121212" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-          <button type="button" className="pk-datepicker__chevron" onClick={next} aria-label="Next month">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M9 18l6-6-6-6" stroke="#121212" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <div className="pk-datepicker__grid">
-        {DAYS.map((d, i) => (
-          <div key={d} className={\`pk-datepicker__weekday\${i === 0 || i === 6 ? ' is-weekend' : ''}\`}>{d}</div>
-        ))}
-        {getCalendarGrid(view.year, view.month).map((d, i) => (
-          <div
-            key={i}
-            className={\`pk-datepicker__day\${!d ? ' is-empty' : ''}\${isToday(d) ? ' is-today' : ''}\${isSelected(d) ? ' is-selected' : ''}\`}
-            onClick={() => d && setSelected(new Date(view.year, view.month, d))}
-          >{d}</div>
-        ))}
-      </div>
-
-      <div className="pk-datepicker__ctas">
-        <button type="button" className="pk-datepicker__close" onClick={onClose}>Close</button>
-        <button type="button" className="pk-datepicker__select" onClick={() => onSelect?.(selected)}>Select</button>
-      </div>
-    </div>
-  );
-}
-
-/* parkway-date-picker.css
-
-:root {
-  --pk-dp-bg:      #FFFFFF;  --pk-dp-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  --pk-dp-title:   #121212;  --pk-dp-chevron: #121212;
-  --pk-dp-weekday: #121212;  --pk-dp-day:    #858585;
-  --pk-dp-hover:   #FFF0E8;  --pk-dp-close:  #9CA3AF;
-}
-[data-theme="dark"] {
-  --pk-dp-bg:      #232323;  --pk-dp-shadow: 0 2px 20px rgba(0,0,0,0.40);
-  --pk-dp-title:   #F2F2F0;  --pk-dp-chevron: #F2F2F0;
-  --pk-dp-weekday: #F2F2F0;  --pk-dp-day:    #A0A0A0;
-  --pk-dp-hover:   #2A2018;  --pk-dp-close:  #7A7A75;
-}
-
-.pk-datepicker {
-  background: var(--pk-dp-bg); box-shadow: var(--pk-dp-shadow);
-  border-radius: 8px; padding: 25px; width: 326px;
-  display: flex; flex-direction: column; gap: 20px;
-  font-family: Inter, system-ui, sans-serif;
-}
-.pk-datepicker__header { display: flex; justify-content: space-between; align-items: center; }
-.pk-datepicker__title { font: 500 17px/25px Inter, sans-serif; color: var(--pk-dp-title); }
-.pk-datepicker__nav { display: flex; gap: 10px; }
-.pk-datepicker__chevron {
-  background: none; border: 0; padding: 2px; cursor: pointer;
-  display: flex; align-items: center; border-radius: 4px;
-}
-.pk-datepicker__chevron svg path { stroke: var(--pk-dp-chevron); }
-.pk-datepicker__chevron:hover { background: var(--pk-dp-hover); }
-.pk-datepicker__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
-.pk-datepicker__weekday {
-  text-align: center; padding: 10px 2.5px;
-  font: 400 15px/20px Inter, sans-serif; color: var(--pk-dp-weekday);
-}
-.pk-datepicker__weekday.is-weekend { color: #F36A6A; }
-.pk-datepicker__day {
-  height: 40px; display: flex; align-items: center; justify-content: center;
-  font: 400 15px/20px Inter, sans-serif; color: var(--pk-dp-day);
-  cursor: pointer; border-radius: 8px; margin: 2px 0;
-}
-.pk-datepicker__day.is-empty { pointer-events: none; }
-.pk-datepicker__day:not(.is-empty):hover { background: var(--pk-dp-hover); }
-.pk-datepicker__day.is-today { font-weight: 600; color: #FAAA89; }
-.pk-datepicker__day.is-selected { background: #FAAA89; color: #fff; font-weight: 400; }
-.pk-datepicker__ctas { display: flex; justify-content: flex-end; gap: 20px; }
-.pk-datepicker__close {
-  background: none; border: 0; padding: 10px 20px; border-radius: 4px;
-  font: 400 15px/20px Inter, sans-serif; color: var(--pk-dp-close); cursor: pointer;
-}
-.pk-datepicker__select {
-  background: #FAAA89; border: 0; padding: 10px 20px; border-radius: 4px;
-  font: 400 15px/20px Inter, sans-serif; color: #fff; cursor: pointer;
-}
-*/`;
-
-export const vueDatePicker = `<!-- PkDatePicker.vue — Parkway Wallet -->
-<script setup>
-import { ref, computed } from 'vue';
-
-const emit = defineEmits(['select', 'close']);
-
-const MONTHS = ['January','February','March','April','May','June',
-  'July','August','September','October','November','December'];
-const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-
-const today = new Date();
-const view = ref({ year: today.getFullYear(), month: today.getMonth() });
-const selected = ref(null);
-
-function getGrid(year, month) {
-  const start = new Date(year, month, 1).getDay();
-  const total = new Date(year, month + 1, 0).getDate();
-  const cells = Array(start).fill(null);
-  for (let d = 1; d <= total; d++) cells.push(d);
-  while (cells.length % 7) cells.push(null);
-  return cells;
-}
-
-const grid = computed(() => getGrid(view.value.year, view.value.month));
-
-const prev = () => view.value = view.value.month === 0
-  ? { year: view.value.year - 1, month: 11 }
-  : { ...view.value, month: view.value.month - 1 };
-const next = () => view.value = view.value.month === 11
-  ? { year: view.value.year + 1, month: 0 }
-  : { ...view.value, month: view.value.month + 1 };
-
-const isToday = (d) => d && view.value.year === today.getFullYear()
-  && view.value.month === today.getMonth() && d === today.getDate();
-const isSelected = (d) => selected.value
-  && view.value.year === selected.value.getFullYear()
-  && view.value.month === selected.value.getMonth()
-  && d === selected.value.getDate();
-const pick = (d) => { if (d) selected.value = new Date(view.value.year, view.value.month, d); };
-</script>
-
-<template>
-  <div class="pk-datepicker">
-    <div class="pk-datepicker__header">
-      <span class="pk-datepicker__title">{{ MONTHS[view.month] }} {{ view.year }}</span>
-      <div class="pk-datepicker__nav">
-        <button type="button" class="pk-datepicker__chevron" @click="prev" aria-label="Previous month">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18l-6-6 6-6" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button type="button" class="pk-datepicker__chevron" @click="next" aria-label="Next month">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M9 18l6-6-6-6" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-    <div class="pk-datepicker__grid">
-      <div v-for="(d, i) in DAYS" :key="d" class="pk-datepicker__weekday" :class="{ 'is-weekend': i === 0 || i === 6 }">{{ d }}</div>
-      <div
-        v-for="(d, i) in grid" :key="i"
-        class="pk-datepicker__day"
-        :class="{ 'is-empty': !d, 'is-today': isToday(d), 'is-selected': isSelected(d) }"
-        @click="pick(d)"
-      >{{ d }}</div>
-    </div>
-    <div class="pk-datepicker__ctas">
-      <button type="button" class="pk-datepicker__close" @click="emit('close')">Close</button>
-      <button type="button" class="pk-datepicker__select" @click="emit('select', selected)">Select</button>
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.pk-datepicker {
-  background: #fff; border-radius: 8px; padding: 25px; width: 326px;
-  display: flex; flex-direction: column; gap: 20px; font-family: Inter, system-ui, sans-serif;
-}
-.pk-datepicker__header { display: flex; justify-content: space-between; align-items: center; }
-.pk-datepicker__title { font: 500 17px/25px Inter, sans-serif; color: #121212; }
-.pk-datepicker__nav { display: flex; gap: 10px; }
-.pk-datepicker__chevron { background: none; border: 0; padding: 2px; cursor: pointer; display: flex; border-radius: 4px; }
-.pk-datepicker__chevron:hover { background: #F5F5F5; }
-.pk-datepicker__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
-.pk-datepicker__weekday { text-align: center; padding: 10px 2.5px; font: 400 15px/20px Inter, sans-serif; color: #121212; }
-.pk-datepicker__weekday.is-weekend { color: #F36A6A; }
-.pk-datepicker__day { height: 40px; display: flex; align-items: center; justify-content: center; font: 400 15px/20px Inter, sans-serif; color: #858585; cursor: pointer; border-radius: 8px; margin: 2px 0; }
-.pk-datepicker__day.is-empty { pointer-events: none; }
-.pk-datepicker__day:not(.is-empty):hover { background: #FFF0E8; }
-.pk-datepicker__day.is-today { font-weight: 600; color: #FAAA89; }
-.pk-datepicker__day.is-selected { background: #FAAA89; color: #fff; }
-.pk-datepicker__ctas { display: flex; justify-content: flex-end; gap: 20px; }
-.pk-datepicker__close { background: none; border: 0; padding: 10px 20px; border-radius: 4px; font: 400 15px/20px Inter, sans-serif; color: #9CA3AF; cursor: pointer; }
-.pk-datepicker__select { background: #FAAA89; border: 0; padding: 10px 20px; border-radius: 4px; font: 400 15px/20px Inter, sans-serif; color: #fff; cursor: pointer; }
-</style>`;
-
-export const flutterDatePicker = `// pk_date_picker.dart — Parkway Wallet
-import 'package:flutter/material.dart';
-
-const _months = ['January','February','March','April','May','June',
-  'July','August','September','October','November','December'];
-const _days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const _kAccent = Color(0xFFFAAA89);
-const _kWeekend = Color(0xFFF36A6A);
-const _kDay = Color(0xFF858585);
-const _kHeader = Color(0xFF121212);
-const _kMuted = Color(0xFF9CA3AF);
-
-class PkDatePicker extends StatefulWidget {
-  const PkDatePicker({ super.key, this.initialDate, this.onSelect, this.onClose });
-  final DateTime? initialDate;
-  final ValueChanged<DateTime?>? onSelect;
-  final VoidCallback? onClose;
-
-  @override
-  State<PkDatePicker> createState() => _PkDatePickerState();
-}
-
-class _PkDatePickerState extends State<PkDatePicker> {
-  late DateTime _view;
-  DateTime? _selected;
-  final _today = DateTime.now();
-
-  @override
-  void initState() {
-    super.initState();
-    _view = DateTime(widget.initialDate?.year ?? _today.year, widget.initialDate?.month ?? _today.month);
-    _selected = widget.initialDate;
-  }
-
-  List<int?> _grid() {
-    final first = DateTime(_view.year, _view.month, 1).weekday % 7;
-    final last  = DateTime(_view.year, _view.month + 1, 0).day;
-    final cells = List<int?>.filled(first, null);
-    for (var d = 1; d <= last; d++) cells.add(d);
-    while (cells.length % 7 != 0) cells.add(null);
-    return cells;
-  }
-
-  bool _isToday(int? d) => d != null && _view.year == _today.year
-    && _view.month == _today.month && d == _today.day;
-  bool _isSel(int? d) => d != null && _selected != null
-    && _view.year == _selected!.year && _view.month == _selected!.month && d == _selected!.day;
-
-  void _prev() => setState(() => _view = DateTime(_view.year, _view.month - 1));
-  void _next() => setState(() => _view = DateTime(_view.year, _view.month + 1));
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 326, padding: const EdgeInsets.all(25),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('\${_months[_view.month - 1]} \${_view.year}',
-            style: const TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500, fontSize: 17, color: _kHeader)),
-          Row(children: [
-            _ChevronBtn(left: true,  onTap: _prev),
-            const SizedBox(width: 10),
-            _ChevronBtn(left: false, onTap: _next),
-          ]),
-        ]),
-        const SizedBox(height: 15),
-        GridView.count(crossAxisCount: 7, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 4, children: [
-          ..._days.asMap().entries.map((e) => Center(child: Text(e.value,
-            style: TextStyle(fontFamily: 'Inter', fontSize: 15,
-              color: e.key == 0 || e.key == 6 ? _kWeekend : _kHeader)))),
-          ..._grid().map((d) => d == null ? const SizedBox() : GestureDetector(
-            onTap: () => setState(() => _selected = DateTime(_view.year, _view.month, d)),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
-              decoration: BoxDecoration(
-                color: _isSel(d) ? _kAccent : Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              alignment: Alignment.center,
-              child: Text('\$d', style: TextStyle(
-                fontFamily: 'Inter', fontSize: 15,
-                fontWeight: _isToday(d) ? FontWeight.w600 : FontWeight.w400,
-                color: _isSel(d) ? Colors.white : _isToday(d) ? _kAccent : _kDay,
-              )),
-            ),
-          )),
-        ]),
-        const SizedBox(height: 4),
-        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          TextButton(onPressed: widget.onClose, child: const Text('Close',
-            style: TextStyle(fontFamily: 'Inter', fontSize: 15, color: _kMuted))),
-          const SizedBox(width: 8),
-          ElevatedButton(
-            onPressed: () => widget.onSelect?.call(_selected),
-            style: ElevatedButton.styleFrom(backgroundColor: _kAccent, foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), elevation: 0),
-            child: const Text('Select', style: TextStyle(fontFamily: 'Inter', fontSize: 15)),
-          ),
-        ]),
-      ]),
-    );
-  }
-}
-
-class _ChevronBtn extends StatelessWidget {
-  const _ChevronBtn({ required this.left, required this.onTap });
-  final bool left;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => GestureDetector(
-    onTap: onTap,
-    child: Icon(left ? Icons.chevron_left : Icons.chevron_right, color: _kHeader, size: 24),
-  );
-}`;
-
-export function usageDatePicker(fw) {
-  if (fw === "flutter")
-    return `PkDatePicker(\n  initialDate: DateTime.now(),\n  onSelect: (date) => setState(() => picked = date),\n  onClose: () => Navigator.pop(context),\n)`;
-  if (fw === "vue")
-    return `<PkDatePicker @select="onDateSelect" @close="showPicker = false" />`;
-  return `<PkDatePicker\n  onSelect={(date) => setPickedDate(date)}\n  onClose={() => setOpen(false)}\n/>`;
 }
 
 /* ── Radio Button ────────────────────────────────────────────────────── */

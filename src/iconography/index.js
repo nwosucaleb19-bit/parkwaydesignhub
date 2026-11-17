@@ -9,6 +9,8 @@ import { MagnifyingGlass }  from "@phosphor-icons/react/dist/csr/MagnifyingGlass
 import { X }                from "@phosphor-icons/react/dist/csr/X";
 import { CaretRight }       from "@phosphor-icons/react/dist/csr/CaretRight";
 import { CaretDown }        from "@phosphor-icons/react/dist/csr/CaretDown";
+import { CaretLeft }        from "@phosphor-icons/react/dist/csr/CaretLeft";
+import { CurrencyNgn }      from "@phosphor-icons/react/dist/csr/CurrencyNgn";
 import { ArrowRight }       from "@phosphor-icons/react/dist/csr/ArrowRight";
 import { ArrowUpRight }     from "@phosphor-icons/react/dist/csr/ArrowUpRight";
 import { Copy }             from "@phosphor-icons/react/dist/csr/Copy";
@@ -22,8 +24,8 @@ import { Swatches }         from "@phosphor-icons/react/dist/csr/Swatches";
 import { FolderOpen }       from "@phosphor-icons/react/dist/csr/FolderOpen";
 
 export {
-  MagnifyingGlass, X, CaretRight, CaretDown, ArrowRight, ArrowUpRight,
-  Copy, Check, DownloadSimple,
+  MagnifyingGlass, X, CaretRight, CaretDown, CaretLeft, ArrowRight, ArrowUpRight,
+  Copy, Check, DownloadSimple, CurrencyNgn,
 };
 
 // Rail module icon-key → component
